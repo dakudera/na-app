@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* tech.na_app.Runner
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* src.main.java.tech.na_app.Runner.java
