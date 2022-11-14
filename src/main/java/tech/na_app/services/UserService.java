@@ -8,6 +8,7 @@ import tech.na_app.entity.user.User;
 import tech.na_app.entity.user.UserSequence;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
+import tech.na_app.model.LoginResponse;
 import tech.na_app.model.profile.SaveUserProfileRequest;
 import tech.na_app.model.profile.SaveUserProfileResponse;
 import tech.na_app.model.user.SaveNewUserRequest;
@@ -24,6 +25,32 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final SequenceGeneratorService sequenceGeneratorService;
+
+
+    public LoginResponse login(String requestId, String login, String password) {
+        try {
+            if (login == null || login.isEmpty()
+                    || password == null || password.isEmpty()) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            Optional<User> userOptional = userRepository.findByLoginAndPassword(login, password);
+            if (userOptional.isEmpty()) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            User user = userOptional.get();
+
+            return LoginResponse.builder()
+                    .id(user.getId())
+                    .role(user.getRole())
+                    .error(new ErrorObject(0))
+                    .build();
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new LoginResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
 
 
     public SaveNewUserResponse saveNewUser(String requestId, SaveNewUserRequest saveNewUserRequest) {
