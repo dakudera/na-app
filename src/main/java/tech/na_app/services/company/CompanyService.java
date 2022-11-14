@@ -1,4 +1,4 @@
-package tech.na_app.services;
+package tech.na_app.services.company;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,6 +13,7 @@ import tech.na_app.model.company.SaveNewCompanyResponse;
 import tech.na_app.model.enums.UserRole;
 import tech.na_app.repository.CompanyRepository;
 import tech.na_app.repository.UserRepository;
+import tech.na_app.utils.SequenceGeneratorService;
 
 import java.util.ArrayList;
 import java.util.Date;

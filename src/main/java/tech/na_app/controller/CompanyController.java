@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import tech.na_app.model.company.GetAllCompanyResponse;
 import tech.na_app.model.company.SaveNewCompanyRequest;
 import tech.na_app.model.company.SaveNewCompanyResponse;
-import tech.na_app.services.CompanyService;
+import tech.na_app.services.company.CompanyService;
 import tech.na_app.utils.HelpUtil;
 
 @Log4j2
@@ -25,10 +25,10 @@ public class CompanyController {
     }
 
     @GetMapping("get_all")
-    public GetAllCompanyResponse getAllCompany(@RequestHeader Integer userId){
+    public GetAllCompanyResponse getAllCompany(){
         String requestId = HelpUtil.getUUID();
         log.info(requestId + " Request to getAllCompany");
-        return companyService.getAllCompanies(requestId, userId);
+        return companyService.getAllCompanies(requestId, 1);
     }
 
 }

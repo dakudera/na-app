@@ -8,12 +8,13 @@ import tech.na_app.entity.user.User;
 import tech.na_app.entity.user.UserSequence;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
-import tech.na_app.model.LoginResponse;
+import tech.na_app.model.auth.LoginResponse;
 import tech.na_app.model.profile.SaveUserProfileRequest;
 import tech.na_app.model.profile.SaveUserProfileResponse;
 import tech.na_app.model.user.SaveNewUserRequest;
 import tech.na_app.model.user.SaveNewUserResponse;
 import tech.na_app.repository.UserRepository;
+import tech.na_app.utils.SequenceGeneratorService;
 
 import java.util.Date;
 import java.util.Optional;
@@ -42,8 +43,6 @@ public class UserService {
             User user = userOptional.get();
 
             return LoginResponse.builder()
-                    .id(user.getId())
-                    .role(user.getRole())
                     .error(new ErrorObject(0))
                     .build();
         } catch (ApiException e) {
