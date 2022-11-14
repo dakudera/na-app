@@ -7,11 +7,17 @@ import tech.na_app.entity.company.*;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
+import tech.na_app.model.company.GetAllCompanyResponse;
 import tech.na_app.model.company.SaveNewCompanyRequest;
 import tech.na_app.model.company.SaveNewCompanyResponse;
+import tech.na_app.model.enums.UserRole;
 import tech.na_app.repository.CompanyRepository;
+import tech.na_app.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 @Service
@@ -19,6 +25,7 @@ import java.util.Date;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
     private final SequenceGeneratorService sequenceGeneratorService;
 
     public SaveNewCompanyResponse saveNewCompany(String requestId, SaveNewCompanyRequest request) {
@@ -81,6 +88,45 @@ public class CompanyService {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new SaveNewCompanyResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+
+    public GetAllCompanyResponse getAllCompanies(String requestId, Integer userId) {
+        try {
+            if (userId == null) {
+                throw new ApiException(400, "BAD_REQUEST");
+            }
+
+            Optional<User> userOptional = userRepository.findById(userId);
+            if (userOptional.isPresent()) {
+                if (!userOptional.get().getRole().equals(UserRole.SUPER_ADMIN)) {
+                    throw new ApiException(400, "BAD_REQUEST");
+                }
+            }
+
+            List<Company> all = companyRepository.findAll();
+            if (all.isEmpty()) {
+                return new GetAllCompanyResponse(new ErrorObject(0));
+            }
+            List<GetAllCompanyResponse.Company> companies = new ArrayList<>();
+            for (var company : all) {
+                companies.add(
+                        GetAllCompanyResponse.Company.builder()
+                                .id(company.getId())
+                                .name(company.getUkr_name().getFull_name())
+                                .registrationDate(company.getCreate_date())
+                                .build()
+                );
+            }
+
+            return GetAllCompanyResponse.builder()
+                    .companies(companies)
+                    .errorObject(new ErrorObject(0))
+                    .build();
+        } catch (Exception e) {
+            log.error(requestId + " Error: " + 500 + " Message: " + e.getMessage());
+            return new GetAllCompanyResponse(new ErrorObject(500, e.getMessage()));
         }
     }
 
