@@ -11,7 +11,7 @@ import tech.na_app.model.enums.UserRole;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestAuthResponse {
+public class SaveNewUserResponse {
 
     private Integer id;
     private String login;
@@ -20,7 +20,7 @@ public class TestAuthResponse {
 
     private ErrorObject error;
 
-    public TestAuthResponse(ErrorObject error) {
+    public SaveNewUserResponse(ErrorObject error) {
         this.error = error;
     }
 }

@@ -4,14 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.UserRole;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestAuthRequest {
+public class SaveNewUserRequest {
 
     private String login;
     private String password;

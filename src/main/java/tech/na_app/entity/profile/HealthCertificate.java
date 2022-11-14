@@ -1,4 +1,4 @@
-package tech.na_app.entity.user;
+package tech.na_app.entity.profile;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

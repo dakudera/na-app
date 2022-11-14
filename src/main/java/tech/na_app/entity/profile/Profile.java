@@ -1,4 +1,4 @@
-package tech.na_app.entity.user;
+package tech.na_app.entity.profile;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +37,5 @@ public class Profile {
     private DrivingLicense driving_license;
     private AvailableDocuments available_documents;
     private Internship internship;
-
 
 }

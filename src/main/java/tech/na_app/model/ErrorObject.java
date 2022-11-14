@@ -14,4 +14,7 @@ public class ErrorObject {
     private Integer code;
     private String description;
 
+    public ErrorObject(Integer code) {
+        this.code = code;
+    }
 }

@@ -1,5 +1,4 @@
-package tech.na_app.entity.user;
-
+package tech.na_app.entity.company;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,10 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Education {
+public class BankingDetails {
 
-    private String certificate;
-    private String specialty;
-    private String advanced_qualification;
+    private String iban;
+    private String remittance_bank;
 
 }
