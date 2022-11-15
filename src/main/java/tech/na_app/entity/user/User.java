@@ -38,6 +38,7 @@ public class User implements Serializable {
 
     private String login;
     private String password;
+    private String salt;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;

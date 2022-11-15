@@ -1,4 +1,4 @@
-package tech.na_app.services;
+package tech.na_app.utils;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoOperations;
