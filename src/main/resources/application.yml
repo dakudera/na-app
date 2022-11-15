@@ -8,3 +8,7 @@ security:
     secret-key: 841113a1-9083-43ab-ab88-972070c907b5
     expiration: 3600000
     refresh-expiration: 86400000
+
+springdoc:
+  api-docs:
+    enabled: true

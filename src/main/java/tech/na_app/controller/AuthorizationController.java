@@ -12,7 +12,6 @@ import tech.na_app.utils.jwt.AuthChecker;
 
 import javax.validation.Valid;
 
-
 @RestController
 @RequiredArgsConstructor
 public class AuthorizationController {
