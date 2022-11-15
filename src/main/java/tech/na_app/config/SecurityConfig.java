@@ -30,8 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
 
@@ -43,13 +44,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().antMatchers("/authenticate")
-                .permitAll().anyRequest().authenticated()
-                .and().exceptionHandling().and().sessionManagement()
+        http.csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/authenticate").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);;
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
-
 
 }

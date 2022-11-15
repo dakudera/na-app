@@ -29,7 +29,7 @@ public class AuthorizationController {
     }
 
     @PostMapping("/authenticate")
-    public LoginResponse generateToken(@RequestBody AuthRequest authRequest) throws Exception {
+    public LoginResponse generateToken(@RequestBody AuthRequest authRequest) {
         return authorizationService.login(authRequest);
     }
 

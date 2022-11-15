@@ -15,6 +15,7 @@ import tech.na_app.model.user.SaveNewUserRequest;
 import tech.na_app.model.user.SaveNewUserResponse;
 import tech.na_app.repository.UserRepository;
 import tech.na_app.utils.SequenceGeneratorService;
+import tech.na_app.utils.jwt.PasswordUtils;
 
 import java.util.Date;
 import java.util.Optional;
@@ -27,31 +28,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final SequenceGeneratorService sequenceGeneratorService;
 
-
-    public LoginResponse login(String requestId, String login, String password) {
-        try {
-            if (login == null || login.isEmpty()
-                    || password == null || password.isEmpty()) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
-            Optional<User> userOptional = userRepository.findByLoginAndPassword(login, password);
-            if (userOptional.isEmpty()) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
-            User user = userOptional.get();
-
-            return LoginResponse.builder()
-                    .error(new ErrorObject(0))
-                    .build();
-        } catch (ApiException e) {
-            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
-            return new LoginResponse(new ErrorObject(e.getCode(), e.getMessage()));
-        }
-    }
-
-
     public SaveNewUserResponse saveNewUser(String requestId, SaveNewUserRequest saveNewUserRequest) {
         try {
             if (saveNewUserRequest.getLogin() == null || saveNewUserRequest.getLogin().isEmpty()
@@ -61,21 +37,21 @@ public class UserService {
 
             UserSequence sequenceNumber = (UserSequence) sequenceGeneratorService.getSequenceNumber(User.SEQUENCE_NAME, UserSequence.class);
 
-            User save = userRepository.save(
+            String salt = PasswordUtils.getSalt();
+            String passwordEncode = PasswordUtils.generateSecurePassword(saveNewUserRequest.getPassword(), salt);
+            userRepository.save(
                     User.builder()
                             .id(sequenceNumber.getSeq())
                             .create_date(new Date())
                             .login(saveNewUserRequest.getLogin())
-                            .password(saveNewUserRequest.getPassword())
+                            .password(passwordEncode)
                             .role(saveNewUserRequest.getRole())
+                            .salt(salt)
                             .build()
             );
 
             return SaveNewUserResponse.builder()
-                    .id(save.getId())
-                    .login(save.getLogin())
-                    .password(save.getPassword())
-                    .role(save.getRole())
+                    .error(new ErrorObject(0))
                     .build();
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
