@@ -10,7 +10,7 @@ import tech.na_app.model.profile.SaveUserProfileRequest;
 import tech.na_app.model.profile.SaveUserProfileResponse;
 import tech.na_app.model.user.SaveNewUserRequest;
 import tech.na_app.model.user.SaveNewUserResponse;
-import tech.na_app.services.UserService;
+import tech.na_app.services.user.UserService;
 import tech.na_app.utils.HelpUtil;
 import tech.na_app.utils.jwt.AuthChecker;
 
@@ -30,7 +30,9 @@ public class UserController {
         try {
             authChecker.checkToken(token, UserRole.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to saveNewUser: " + request);
-            return saveNewUser.saveNewUser(requestId, request);
+            SaveNewUserResponse response = saveNewUser.saveNewUser(requestId, request);
+            log.info(requestId + " Response: " + response);
+            return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new SaveNewUserResponse(new ErrorObject(e.getCode(), e.getMessage()));
@@ -45,7 +47,9 @@ public class UserController {
         try {
             authChecker.checkToken(token, UserRole.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to saveUserProfile: " + request);
-            return saveNewUser.saveUserProfile(requestId, request);
+            SaveUserProfileResponse response = saveNewUser.saveUserProfile(requestId, request);
+            log.info(requestId + " Response: " + response);
+            return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new SaveUserProfileResponse(new ErrorObject(e.getCode(), e.getMessage()));

@@ -8,9 +8,9 @@ import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.company.GetAllCompanyResponse;
+import tech.na_app.model.company.GetCompanyInfoResponse;
 import tech.na_app.model.company.SaveNewCompanyRequest;
 import tech.na_app.model.company.SaveNewCompanyResponse;
-import tech.na_app.model.enums.UserRole;
 import tech.na_app.repository.CompanyRepository;
 import tech.na_app.repository.UserRepository;
 import tech.na_app.utils.SequenceGeneratorService;
@@ -93,21 +93,11 @@ public class CompanyService {
     }
 
 
-    public GetAllCompanyResponse getAllCompanies(String requestId, Integer userId) {
+    public GetAllCompanyResponse getAllCompanies(String requestId) {
         try {
-            if (userId == null) {
-                throw new ApiException(400, "BAD_REQUEST");
-            }
-
-            Optional<User> userOptional = userRepository.findById(userId);
-            if (userOptional.isPresent()) {
-                if (!userOptional.get().getRole().equals(UserRole.SUPER_ADMIN)) {
-                    throw new ApiException(400, "BAD_REQUEST");
-                }
-            }
-
             List<Company> all = companyRepository.findAll();
             if (all.isEmpty()) {
+                log.info(requestId + " Companies were not found");
                 return new GetAllCompanyResponse(new ErrorObject(0));
             }
             List<GetAllCompanyResponse.Company> companies = new ArrayList<>();
@@ -130,5 +120,65 @@ public class CompanyService {
             return new GetAllCompanyResponse(new ErrorObject(500, e.getMessage()));
         }
     }
+
+    public GetCompanyInfoResponse getCompanyInfo(String requestId, User user) {
+        try {
+            Optional<Company> companyOptional = companyRepository.findById(user.getCompanyId());
+            if (companyOptional.isEmpty()) {
+                log.info(requestId + " Company was not found");
+                return new GetCompanyInfoResponse(new ErrorObject(0));
+            }
+
+            Company company = companyOptional.get();
+            return GetCompanyInfoResponse.builder()
+                    .ukrName(
+                            company.getUkr_name() != null ?
+                                    tech.na_app.model.company.CompanyName.builder()
+                                            .full_name(company.getUkr_name().getFull_name())
+                                            .short_name(company.getUkr_name().getShort_name())
+                                            .build() : null
+                    )
+                    .engName(
+                            company.getEng_name() != null ?
+                                    tech.na_app.model.company.CompanyName.builder()
+                                            .full_name(company.getEng_name().getFull_name())
+                                            .short_name(company.getEng_name().getShort_name())
+                                            .build() : null
+                    )
+                    .address(company.getAddress())
+                    .postalAddress(company.getPostal_address())
+                    .communication(
+                            company.getCommunication() != null ?
+                                    tech.na_app.model.company.Communication.builder()
+                                            .email(company.getCommunication().getEmail())
+                                            .phone_number(company.getCommunication().getPhone_number())
+                                            .build() : null
+                    )
+                    .bankingDetails(
+                            company.getBanking_details() != null ?
+                                    tech.na_app.model.company.BankingDetails.builder()
+                                            .iban(company.getBanking_details().getIban())
+                                            .remittance_bank(company.getBanking_details().getRemittance_bank())
+                                            .build() : null
+                    )
+                    .identificationDetails(
+                            company.getIdentification_details() != null ?
+                                    tech.na_app.model.company.IdentificationDetails.builder()
+                                            .edrpou(company.getIdentification_details().getEdrpou())
+                                            .registration_certificate(company.getIdentification_details().getRegistration_certificate())
+                                            .ipn(company.getIdentification_details().getIpn())
+                                            .accounting_tax_info(company.getIdentification_details().getAccounting_tax_info())
+                                            .tax_form(company.getIdentification_details().getTax_form())
+                                            .build() : null
+                    )
+                    .licenceInfo(company.getLicence_info())
+                    .error(new ErrorObject(0))
+                    .build();
+        } catch (Exception e) {
+            log.error(requestId + " Error: " + 500 + " Message: " + e.getMessage());
+            return new GetCompanyInfoResponse(new ErrorObject(500, e.getMessage()));
+        }
+    }
+
 
 }

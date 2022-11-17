@@ -45,4 +45,6 @@ public class User implements Serializable {
 
     private Profile profile;
 
+    private Integer companyId;
+
 }

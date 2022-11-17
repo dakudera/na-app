@@ -15,5 +15,6 @@ public class SaveNewUserRequest {
     private String login;
     private String password;
     private UserRole role;
+    private Integer companyId;
 
 }
