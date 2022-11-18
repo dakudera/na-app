@@ -1,5 +1,6 @@
 package tech.na_app.model.profile;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import tech.na_app.entity.profile.AvailableDocuments;
 import tech.na_app.entity.profile.DrivingLicense;
@@ -16,8 +17,10 @@ public class SaveUserProfileRequest {
     private String email;
     private String fio;
     private String acc_order_number;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
     private Date acc_order_date;
     private BigDecimal salary;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
     private Date birthday;
     private String previous_work_exp;
     private String previous_info_work_mp;

@@ -29,6 +29,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final SequenceGeneratorService sequenceGeneratorService;
     private final CompanyRepository companyRepository;
+    private final UserHelperComponent userHelperComponent;
 
     public SaveNewUserResponse saveNewUser(String requestId, SaveNewUserRequest request) {
         try {
@@ -92,6 +93,7 @@ public class UserService {
                     .acc_order_date(request.getAcc_order_date())
                     .salary(request.getSalary())
                     .birthday(request.getBirthday())
+                    .age(userHelperComponent.calculateAge(request.getBirthday()))
                     .previous_work_exp(request.getPrevious_work_exp())
                     .previous_info_work_mp(request.getPrevious_info_work_mp())
                     .sufficient_experience_mp(request.getSufficient_experience_mp())
