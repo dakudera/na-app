@@ -8,6 +8,8 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PasswordUtils {
 
@@ -16,6 +18,12 @@ public class PasswordUtils {
     private static final int ITERATIONS = 10000;
     private static final int KEY_LENGTH = 256;
     private static final int salt = 30;
+
+    // digit + lowercase char + uppercase char + punctuation + symbol
+    private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
+
+    private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+
 
     public static String getSalt() {
         StringBuilder returnValue = new StringBuilder(salt);
@@ -49,5 +57,10 @@ public class PasswordUtils {
 
         // Check if two passwords are equal
         return newSecurePassword.equalsIgnoreCase(securedPassword);
+    }
+
+    public static boolean isValid(final String password) {
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
 }
