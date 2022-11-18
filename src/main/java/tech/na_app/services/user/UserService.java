@@ -11,6 +11,7 @@ import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.profile.SaveUserProfileRequest;
 import tech.na_app.model.profile.SaveUserProfileResponse;
+import tech.na_app.model.user.ResetPasswordRequest;
 import tech.na_app.model.user.SaveNewUserRequest;
 import tech.na_app.model.user.SaveNewUserResponse;
 import tech.na_app.repository.CompanyRepository;
@@ -111,6 +112,46 @@ public class UserService {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new SaveUserProfileResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    public ErrorObject resetPassword(String requestId, User user, ResetPasswordRequest request) {
+        try {
+            if (request.getNewPassword() == null || request.getNewPassword().isEmpty()
+                    || request.getOldPassword() == null || request.getOldPassword().isEmpty()) {
+                log.info(requestId+ " Bad request: "+request);
+                throw new ApiException(400, "BAD_REQUEST");
+            }
+
+            String encodeOldPassword = PasswordUtils.generateSecurePassword(request.getOldPassword(), user.getSalt());
+            if (!encodeOldPassword.equals(user.getPassword())) {
+                log.info(requestId+ " Incorrect password");
+                throw new ApiException(400, "Incorrect request data");
+            }
+
+
+            if (!PasswordUtils.isValid(request.getNewPassword())) {
+                log.info(requestId+ " New password not verified");
+                throw new ApiException(400, "Incorrect request data");
+            }
+
+            String encodeNewPassword = PasswordUtils.generateSecurePassword(request.getNewPassword(), user.getSalt());
+            if (encodeNewPassword.equals(encodeOldPassword)) {
+                log.info(requestId+ " Incorrect password");
+                throw new ApiException(400, "Incorrect request data");
+            }
+
+            String salt = PasswordUtils.getSalt();
+            String passwordEncode = PasswordUtils.generateSecurePassword(request.getNewPassword(), salt);
+
+            user.setSalt(salt);
+            user.setPassword(passwordEncode);
+            userRepository.save(user);
+
+            return new ErrorObject(0);
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new ErrorObject(e.getCode(), e.getMessage());
         }
     }
 
