@@ -1,4 +1,5 @@
-package tech.na_app.entity.transport_card;
+package tech.na_app.model.transport;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,13 +15,8 @@ import java.math.BigDecimal;
 public class GeneralInfo {
 
     private BigDecimal mileage;
-
     private BigDecimal fuel_tank_volume;
-
     private BigDecimal height;
-
     private BigDecimal width;
-
     private BigDecimal length;
-
 }

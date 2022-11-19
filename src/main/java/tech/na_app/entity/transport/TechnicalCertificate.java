@@ -1,4 +1,4 @@
-package tech.na_app.entity.transport_card;
+package tech.na_app.entity.transport;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,18 +13,18 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsingReasonInfo {
+public class TechnicalCertificate {
 
-    private String num_and_name_contract;
+    private String num_and_series;
 
-    @Temporal(value = TemporalType.DATE)
-    private Date date_start;
-
-    private Boolean is_contract_fixed_term;
+    private String issued_by;
 
     @Temporal(value = TemporalType.DATE)
     private Date date_end;
 
     @Temporal(value = TemporalType.DATE)
-    private Date date_next_start;
+    private Date date_issue;
+
+    private TechnicalCertificateDopInfo technical_certificate_dop_info;
+
 }

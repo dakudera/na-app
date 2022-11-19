@@ -1,4 +1,4 @@
-package tech.na_app.entity.transport_card;
+package tech.na_app.entity.transport;
 
 
 import lombok.AllArgsConstructor;

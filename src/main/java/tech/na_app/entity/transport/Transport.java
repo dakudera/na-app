@@ -22,7 +22,6 @@ public class Transport {
     @Transient
     public static final String SEQUENCE_NAME = "transport_sequence";
 
-
     private Integer id;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -30,4 +29,7 @@ public class Transport {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date update_date;
+
+    private TransportCard transport_card;
+    private Integer company_id;
 }

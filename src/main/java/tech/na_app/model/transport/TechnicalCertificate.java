@@ -1,12 +1,13 @@
-package tech.na_app.entity.transport_card;
+package tech.na_app.model.transport;
 
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tech.na_app.entity.transport.TechnicalCertificateDopInfo;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.util.Date;
 
 @Data
@@ -16,15 +17,13 @@ import java.util.Date;
 public class TechnicalCertificate {
 
     private String num_and_series;
-
     private String issued_by;
 
-    @Temporal(value = TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
     private Date date_end;
 
-    @Temporal(value = TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
     private Date date_issue;
 
     private TechnicalCertificateDopInfo technical_certificate_dop_info;
-
 }
