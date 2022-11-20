@@ -180,5 +180,8 @@ public class CompanyService {
         }
     }
 
+    public Company findById(Integer id) {
+        return companyRepository.findById(id).orElseThrow(() -> new ApiException(400, "BAD_REQUEST"));
+    }
 
 }
