@@ -32,7 +32,7 @@ public class TransportService {
             if (Objects.isNull(request)) {
                 throw new ApiException(400, "BAD_REQUEST");
             }
-            if (Objects.nonNull(request.getCompany_id())) {
+            if (Objects.isNull(request.getCompany_id())) {
                 throw new ApiException(400, "BAD_REQUEST");
             }
             companyService.findById(request.getCompany_id());

@@ -82,7 +82,7 @@ public class TransportConverter {
                                 .length(request.getTransport_card().getGeneral_info().getLength())
                                 .build() : null)
                         .build() : null)
-                .company_id(transportSequence.getSeq())
+                .company_id(request.getCompany_id())
                 .build();
     }
 }
