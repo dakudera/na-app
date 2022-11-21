@@ -1,12 +1,14 @@
 package tech.na_app.model.transport;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import tech.na_app.entity.transport.TransportCard;
 
 @Data
 public class SaveNewTransportRequest {
 
-    private Integer id;
+    @JsonProperty("transport_card")
     private TransportCard transport_card;
+
+    @JsonProperty("company_id")
     private Integer company_id;
 }
