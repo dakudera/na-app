@@ -23,7 +23,7 @@ public class TransportController {
     private final TransportService transportService;
 
     @PostMapping("/save_new_transport")
-    public SaveNewTransportResponse saveNewUser(
+    public SaveNewTransportResponse saveNewTransport(
             @RequestHeader(name = "Authorization") String token, @RequestBody SaveNewTransportRequest request
     ) {
         String requestId = HelpUtil.getUUID();
