@@ -10,6 +10,7 @@ import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.profile.SaveUserProfileRequest;
 import tech.na_app.model.profile.SaveUserProfileResponse;
 import tech.na_app.model.user.GetAllUserRolesResponse;
+import tech.na_app.model.user.ResetPasswordRequest;
 import tech.na_app.model.user.SaveNewUserRequest;
 import tech.na_app.model.user.SaveNewUserResponse;
 import tech.na_app.services.user.UserService;
@@ -22,7 +23,7 @@ import tech.na_app.utils.jwt.AuthChecker;
 @RequiredArgsConstructor
 public class UserController {
     private final AuthChecker authChecker;
-    private final UserService saveNewUser;
+    private final UserService userService;
 
     @PostMapping("/save_new_user")
     public SaveNewUserResponse saveNewUser(
@@ -32,7 +33,7 @@ public class UserController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to saveNewUser: " + request);
-            SaveNewUserResponse response = saveNewUser.saveNewUser(requestId, user, request);
+            SaveNewUserResponse response = userService.saveNewUser(requestId, user, request);
             log.info(requestId + " Response: " + response);
             return response;
         } catch (ApiException e) {
@@ -49,7 +50,7 @@ public class UserController {
         try {
             authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to saveUserProfile: " + request);
-            SaveUserProfileResponse response = saveNewUser.saveUserProfile(requestId, request);
+            SaveUserProfileResponse response = userService.saveUserProfile(requestId, request);
             log.info(requestId + " Response: " + response);
             return response;
         } catch (ApiException e) {
@@ -57,6 +58,7 @@ public class UserController {
             return new SaveUserProfileResponse(new ErrorObject(e.getCode(), e.getMessage()));
         }
     }
+
 
     @GetMapping("/get_all_roles")
     public GetAllUserRolesResponse getAllUserRoles(
@@ -66,12 +68,29 @@ public class UserController {
         try {
             authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to saveUserProfile");
-            GetAllUserRolesResponse response = saveNewUser.getAllUserRoles(requestId);
+            GetAllUserRolesResponse response = userService.getAllUserRoles(requestId);
             log.info(requestId + " Response: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new GetAllUserRolesResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @PostMapping("/reset_password")
+    public ErrorObject reset_password(
+            @RequestHeader(name = "Authorization") String token, @RequestBody ResetPasswordRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            log.info(requestId + " Request to saveUserProfile: " + request);
+            ErrorObject response = userService.resetPassword(requestId, user, request);
+            log.info(requestId + " Response: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new ErrorObject(e.getCode(), e.getMessage());
         }
     }
 
