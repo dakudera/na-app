@@ -6,20 +6,26 @@ import org.springframework.stereotype.Service;
 import tech.na_app.entity.company.Company;
 import tech.na_app.entity.profile.Profile;
 import tech.na_app.entity.user.User;
+import tech.na_app.entity.user.UserRolesStore;
 import tech.na_app.entity.user.UserSequence;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
+import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.profile.SaveUserProfileRequest;
 import tech.na_app.model.profile.SaveUserProfileResponse;
+import tech.na_app.model.user.GetAllUserRolesResponse;
 import tech.na_app.model.user.ResetPasswordRequest;
 import tech.na_app.model.user.SaveNewUserRequest;
 import tech.na_app.model.user.SaveNewUserResponse;
 import tech.na_app.repository.CompanyRepository;
 import tech.na_app.repository.UserRepository;
+import tech.na_app.repository.UserRolesStoreRepository;
 import tech.na_app.utils.SequenceGeneratorService;
 import tech.na_app.utils.jwt.PasswordUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Log4j2
@@ -31,8 +37,9 @@ public class UserService {
     private final SequenceGeneratorService sequenceGeneratorService;
     private final CompanyRepository companyRepository;
     private final UserHelperComponent userHelperComponent;
+    private final UserRolesStoreRepository userRolesStoreRepository;
 
-    public SaveNewUserResponse saveNewUser(String requestId, SaveNewUserRequest request) {
+    public SaveNewUserResponse saveNewUser(String requestId, User user, SaveNewUserRequest request) {
         try {
             if (request.getLogin() == null || request.getLogin().isEmpty()
                     || request.getPassword() == null || request.getPassword().isEmpty()) {
@@ -40,8 +47,8 @@ public class UserService {
             }
 
             Integer companyId = null;
-            if (request.getCompanyId() != null) {
-                Optional<Company> companyOptional = companyRepository.findById(request.getCompanyId());
+            if (!request.getRole().equals(UserRoleType.SUPER_ADMIN)) {
+                Optional<Company> companyOptional = companyRepository.findById(user.getCompanyId());
                 if (companyOptional.isPresent()) {
                     companyId = companyOptional.get().getId();
                 }
@@ -64,6 +71,7 @@ public class UserService {
             );
 
             return SaveNewUserResponse.builder()
+                    .id(sequenceNumber.getSeq())
                     .error(new ErrorObject(0))
                     .build();
         } catch (ApiException e) {
@@ -115,29 +123,50 @@ public class UserService {
         }
     }
 
+
+    public GetAllUserRolesResponse getAllUserRoles(String requestId) {
+        try {
+            List<UserRolesStore> all = userRolesStoreRepository.findAll();
+            GetAllUserRolesResponse response = new GetAllUserRolesResponse(new ErrorObject(0));
+            List<GetAllUserRolesResponse.Role> roles = new ArrayList<>();
+            all.forEach(a -> roles.add(
+                    GetAllUserRolesResponse.Role.builder()
+                            .role(a.getRole())
+                            .description(a.getDescription())
+                            .build()
+            ));
+
+            response.setRoles(roles);
+            return response;
+        } catch (Exception e) {
+            log.error(requestId + " Error: " + e.getMessage());
+            return new GetAllUserRolesResponse(new ErrorObject(500, e.getMessage()));
+        }
+    }
+
     public ErrorObject resetPassword(String requestId, User user, ResetPasswordRequest request) {
         try {
             if (request.getNewPassword() == null || request.getNewPassword().isEmpty()
                     || request.getOldPassword() == null || request.getOldPassword().isEmpty()) {
-                log.info(requestId+ " Bad request: "+request);
+                log.info(requestId + " Bad request: " + request);
                 throw new ApiException(400, "BAD_REQUEST");
             }
 
             String encodeOldPassword = PasswordUtils.generateSecurePassword(request.getOldPassword(), user.getSalt());
             if (!encodeOldPassword.equals(user.getPassword())) {
-                log.info(requestId+ " Incorrect password");
+                log.info(requestId + " Incorrect password");
                 throw new ApiException(400, "Incorrect request data");
             }
 
 
             if (!PasswordUtils.isValid(request.getNewPassword())) {
-                log.info(requestId+ " New password not verified");
+                log.info(requestId + " New password not verified");
                 throw new ApiException(400, "Incorrect request data");
             }
 
             String encodeNewPassword = PasswordUtils.generateSecurePassword(request.getNewPassword(), user.getSalt());
             if (encodeNewPassword.equals(encodeOldPassword)) {
-                log.info(requestId+ " Incorrect password");
+                log.info(requestId + " Incorrect password");
                 throw new ApiException(400, "Incorrect request data");
             }
 

@@ -1,10 +1,11 @@
 package tech.na_app.model.user;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tech.na_app.model.enums.UserRole;
+import tech.na_app.model.enums.UserRoleType;
 
 @Data
 @Builder
@@ -12,9 +13,22 @@ import tech.na_app.model.enums.UserRole;
 @AllArgsConstructor
 public class SaveNewUserRequest {
 
+    @Schema(
+            example = "new user",
+            required = true
+    )
     private String login;
+
+    @Schema(
+            example = "secrete password",
+            required = true
+    )
     private String password;
-    private UserRole role;
-    private Integer companyId;
+
+    @Schema(
+            example = "DRIVER",
+            required = true
+    )
+    private UserRoleType role;
 
 }

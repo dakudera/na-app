@@ -9,7 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.mongodb.core.mapping.Document;
 import tech.na_app.entity.profile.Profile;
-import tech.na_app.model.enums.UserRole;
+import tech.na_app.model.enums.UserRoleType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -41,7 +41,7 @@ public class User implements Serializable {
     private String salt;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private UserRoleType role;
 
     private Profile profile;
 

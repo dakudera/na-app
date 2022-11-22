@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.*;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
-import tech.na_app.model.enums.UserRole;
+import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.profile.SaveUserProfileRequest;
 import tech.na_app.model.profile.SaveUserProfileResponse;
+import tech.na_app.model.user.GetAllUserRolesResponse;
 import tech.na_app.model.user.ResetPasswordRequest;
 import tech.na_app.model.user.SaveNewUserRequest;
 import tech.na_app.model.user.SaveNewUserResponse;
@@ -30,9 +31,9 @@ public class UserController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            authChecker.checkToken(token, UserRole.CHIEF_ACCOUNTANT);
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to saveNewUser: " + request);
-            SaveNewUserResponse response = userService.saveNewUser(requestId, request);
+            SaveNewUserResponse response = userService.saveNewUser(requestId, user, request);
             log.info(requestId + " Response: " + response);
             return response;
         } catch (ApiException e) {
@@ -47,7 +48,7 @@ public class UserController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            authChecker.checkToken(token, UserRole.CHIEF_ACCOUNTANT);
+            authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to saveUserProfile: " + request);
             SaveUserProfileResponse response = userService.saveUserProfile(requestId, request);
             log.info(requestId + " Response: " + response);
@@ -59,13 +60,30 @@ public class UserController {
     }
 
 
+    @GetMapping("/get_all_roles")
+    public GetAllUserRolesResponse getAllUserRoles(
+            @RequestHeader(name = "Authorization") String token
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            log.info(requestId + " Request to saveUserProfile");
+            GetAllUserRolesResponse response = userService.getAllUserRoles(requestId);
+            log.info(requestId + " Response: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new GetAllUserRolesResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
     @PostMapping("/reset_password")
     public ErrorObject reset_password(
             @RequestHeader(name = "Authorization") String token, @RequestBody ResetPasswordRequest request
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            User user = authChecker.checkToken(token, UserRole.WAREHOUSE_MANAGER);
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to saveUserProfile: " + request);
             ErrorObject response = userService.resetPassword(requestId, user, request);
             log.info(requestId + " Response: " + response);
