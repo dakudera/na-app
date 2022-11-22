@@ -3,7 +3,7 @@ package tech.na_app.model;
 import lombok.Data;
 
 @Data
-public class ApiException extends Exception {
+public class ApiException extends RuntimeException {
 
     private Integer code;
     private String message;

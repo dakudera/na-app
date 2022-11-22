@@ -179,6 +179,4 @@ public class CompanyService {
             return new GetCompanyInfoResponse(new ErrorObject(500, e.getMessage()));
         }
     }
-
-
 }
