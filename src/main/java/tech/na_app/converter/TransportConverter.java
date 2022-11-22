@@ -2,6 +2,7 @@ package tech.na_app.converter;
 
 import org.springframework.stereotype.Component;
 import tech.na_app.entity.transport.*;
+import tech.na_app.entity.user.User;
 import tech.na_app.model.transport.SaveNewTransportRequest;
 
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.Objects;
 @Component
 public class TransportConverter {
 
-    public Transport convertToTransportEntity(SaveNewTransportRequest request, TransportSequence transportSequence) {
+    public Transport convertToTransportEntity(SaveNewTransportRequest request, TransportSequence transportSequence, User user) {
         return Transport.builder()
                 .id(transportSequence.getSeq())
                 .create_date(new Date())
@@ -82,7 +83,7 @@ public class TransportConverter {
                                 .length(request.getTransport_card().getGeneral_info().getLength())
                                 .build() : null)
                         .build() : null)
-                .company_id(request.getCompany_id())
+                .company_id(user.getCompanyId())
                 .build();
     }
 }

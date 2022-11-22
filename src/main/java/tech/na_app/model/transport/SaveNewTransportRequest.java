@@ -8,7 +8,4 @@ public class SaveNewTransportRequest {
 
     @JsonProperty("transport_card")
     private TransportCard transport_card;
-
-    @JsonProperty("company_id")
-    private Integer company_id;
 }

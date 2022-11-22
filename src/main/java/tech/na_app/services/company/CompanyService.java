@@ -179,9 +179,4 @@ public class CompanyService {
             return new GetCompanyInfoResponse(new ErrorObject(500, e.getMessage()));
         }
     }
-
-    public Company findById(Integer id) {
-        return companyRepository.findById(id).orElseThrow(() -> new ApiException(400, "BAD_REQUEST"));
-    }
-
 }

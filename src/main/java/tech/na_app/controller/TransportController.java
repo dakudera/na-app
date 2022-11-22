@@ -3,6 +3,7 @@ package tech.na_app.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
+import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.UserRole;
@@ -27,9 +28,9 @@ public class TransportController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            authChecker.checkToken(token, UserRole.CHIEF_ACCOUNTANT);
+            User user = authChecker.checkToken(token, UserRole.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to saveNewTransport: " + request);
-            SaveNewTransportResponse response = transportService.saveNewTransport(requestId, request);
+            SaveNewTransportResponse response = transportService.saveNewTransport(requestId, request, user);
             log.info(requestId + " Response: " + response);
             return response;
         } catch (ApiException e) {

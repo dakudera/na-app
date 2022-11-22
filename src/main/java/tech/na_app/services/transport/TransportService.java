@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import tech.na_app.converter.TransportConverter;
 import tech.na_app.entity.transport.Transport;
 import tech.na_app.entity.transport.TransportSequence;
+import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.transport.SaveNewTransportRequest;
@@ -24,20 +25,15 @@ public class TransportService {
 
     private final SequenceGeneratorService sequenceGeneratorService;
     private final TransportRepository transportRepository;
-    private final CompanyService companyService;
     private final TransportConverter transportConverter;
 
-    public SaveNewTransportResponse saveNewTransport(String requestId, SaveNewTransportRequest request) {
+    public SaveNewTransportResponse saveNewTransport(String requestId, SaveNewTransportRequest request, User user) {
         try {
             if (Objects.isNull(request)) {
                 throw new ApiException(400, "BAD_REQUEST");
             }
-            if (Objects.isNull(request.getCompany_id())) {
-                throw new ApiException(400, "BAD_REQUEST");
-            }
-            companyService.findById(request.getCompany_id());
             TransportSequence sequenceNumber = (TransportSequence) sequenceGeneratorService.getSequenceNumber(Transport.SEQUENCE_NAME, TransportSequence.class);
-            transportRepository.save(transportConverter.convertToTransportEntity(request, sequenceNumber));
+            transportRepository.save(transportConverter.convertToTransportEntity(request, sequenceNumber, user));
             return new SaveNewTransportResponse(new ErrorObject(0));
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
