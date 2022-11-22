@@ -10,7 +10,7 @@ import tech.na_app.model.company.GetAllCompanyResponse;
 import tech.na_app.model.company.GetCompanyInfoResponse;
 import tech.na_app.model.company.SaveNewCompanyRequest;
 import tech.na_app.model.company.SaveNewCompanyResponse;
-import tech.na_app.model.enums.UserRole;
+import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.services.company.CompanyService;
 import tech.na_app.utils.HelpUtil;
 import tech.na_app.utils.jwt.AuthChecker;
@@ -30,7 +30,7 @@ public class CompanyController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            authChecker.checkToken(token, UserRole.SUPER_ADMIN);
+            authChecker.checkToken(token, UserRoleType.SUPER_ADMIN);
             log.info(requestId + " Request to saveNewCompany: " + request);
             SaveNewCompanyResponse response = companyService.saveNewCompany(requestId, request);
             log.info(requestId + " Response: " + response);
@@ -45,7 +45,7 @@ public class CompanyController {
     public GetAllCompanyResponse getAllCompany(@RequestHeader(name = "Authorization") String token) {
         String requestId = HelpUtil.getUUID();
         try {
-            User user = authChecker.checkToken(token, UserRole.SUPER_ADMIN);
+            User user = authChecker.checkToken(token, UserRoleType.SUPER_ADMIN);
             log.info(requestId + " Request to getAllCompany");
             GetAllCompanyResponse response = companyService.getAllCompanies(requestId);
             log.info(requestId + " Response: " + response);
@@ -60,8 +60,8 @@ public class CompanyController {
     public GetCompanyInfoResponse getCompanyInfo(@RequestHeader(name = "Authorization") String token) {
         String requestId = HelpUtil.getUUID();
         try {
-            User user = authChecker.checkToken(token, UserRole.WAREHOUSE_MANAGER);
-            log.info(requestId + " Request to getAllCompany");
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            log.info(requestId + " Request to getCompanyInfo");
             GetCompanyInfoResponse response = companyService.getCompanyInfo(requestId, user);
             log.info(requestId + " Response: " + response);
             return response;

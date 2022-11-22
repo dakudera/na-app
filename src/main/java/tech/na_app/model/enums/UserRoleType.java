@@ -1,6 +1,6 @@
 package tech.na_app.model.enums;
 
-public enum UserRole {
+public enum UserRoleType {
 
     SUPER_ADMIN(1),
     ADMIN(2),
@@ -17,7 +17,7 @@ public enum UserRole {
 
     private final Integer value;
 
-    UserRole(Integer value) {
+    UserRoleType(Integer value) {
         this.value = value;
     }
 

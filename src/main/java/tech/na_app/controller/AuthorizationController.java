@@ -6,7 +6,7 @@ import tech.na_app.model.ApiException;
 import tech.na_app.model.TokenRefreshRequest;
 import tech.na_app.model.auth.AuthRequest;
 import tech.na_app.model.auth.LoginResponse;
-import tech.na_app.model.enums.UserRole;
+import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.services.authorization.AuthorizationService;
 import tech.na_app.utils.jwt.AuthChecker;
 
@@ -22,7 +22,7 @@ public class AuthorizationController {
 
     @GetMapping("/")
     public String welcome(@RequestHeader(name = "Authorization") String token) throws ApiException {
-        authChecker.checkToken(token, UserRole.SUPER_ADMIN);
+        authChecker.checkToken(token, UserRoleType.SUPER_ADMIN);
 
         return "Welcome to javatechie !!";
     }

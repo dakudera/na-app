@@ -1,6 +1,7 @@
 package tech.na_app.model.profile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import tech.na_app.entity.profile.AvailableDocuments;
 import tech.na_app.entity.profile.DrivingLicense;
@@ -18,6 +19,11 @@ public class SaveUserProfileRequest {
     private String fio;
     private String acc_order_number;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
+    @Schema(
+            example = "03.10.2023",
+            pattern = "dd.MM.yyyy",
+            type = "string"
+    )
     private Date acc_order_date;
     private BigDecimal salary;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")

@@ -1,11 +1,11 @@
 package tech.na_app.model.user;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tech.na_app.model.ErrorObject;
-import tech.na_app.model.enums.UserRole;
 
 @Data
 @Builder
@@ -13,11 +13,10 @@ import tech.na_app.model.enums.UserRole;
 @AllArgsConstructor
 public class SaveNewUserResponse {
 
+    @Schema(
+            example = "1"
+    )
     private Integer id;
-    private String login;
-    private String password;
-    private UserRole role;
-
     private ErrorObject error;
 
     public SaveNewUserResponse(ErrorObject error) {

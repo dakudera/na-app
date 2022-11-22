@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
-import tech.na_app.model.enums.UserRole;
+import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.repository.UserRepository;
 
 import java.util.Optional;
@@ -17,7 +17,7 @@ public class AuthChecker {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
 
-    public User checkToken(String token, UserRole role) throws ApiException {
+    public User checkToken(String token, UserRoleType role) throws ApiException {
         String tokenSplit = token.split(" ")[1];
 
         Claims claims = jwtUtil.extractAllClaims(tokenSplit);
