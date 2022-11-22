@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
-import tech.na_app.model.enums.UserRole;
+import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.transport.SaveNewTransportRequest;
 import tech.na_app.model.transport.SaveNewTransportResponse;
 import tech.na_app.services.transport.TransportService;
@@ -28,7 +28,7 @@ public class TransportController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            User user = authChecker.checkToken(token, UserRole.CHIEF_ACCOUNTANT);
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to saveNewTransport: " + request);
             SaveNewTransportResponse response = transportService.saveNewTransport(requestId, request, user);
             log.info(requestId + " Response: " + response);
