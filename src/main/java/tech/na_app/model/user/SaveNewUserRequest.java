@@ -31,4 +31,12 @@ public class SaveNewUserRequest {
     )
     private UserRoleType role;
 
+
+    @Override
+    public String toString() {
+        return "SaveNewUserRequest{" +
+                "login='" + login + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }
