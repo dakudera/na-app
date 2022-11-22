@@ -1,8 +1,6 @@
 package tech.na_app.controller;
 
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.Test;
 
 class TransportControllerTest {
 

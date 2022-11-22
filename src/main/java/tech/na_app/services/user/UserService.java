@@ -20,6 +20,7 @@ import tech.na_app.model.user.SaveNewUserResponse;
 import tech.na_app.repository.CompanyRepository;
 import tech.na_app.repository.UserRepository;
 import tech.na_app.repository.UserRolesStoreRepository;
+import tech.na_app.utils.ParameterValidator;
 import tech.na_app.utils.SequenceGeneratorService;
 import tech.na_app.utils.jwt.PasswordUtils;
 
@@ -95,8 +96,14 @@ public class UserService {
 
             User user = userOptional.get();
             user.setUpdate_date(new Date());
+
+            String email = request.getEmail();
+            if (!ParameterValidator.emailIsValid(request.getEmail())) {
+                throw new ApiException(500, "Email is invalid");
+            }
+
             Profile profile = Profile.builder()
-                    .email(request.getEmail())
+                    .email(email)
                     .fio(request.getFio())
                     .acc_order_number(request.getAcc_order_number())
                     .acc_order_date(request.getAcc_order_date())
