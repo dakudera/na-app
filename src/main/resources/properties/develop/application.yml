@@ -1,3 +1,9 @@
+application:
+  title: na-app
+  version: v1.0
+
+
+
 spring:
   data:
     mongodb:

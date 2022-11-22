@@ -8,7 +8,7 @@ import tech.na_app.entity.auth.RefreshToken;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
-import tech.na_app.model.TokenRefreshRequest;
+import tech.na_app.model.auth.TokenRefreshRequest;
 import tech.na_app.model.auth.AuthRequest;
 import tech.na_app.model.auth.LoginResponse;
 import tech.na_app.repository.RefreshTokenRepository;

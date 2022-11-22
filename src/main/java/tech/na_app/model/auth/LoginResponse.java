@@ -1,6 +1,7 @@
 package tech.na_app.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,11 +16,29 @@ import java.util.Date;
 @AllArgsConstructor
 public class LoginResponse {
 
+    @Schema(
+            example = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYWt1ZGVyYSIsInJvbGUiOiJTVVBFUl9BRE1JTiIsImV4cCI6MTY2ODUwNTkyN ..."
+    )
     private String accessToken;
+    @Schema(
+            example = "dfd74a32-8573-47df-9b3d-943b4d864fa7"
+    )
     private String refreshToken;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm", timezone = "Europe/Kiev")
+    @Schema(
+            example = "03.10.2023 10:00",
+            pattern = "dd.MM.yyyy HH:mm",
+            type = "string"
+    )
     private Date issueAt;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm", timezone = "Europe/Kiev")
+    @Schema(
+            example = "03.10.2023 11:00",
+            pattern = "dd.MM.yyyy HH:mm",
+            type = "string"
+    )
     private Date expDate;
 
     private ErrorObject error;

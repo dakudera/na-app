@@ -1,0 +1,20 @@
+application:
+  title: na-app
+  version: v1.0
+
+
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://Admin_qniso:BUOorKChVrdWTWVu@telegrambot.n1ebp.mongodb.net/na_app?retryWrites=true&w=majority
+
+security:
+  jwt:
+    secret-key: 841113a1-9083-43ab-ab88-972070c907b5
+    expiration: 3600000
+    refresh-expiration: 86400000
+
+springdoc:
+  api-docs:
+    enabled: true

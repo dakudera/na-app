@@ -3,7 +3,7 @@ package tech.na_app.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tech.na_app.model.ApiException;
-import tech.na_app.model.TokenRefreshRequest;
+import tech.na_app.model.auth.TokenRefreshRequest;
 import tech.na_app.model.auth.AuthRequest;
 import tech.na_app.model.auth.LoginResponse;
 import tech.na_app.model.enums.UserRoleType;
