@@ -25,18 +25,18 @@ public class LoginResponse {
     )
     private String refreshToken;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm", timezone = "Europe/Kiev")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy'T'HH:mm", timezone = "Europe/Kiev")
     @Schema(
-            example = "03.10.2023 10:00",
-            pattern = "dd.MM.yyyy HH:mm",
+            example = "03.10.2023'T'10:00",
+            pattern = "dd.MM.yyyy'T'HH:mm",
             type = "string"
     )
     private Date issueAt;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm", timezone = "Europe/Kiev")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy'T'HH:mm", timezone = "Europe/Kiev")
     @Schema(
-            example = "03.10.2023 11:00",
-            pattern = "dd.MM.yyyy HH:mm",
+            example = "03.10.2023'T'11:00",
+            pattern = "dd.MM.yyyy'T'HH:mm",
             type = "string"
     )
     private Date expDate;

@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 public class TokenRefreshRequest {
 
     @Schema(
-            example = "refresh token"
+            example = "dfd74a32-8573-47df-9b3d-943b4d864fa7"
     )
     @NotBlank
     private String refreshToken;
