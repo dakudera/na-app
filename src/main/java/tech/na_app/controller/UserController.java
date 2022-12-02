@@ -13,6 +13,8 @@ import tech.na_app.model.user.GetAllUserRolesResponse;
 import tech.na_app.model.user.ResetPasswordRequest;
 import tech.na_app.model.user.SaveNewUserRequest;
 import tech.na_app.model.user.SaveNewUserResponse;
+import tech.na_app.model.user.employee.GetAllEmployeeResponse;
+import tech.na_app.services.user.EmployeeService;
 import tech.na_app.services.user.UserService;
 import tech.na_app.utils.HelpUtil;
 import tech.na_app.utils.jwt.AuthChecker;
@@ -24,6 +26,7 @@ import tech.na_app.utils.jwt.AuthChecker;
 public class UserController {
     private final AuthChecker authChecker;
     private final UserService userService;
+    private final EmployeeService employeeService;
 
     @PostMapping("/save_new_user")
     public SaveNewUserResponse saveNewUser(
@@ -59,7 +62,6 @@ public class UserController {
         }
     }
 
-
     @GetMapping("/get_all_roles")
     public GetAllUserRolesResponse getAllUserRoles(
             @RequestHeader(name = "Authorization") String token
@@ -78,7 +80,7 @@ public class UserController {
     }
 
     @PostMapping("/reset_password")
-    public ErrorObject reset_password(
+    public ErrorObject resetPassword(
             @RequestHeader(name = "Authorization") String token, @RequestBody ResetPasswordRequest request
     ) {
         String requestId = HelpUtil.getUUID();
@@ -91,6 +93,22 @@ public class UserController {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new ErrorObject(e.getCode(), e.getMessage());
+        }
+    }
+
+    @GetMapping("/get_employee_list")
+    public GetAllEmployeeResponse getEmployeeList(
+            @RequestHeader(name = "Authorization") String token
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            GetAllEmployeeResponse response = employeeService.getAllEmployee(requestId, user);
+            log.info(requestId + " Response: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new GetAllEmployeeResponse(new ErrorObject(e.getCode(), e.getMessage()));
         }
     }
 

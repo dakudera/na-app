@@ -13,7 +13,6 @@ import tech.na_app.model.ErrorObject;
 import tech.na_app.model.transport.SaveNewTransportRequest;
 import tech.na_app.model.transport.SaveNewTransportResponse;
 import tech.na_app.repository.TransportRepository;
-import tech.na_app.services.company.CompanyService;
 import tech.na_app.utils.SequenceGeneratorService;
 
 import java.util.Objects;
@@ -38,6 +37,9 @@ public class TransportService {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new SaveNewTransportResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new SaveNewTransportResponse(new ErrorObject(500, "Something went wrong"));
         }
     }
 

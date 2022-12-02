@@ -17,6 +17,7 @@ import tech.na_app.model.user.GetAllUserRolesResponse;
 import tech.na_app.model.user.ResetPasswordRequest;
 import tech.na_app.model.user.SaveNewUserRequest;
 import tech.na_app.model.user.SaveNewUserResponse;
+import tech.na_app.model.user.employee.GetAllEmployeeResponse;
 import tech.na_app.repository.CompanyRepository;
 import tech.na_app.repository.UserRepository;
 import tech.na_app.repository.UserRolesStoreRepository;
@@ -78,6 +79,9 @@ public class UserService {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new SaveNewUserResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new SaveNewUserResponse(new ErrorObject(500, "Something went wrong"));
         }
     }
 
@@ -127,6 +131,9 @@ public class UserService {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new SaveUserProfileResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new SaveUserProfileResponse(new ErrorObject(500, "Something went wrong"));
         }
     }
 
@@ -188,6 +195,9 @@ public class UserService {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new ErrorObject(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new ErrorObject(500, "Something went wrong");
         }
     }
 
