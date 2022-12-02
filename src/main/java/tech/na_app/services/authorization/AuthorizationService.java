@@ -8,9 +8,9 @@ import tech.na_app.entity.auth.RefreshToken;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
-import tech.na_app.model.auth.TokenRefreshRequest;
 import tech.na_app.model.auth.AuthRequest;
 import tech.na_app.model.auth.LoginResponse;
+import tech.na_app.model.auth.TokenRefreshRequest;
 import tech.na_app.repository.RefreshTokenRepository;
 import tech.na_app.repository.UserRepository;
 import tech.na_app.utils.jwt.JwtUtil;
@@ -68,6 +68,8 @@ public class AuthorizationService {
             return LoginResponse.builder()
                     .accessToken("Bearer " + jwtUtil.generateToken(userOptional.get(), issueAt, expDate))
                     .refreshToken(refreshTokenService.createRefreshToken(userOptional.get().getId()))
+                    .issueAt(issueAt)
+                    .expDate(expDate)
                     .error(new ErrorObject(0))
                     .build();
         } catch (Exception e) {
