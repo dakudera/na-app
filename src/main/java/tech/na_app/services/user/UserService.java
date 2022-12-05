@@ -49,7 +49,7 @@ public class UserService {
             }
 
             Integer companyId = null;
-            if (!request.getRole().equals(UserRoleType.SUPER_ADMIN)) {
+            if (!request.getRole().equals(UserRoleType.SUPER_ADMIN) && !user.getRole().equals(UserRoleType.SUPER_ADMIN)) {
                 Optional<Company> companyOptional = companyRepository.findById(user.getCompanyId());
                 if (companyOptional.isPresent()) {
                     companyId = companyOptional.get().getId();
