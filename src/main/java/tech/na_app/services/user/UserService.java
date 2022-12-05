@@ -17,7 +17,6 @@ import tech.na_app.model.user.GetAllUserRolesResponse;
 import tech.na_app.model.user.ResetPasswordRequest;
 import tech.na_app.model.user.SaveNewUserRequest;
 import tech.na_app.model.user.SaveNewUserResponse;
-import tech.na_app.model.user.employee.GetAllEmployeeResponse;
 import tech.na_app.repository.CompanyRepository;
 import tech.na_app.repository.UserRepository;
 import tech.na_app.repository.UserRolesStoreRepository;
