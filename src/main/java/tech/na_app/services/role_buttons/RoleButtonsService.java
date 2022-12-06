@@ -21,10 +21,10 @@ public class RoleButtonsService {
 
     private final RoleButtonsRepository roleButtonsRepository;
 
-    public GetAllowedButtonsResponse getAllowedButtons(String requestId, User user){
+    public GetAllowedButtonsResponse getAllowedButtons(String requestId, User user) {
         try {
             RoleButtons allowedRoleButtons = roleButtonsRepository.findByRole(user.getRole())
-                    .orElseGet(()-> RoleButtons.builder()
+                    .orElseGet(() -> RoleButtons.builder()
                             .role(UserRoleType.UNKNOWN)
                             .allowed_buttons(List.of(Buttons.values()))
                             .build());

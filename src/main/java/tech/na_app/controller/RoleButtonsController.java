@@ -3,12 +3,15 @@ package tech.na_app.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
-import tech.na_app.model.role_buttons.GetAllowedButtonsResponse;
 import tech.na_app.model.enums.UserRoleType;
+import tech.na_app.model.role_buttons.GetAllowedButtonsResponse;
 import tech.na_app.services.role_buttons.RoleButtonsService;
 import tech.na_app.utils.HelpUtil;
 import tech.na_app.utils.jwt.AuthChecker;
