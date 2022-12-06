@@ -26,7 +26,7 @@ public class RoleButtonsController {
     public GetAllowedButtonsResponse getAllowedButtons(@RequestHeader(name = "Authorization") String token) {
         String requestId = HelpUtil.getUUID();
         try {
-            User user = authChecker.checkToken(token, UserRoleType.UNKNOWN);
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to getAllowedButtons");
             GetAllowedButtonsResponse response = roleButtonsService.getAllowedButtons(requestId, user);
             log.info(requestId + " Response: " + response);
