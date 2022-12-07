@@ -1,6 +1,5 @@
 package tech.na_app.model.transport;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 public class GetAllTransportResponse {
 
-    @JsonProperty("transports")
     private List<Transport> transports;
 
     private ErrorObject errorObject;
@@ -31,19 +29,14 @@ public class GetAllTransportResponse {
     @AllArgsConstructor
     public static class Transport {
 
-        @JsonProperty("id")
         private Integer id;
 
-        @JsonProperty("brand")
         private String brand;
 
-        @JsonProperty("state_number")
         private String state_number;
 
-        @JsonProperty("nomenclature_name")
         private String nomenclature_name;
 
-        @JsonProperty("transport_status")
         private TransportStatus transport_status;
     }
 }
