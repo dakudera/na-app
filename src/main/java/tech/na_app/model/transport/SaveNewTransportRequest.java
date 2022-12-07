@@ -8,5 +8,4 @@ public class SaveNewTransportRequest {
 
     private TransportCard transport_card;
 
-    private TransportStatus transport_status;
 }

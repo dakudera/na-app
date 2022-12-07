@@ -3,6 +3,7 @@ package tech.na_app.converter;
 import org.springframework.stereotype.Component;
 import tech.na_app.entity.transport.*;
 import tech.na_app.entity.user.User;
+import tech.na_app.model.enums.TransportStatus;
 import tech.na_app.model.transport.GetAllTransportResponse;
 import tech.na_app.model.transport.SaveNewTransportRequest;
 
@@ -18,7 +19,7 @@ public class TransportConverter {
         return Transport.builder()
                 .id(transportSequence.getSeq())
                 .create_date(new Date())
-                .transport_status(request.getTransport_status())
+                .transport_status(TransportStatus.PARKING)
                 .transport_card(Objects.nonNull(request.getTransport_card()) ? TransportCard
                         .builder()
                         .nomenclature_name(request.getTransport_card().getNomenclature_name())
