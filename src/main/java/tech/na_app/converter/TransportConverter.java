@@ -3,10 +3,13 @@ package tech.na_app.converter;
 import org.springframework.stereotype.Component;
 import tech.na_app.entity.transport.*;
 import tech.na_app.entity.user.User;
+import tech.na_app.model.transport.GetAllTransportResponse;
 import tech.na_app.model.transport.SaveNewTransportRequest;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Component
 public class TransportConverter {
@@ -15,6 +18,7 @@ public class TransportConverter {
         return Transport.builder()
                 .id(transportSequence.getSeq())
                 .create_date(new Date())
+                .transport_status(request.getTransport_status())
                 .transport_card(Objects.nonNull(request.getTransport_card()) ? TransportCard
                         .builder()
                         .nomenclature_name(request.getTransport_card().getNomenclature_name())
@@ -83,7 +87,21 @@ public class TransportConverter {
                                 .length(request.getTransport_card().getGeneral_info().getLength())
                                 .build() : null)
                         .build() : null)
-                .company_id(user.getCompanyId())
+                .companyId(user.getCompanyId())
+                .build();
+    }
+
+    public List<GetAllTransportResponse.Transport> convertToTransports(List<Transport> transports) {
+        return transports.stream().map(this::convertToTransport).collect(Collectors.toList());
+    }
+
+    public GetAllTransportResponse.Transport convertToTransport(Transport transport) {
+        return GetAllTransportResponse.Transport.builder()
+                .id(transport.getId())
+                .brand(transport.getTransport_card().getTechnical_certificate().getTechnical_certificate_dop_info().getBrand())
+                .state_number(transport.getTransport_card().getTechnical_certificate().getTechnical_certificate_dop_info().getState_number())
+                .nomenclature_name(transport.getTransport_card().getNomenclature_name())
+                .transport_status(transport.getTransport_status())
                 .build();
     }
 }
