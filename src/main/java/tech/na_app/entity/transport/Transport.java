@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
+import tech.na_app.model.enums.TransportStatus;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,6 +31,8 @@ public class Transport {
     @Temporal(TemporalType.TIMESTAMP)
     private Date update_date;
 
+    private TransportStatus transport_status;
+
     private TransportCard transport_card;
-    private Integer company_id;
+    private Integer companyId;
 }

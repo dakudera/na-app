@@ -7,6 +7,7 @@ import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.UserRoleType;
+import tech.na_app.model.transport.GetAllTransportResponse;
 import tech.na_app.model.transport.SaveNewTransportRequest;
 import tech.na_app.model.transport.SaveNewTransportResponse;
 import tech.na_app.services.transport.TransportService;
@@ -36,6 +37,21 @@ public class TransportController {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new SaveNewTransportResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @GetMapping("/get_all_transport")
+    public GetAllTransportResponse getAllTransport(@RequestHeader(name = "Authorization") String token) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            log.info(requestId + " Request to getAllTransport");
+            GetAllTransportResponse response = transportService.getAllTransport(requestId, user);
+            log.info(requestId + " Response: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new GetAllTransportResponse(new ErrorObject(e.getCode(), e.getMessage()));
         }
     }
 }
