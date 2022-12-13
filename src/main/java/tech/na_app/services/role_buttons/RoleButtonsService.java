@@ -7,12 +7,9 @@ import org.springframework.stereotype.Service;
 import tech.na_app.entity.role_buttons.RoleButtons;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ErrorObject;
-import tech.na_app.model.enums.Buttons;
 import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.role_buttons.GetAllowedButtonsResponse;
 import tech.na_app.repository.RoleButtonsRepository;
-
-import java.util.List;
 
 @Log4j2
 @Service
@@ -24,13 +21,9 @@ public class RoleButtonsService {
     public GetAllowedButtonsResponse getAllowedButtons(String requestId, User user) {
         try {
             RoleButtons allowedRoleButtons = roleButtonsRepository.findByRole(user.getRole())
-                    .orElseGet(() -> RoleButtons.builder()
-                            .role(UserRoleType.UNKNOWN)
-                            .allowed_buttons(List.of(Buttons.values()))
-                            .build());
+                    .orElseGet(() -> roleButtonsRepository.findByRole(UserRoleType.UNKNOWN).get());
 
             return GetAllowedButtonsResponse.builder()
-                    .role(allowedRoleButtons.getRole())
                     .buttons(allowedRoleButtons.getAllowed_buttons())
                     .errorObject(new ErrorObject(0))
                     .build();

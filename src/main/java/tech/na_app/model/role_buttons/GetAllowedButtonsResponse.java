@@ -4,9 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tech.na_app.entity.role_buttons.Button;
 import tech.na_app.model.ErrorObject;
-import tech.na_app.model.enums.Buttons;
-import tech.na_app.model.enums.UserRoleType;
 
 import java.util.List;
 
@@ -16,9 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GetAllowedButtonsResponse {
 
-    private UserRoleType role;
-
-    private List<Buttons> buttons;
+    private List<Button> buttons;
 
     private ErrorObject errorObject;
 

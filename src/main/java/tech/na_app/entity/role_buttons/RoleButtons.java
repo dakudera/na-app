@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
-import tech.na_app.model.enums.Buttons;
 import tech.na_app.model.enums.UserRoleType;
 
 import javax.persistence.Id;
@@ -25,6 +24,6 @@ public class RoleButtons {
 
     private UserRoleType role;
 
-    private List<Buttons> allowed_buttons;
+    private List<Button> allowed_buttons;
 
 }
