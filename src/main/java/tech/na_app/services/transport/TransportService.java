@@ -10,11 +10,13 @@ import tech.na_app.entity.transport.TransportSequence;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
+import tech.na_app.model.transport.GetAllTransportResponse;
 import tech.na_app.model.transport.SaveNewTransportRequest;
 import tech.na_app.model.transport.SaveNewTransportResponse;
 import tech.na_app.repository.TransportRepository;
 import tech.na_app.utils.SequenceGeneratorService;
 
+import java.util.List;
 import java.util.Objects;
 
 @Log4j2
@@ -40,6 +42,24 @@ public class TransportService {
         } catch (Exception e) {
             log.error(requestId + " Message: " + e.getMessage());
             return new SaveNewTransportResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public GetAllTransportResponse getAllTransport(String requestId, User user) {
+        try {
+            List<Transport> allTransport = transportRepository.findAllByCompanyId(user.getCompanyId());
+            if (allTransport.isEmpty()) {
+                log.info(requestId + " Transport were not found");
+                return new GetAllTransportResponse(new ErrorObject(0));
+            }
+
+            return GetAllTransportResponse.builder()
+                    .transports(transportConverter.convertToTransports(allTransport))
+                    .errorObject(new ErrorObject(0))
+                    .build();
+        } catch (Exception e) {
+            log.error(requestId + " Error: " + 500 + " Message: " + e.getMessage());
+            return new GetAllTransportResponse(new ErrorObject(500, e.getMessage()));
         }
     }
 
