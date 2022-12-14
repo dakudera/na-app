@@ -55,7 +55,7 @@ public class UserProfileController {
         }
     }
 
-    @GetMapping("/get_user_profile")
+    @PostMapping("/get_user_profile")
     public GetUserProfileResponse getUserProfile(
             @RequestHeader(name = "Authorization") String token, @RequestBody GetUserProfileRequest request
     ) {
