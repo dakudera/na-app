@@ -33,9 +33,8 @@ public class Profile {
     private String sufficient_experience_mp;
     private String registration_address;
     private String actual_address;
-    private Education education;
+
     private DrivingLicense driving_license;
     private AvailableDocuments available_documents;
-    private Internship internship;
 
 }

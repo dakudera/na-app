@@ -30,9 +30,9 @@ public class TransportController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
-            log.info(requestId + " Request to saveNewTransport: " + request);
+            log.info(requestId + " Request to /saveNewTransport: " + request);
             SaveNewTransportResponse response = transportService.saveNewTransport(requestId, request, user);
-            log.info(requestId + " Response: " + response);
+            log.info(requestId + " Response from /saveNewTransport: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
@@ -45,9 +45,9 @@ public class TransportController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
-            log.info(requestId + " Request to getAllTransport");
+            log.info(requestId + " Request to /getAllTransport");
             GetAllTransportResponse response = transportService.getAllTransport(requestId, user);
-            log.info(requestId + " Response: " + response);
+            log.info(requestId + " Response from /getAllTransport: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());

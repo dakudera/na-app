@@ -1,14 +1,13 @@
 package tech.na_app.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import tech.na_app.model.ApiException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import tech.na_app.model.auth.AuthRequest;
 import tech.na_app.model.auth.LoginResponse;
 import tech.na_app.model.auth.TokenRefreshRequest;
-import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.services.authorization.AuthorizationService;
-import tech.na_app.utils.jwt.AuthChecker;
 
 import javax.validation.Valid;
 
@@ -16,16 +15,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class AuthorizationController {
 
-
     private final AuthorizationService authorizationService;
-    private final AuthChecker authChecker;
-
-    @GetMapping("/")
-    public String welcome(@RequestHeader(name = "Authorization") String token) throws ApiException {
-        authChecker.checkToken(token, UserRoleType.SUPER_ADMIN);
-
-        return "Welcome to javatechie !!";
-    }
 
     @PostMapping("/authenticate")
     public LoginResponse generateToken(@RequestBody AuthRequest authRequest) {

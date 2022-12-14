@@ -31,9 +31,9 @@ public class CompanyController {
         String requestId = HelpUtil.getUUID();
         try {
             authChecker.checkToken(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " Request to saveNewCompany: " + request);
+            log.info(requestId + " Request to /saveNewCompany: " + request);
             SaveNewCompanyResponse response = companyService.saveNewCompany(requestId, request);
-            log.info(requestId + " Response: " + response);
+            log.info(requestId + " Response from /saveNewCompany: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
@@ -46,9 +46,9 @@ public class CompanyController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " Request to getAllCompany");
+            log.info(requestId + " Request to /getAllCompany");
             GetAllCompanyResponse response = companyService.getAllCompanies(requestId);
-            log.info(requestId + " Response: " + response);
+            log.info(requestId + " Response from /getAllCompany: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
@@ -61,9 +61,9 @@ public class CompanyController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
-            log.info(requestId + " Request to getCompanyInfo");
+            log.info(requestId + " Request to /getCompanyInfo");
             GetCompanyInfoResponse response = companyService.getCompanyInfo(requestId, user);
-            log.info(requestId + " Response: " + response);
+            log.info(requestId + " Response from /getCompanyInfo: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());

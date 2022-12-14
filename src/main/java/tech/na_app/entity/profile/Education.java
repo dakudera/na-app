@@ -6,28 +6,28 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Document(collection = "education")
 public class Education {
 
+    @Transient
+    public static final String SEQUENCE_NAME = "users_sequence";
 
-    @Schema(
-            example = "12312313",
-            type = "string"
-    )
+    @Id
+    private Integer id;
+
     private String certificate;
-    @Schema(
-            example = "Mechanic",
-            type = "string"
-    )
     private String specialty;
-    @Schema(
-            example = "123132AC",
-            type = "string"
-    )
     private String advanced_qualification;
+
+    private Integer userId;
 
 }

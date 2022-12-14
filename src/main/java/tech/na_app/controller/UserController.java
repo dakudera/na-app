@@ -35,9 +35,9 @@ public class UserController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
-            log.info(requestId + " Request to saveNewUser: " + request);
+            log.info(requestId + " Request to /saveNewUser: " + request);
             SaveNewUserResponse response = userService.saveNewUser(requestId, user, request);
-            log.info(requestId + " Response: " + response);
+            log.info(requestId + " Response from /saveNewUser: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
@@ -52,9 +52,9 @@ public class UserController {
         String requestId = HelpUtil.getUUID();
         try {
             authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
-            log.info(requestId + " Request to saveUserProfile: " + request);
+            log.info(requestId + " Request to /saveUserProfile: " + request);
             SaveUserProfileResponse response = userService.saveUserProfile(requestId, request);
-            log.info(requestId + " Response: " + response);
+            log.info(requestId + " Response from /saveUserProfile: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
@@ -69,9 +69,9 @@ public class UserController {
         String requestId = HelpUtil.getUUID();
         try {
             authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
-            log.info(requestId + " Request to saveUserProfile");
+            log.info(requestId + " Request to /saveUserProfile");
             GetAllUserRolesResponse response = userService.getAllUserRoles(requestId);
-            log.info(requestId + " Response: " + response);
+            log.info(requestId + " Response from /saveUserProfile: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
@@ -86,9 +86,9 @@ public class UserController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
-            log.info(requestId + " Request to saveUserProfile: " + request);
+            log.info(requestId + " Request to /saveUserProfile: " + request);
             ErrorObject response = userService.resetPassword(requestId, user, request);
-            log.info(requestId + " Response: " + response);
+            log.info(requestId + " Response from /saveUserProfile: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
@@ -104,7 +104,7 @@ public class UserController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             GetAllEmployeeResponse response = employeeService.getAllEmployee(requestId, user);
-            log.info(requestId + " Response: " + response);
+            log.info(requestId + " Response from /getEmployeeList: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
