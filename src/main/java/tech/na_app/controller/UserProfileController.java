@@ -7,10 +7,7 @@ import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.UserRoleType;
-import tech.na_app.model.profile.SaveInfoEducationRequest;
-import tech.na_app.model.profile.SaveInfoEducationResponse;
-import tech.na_app.model.profile.SaveInternshipRequest;
-import tech.na_app.model.profile.SaveInternshipResponse;
+import tech.na_app.model.profile.*;
 import tech.na_app.services.user_profile.UserProfileService;
 import tech.na_app.utils.HelpUtil;
 import tech.na_app.utils.jwt.AuthChecker;
@@ -55,6 +52,23 @@ public class UserProfileController {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new SaveInternshipResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @GetMapping("/get_user_profile")
+    public GetUserProfileResponse getUserProfile(
+            @RequestHeader(name = "Authorization") String token, @RequestBody GetUserProfileRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            log.info(requestId + " Request to /saveInternship: " + request);
+            GetUserProfileResponse response = userProfileService.getUserProfile(requestId, user, request);
+            log.info(requestId + " Response from /saveInternship: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new GetUserProfileResponse(new ErrorObject(e.getCode(), e.getMessage()));
         }
     }
 

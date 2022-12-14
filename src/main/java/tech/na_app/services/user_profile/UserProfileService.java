@@ -7,15 +7,18 @@ import tech.na_app.entity.profile.Education;
 import tech.na_app.entity.profile.EducationSequence;
 import tech.na_app.entity.profile.InternshipAndInstruction;
 import tech.na_app.entity.profile.InternshipAndInstructionSequence;
+import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
-import tech.na_app.model.profile.SaveInfoEducationRequest;
-import tech.na_app.model.profile.SaveInfoEducationResponse;
-import tech.na_app.model.profile.SaveInternshipRequest;
-import tech.na_app.model.profile.SaveInternshipResponse;
+import tech.na_app.model.enums.InternshipAndInstructionType;
+import tech.na_app.model.profile.*;
 import tech.na_app.repository.EducationRepository;
 import tech.na_app.repository.InternshipAndInstructionRepository;
+import tech.na_app.repository.UserRepository;
 import tech.na_app.utils.SequenceGeneratorService;
+
+import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 @Service
@@ -25,6 +28,8 @@ public class UserProfileService {
     private final EducationRepository educationRepository;
     private final SequenceGeneratorService sequenceGeneratorService;
     private final InternshipAndInstructionRepository internshipAndInstructionRepository;
+    private final UserRepository userRepository;
+    private final GetUserProfileHelperComponent getUserProfileHelperComponent;
 
     public SaveInfoEducationResponse saveInfoEducation(String requestId, SaveInfoEducationRequest request) {
         try {
@@ -95,6 +100,41 @@ public class UserProfileService {
         } catch (Exception e) {
             log.error(requestId + " Message: " + e.getMessage());
             return new SaveInternshipResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public GetUserProfileResponse getUserProfile(String requestId, User user, GetUserProfileRequest request) {
+        try {
+            User userInfo;
+            if (request != null && request.getUserId() != null) {
+                Optional<User> userOptional = userRepository.findById(request.getUserId());
+                userInfo = userOptional.orElse(user);
+            } else {
+                userInfo = user;
+            }
+
+            List<Education> educations = educationRepository.findAllByUserId(userInfo.getId());
+            List<InternshipAndInstruction> internships = internshipAndInstructionRepository
+                    .findAllByUserIdAndType(userInfo.getId(), InternshipAndInstructionType.INTERNSHIP);
+            List<InternshipAndInstruction> instructions = internshipAndInstructionRepository
+                    .findAllByUserIdAndType(userInfo.getId(), InternshipAndInstructionType.INSTRUCTION);
+            GetUserProfileResponse response = new GetUserProfileResponse(new ErrorObject(0));
+            response.setId(userInfo.getId());
+            response.setEducationInfo(getUserProfileHelperComponent.buildEducations(educations));
+            response.setInternshipInfo(getUserProfileHelperComponent.buildInstructionsAndInternships(internships));
+            response.setInstructionInfo(getUserProfileHelperComponent.buildInstructionsAndInternships(instructions));
+
+            if (userInfo.getProfile() != null) {
+                getUserProfileHelperComponent.fillUserProfile(userInfo, response);
+            }
+
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new GetUserProfileResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new GetUserProfileResponse(new ErrorObject(500, "Something went wrong"));
         }
     }
 

@@ -2,20 +2,12 @@ package tech.na_app.model.profile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import tech.na_app.model.enums.InternshipAndInstructionType;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.util.Date;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class SaveInternshipRequest {
 
     @Schema(

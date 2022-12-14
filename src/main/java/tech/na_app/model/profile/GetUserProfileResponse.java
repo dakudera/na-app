@@ -2,15 +2,23 @@ package tech.na_app.model.profile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import tech.na_app.entity.profile.AvailableDocuments;
 import tech.na_app.entity.profile.DrivingLicense;
+import tech.na_app.model.ErrorObject;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
-public class SaveUserProfileRequest {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class GetUserProfileResponse {
 
     @Schema(
             title = " user id",
@@ -33,6 +41,7 @@ public class SaveUserProfileRequest {
             example = "1231231"
     )
     private String acc_order_number;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
     @Schema(
             example = "03.10.2023",
@@ -46,6 +55,7 @@ public class SaveUserProfileRequest {
             type = "number"
     )
     private BigDecimal salary;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
     @Schema(
             example = "01.10.1993",
@@ -85,5 +95,14 @@ public class SaveUserProfileRequest {
     private String actual_address;
     private DrivingLicense driving_license;
     private AvailableDocuments available_documents;
+    private List<EducationInfo> educationInfo;
+    private List<InstructionInfo> internshipInfo;
+    private List<InstructionInfo> instructionInfo;
+
+    private ErrorObject error;
+
+    public GetUserProfileResponse(ErrorObject error) {
+        this.error = error;
+    }
 
 }
