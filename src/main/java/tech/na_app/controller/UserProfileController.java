@@ -1,0 +1,42 @@
+package tech.na_app.controller;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.web.bind.annotation.*;
+import tech.na_app.entity.user.User;
+import tech.na_app.model.ApiException;
+import tech.na_app.model.ErrorObject;
+import tech.na_app.model.enums.UserRoleType;
+import tech.na_app.model.profile.SaveInfoEducationRequest;
+import tech.na_app.model.profile.SaveInfoEducationResponse;
+import tech.na_app.services.user_profile.UserProfileService;
+import tech.na_app.utils.HelpUtil;
+import tech.na_app.utils.jwt.AuthChecker;
+
+@Log4j2
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("user_profile")
+public class UserProfileController {
+
+    private final UserProfileService userProfileService;
+    private final AuthChecker authChecker;
+
+    @PostMapping("/save_info_education")
+    public SaveInfoEducationResponse saveInfoEducation(
+            @RequestHeader(name = "Authorization") String token, @RequestBody SaveInfoEducationRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            log.info(requestId + " Request to /saveInfoEducation: " + request);
+            SaveInfoEducationResponse response = userProfileService.saveInfoEducation(requestId, request);
+            log.info(requestId + " Response from /saveInfoEducation: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new SaveInfoEducationResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+}

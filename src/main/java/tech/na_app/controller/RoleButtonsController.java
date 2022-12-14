@@ -30,9 +30,9 @@ public class RoleButtonsController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
-            log.info(requestId + " Request to getAllowedButtons");
+            log.info(requestId + " Request to /getAllowedButtons");
             GetAllowedButtonsResponse response = roleButtonsService.getAllowedButtons(requestId, user);
-            log.info(requestId + " Response: " + response);
+            log.info(requestId + " Response from /getAllowedButtons: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());

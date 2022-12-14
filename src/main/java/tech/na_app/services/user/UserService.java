@@ -118,10 +118,8 @@ public class UserService {
                     .sufficient_experience_mp(request.getSufficient_experience_mp())
                     .registration_address(request.getRegistration_address())
                     .actual_address(request.getActual_address())
-                    .education(request.getEducation())
                     .driving_license(request.getDriving_license())
                     .available_documents(request.getAvailable_documents())
-                    .internship(request.getInternship())
                     .build();
             user.setProfile(profile);
             userRepository.save(user);
