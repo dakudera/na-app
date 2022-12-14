@@ -6,11 +6,11 @@ import tech.na_app.model.ErrorObject;
 
 @Data
 @NoArgsConstructor
-public class SaveInfoEducationResponse {
+public class SaveInternshipResponse {
 
     private ErrorObject error;
 
-    public SaveInfoEducationResponse(ErrorObject error) {
+    public SaveInternshipResponse(ErrorObject error) {
         this.error = error;
     }
 

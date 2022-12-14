@@ -36,6 +36,5 @@ public class Profile {
 
     private DrivingLicense driving_license;
     private AvailableDocuments available_documents;
-    private Internship internship;
 
 }

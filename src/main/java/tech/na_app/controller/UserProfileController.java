@@ -9,6 +9,8 @@ import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.profile.SaveInfoEducationRequest;
 import tech.na_app.model.profile.SaveInfoEducationResponse;
+import tech.na_app.model.profile.SaveInternshipRequest;
+import tech.na_app.model.profile.SaveInternshipResponse;
 import tech.na_app.services.user_profile.UserProfileService;
 import tech.na_app.utils.HelpUtil;
 import tech.na_app.utils.jwt.AuthChecker;
@@ -28,7 +30,7 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to /saveInfoEducation: " + request);
             SaveInfoEducationResponse response = userProfileService.saveInfoEducation(requestId, request);
             log.info(requestId + " Response from /saveInfoEducation: " + response);
@@ -36,6 +38,23 @@ public class UserProfileController {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new SaveInfoEducationResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @PostMapping("/save_internship")
+    public SaveInternshipResponse saveInternship(
+            @RequestHeader(name = "Authorization") String token, @RequestBody SaveInternshipRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            log.info(requestId + " Request to /saveInternship: " + request);
+            SaveInternshipResponse response = userProfileService.saveInternship(requestId, request);
+            log.info(requestId + " Response from /saveInternship: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new SaveInternshipResponse(new ErrorObject(e.getCode(), e.getMessage()));
         }
     }
 

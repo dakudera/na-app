@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import tech.na_app.entity.profile.AvailableDocuments;
 import tech.na_app.entity.profile.DrivingLicense;
-import tech.na_app.entity.profile.Internship;
+import tech.na_app.entity.profile.InternshipAndInstruction;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -86,6 +86,6 @@ public class SaveUserProfileRequest {
     private String actual_address;
     private DrivingLicense driving_license;
     private AvailableDocuments available_documents;
-    private Internship internship;
+    private InternshipAndInstruction internship;
 
 }

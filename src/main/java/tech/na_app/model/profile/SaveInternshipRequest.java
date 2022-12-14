@@ -1,4 +1,4 @@
-package tech.na_app.entity.profile;
+package tech.na_app.model.profile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tech.na_app.model.enums.InternshipAndInstructionType;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -15,16 +16,19 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Internship {
+public class SaveInternshipRequest {
 
     @Schema(
-            example = "01.10.2003",
-            pattern = "dd.MM.yyyy",
+            example = "1",
+            type = "integer"
+    )
+    private Integer userId;
+    @Schema(
+            example = "123456",
             type = "string"
     )
     private String doc_number;
 
-    @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
     @Schema(
             example = "01.10.2015",
@@ -32,5 +36,10 @@ public class Internship {
             type = "string"
     )
     private Date date;
+    @Schema(
+            example = "INTERNSHIP",
+            type = "enum"
+    )
+    private InternshipAndInstructionType type;
 
 }
