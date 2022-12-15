@@ -9,6 +9,7 @@ import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.InternshipAndInstructionType;
 import tech.na_app.model.profile.*;
+import tech.na_app.model.profile.education.*;
 import tech.na_app.repository.EducationRepository;
 import tech.na_app.repository.InternshipAndInstructionRepository;
 import tech.na_app.repository.UserRepository;
@@ -66,6 +67,67 @@ public class UserProfileService {
         } catch (Exception e) {
             log.error(requestId + " Message: " + e.getMessage());
             return new SaveInfoEducationResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public EditInfoEducationResponse editInfoEducation(String requestId, User user, EditInfoEducationRequest request) {
+        try {
+            if (request.getCertificate() == null || request.getCertificate().isEmpty()) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (request.getSpecialty() == null || request.getSpecialty().isEmpty()) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (request.getAdvanced_qualification() == null || request.getAdvanced_qualification().isEmpty()) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            User userInfo;
+            if (request.getUserId() != null) {
+                Optional<User> userOptional = userRepository.findById(request.getUserId());
+                userInfo = userOptional.orElse(user);
+            } else {
+                userInfo = user;
+            }
+
+            Optional<Education> educationOptional = educationRepository.findByIdAndUserId(request.getId(), userInfo.getId());
+            Education education = educationOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
+            education.setCertificate(request.getCertificate());
+            education.setSpecialty(request.getSpecialty());
+            education.setAdvanced_qualification(request.getAdvanced_qualification());
+            educationRepository.save(education);
+
+            return new EditInfoEducationResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditInfoEducationResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new EditInfoEducationResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public RemoveInfoEducationResponse removeInfoEducation(String requestId, User user, RemoveInfoEducationRequest request) {
+        try {
+            User userInfo;
+            if (request.getUserId() != null) {
+                Optional<User> userOptional = userRepository.findById(request.getUserId());
+                userInfo = userOptional.orElse(user);
+            } else {
+                userInfo = user;
+            }
+
+            Optional<Education> educationOptional = educationRepository.findByIdAndUserId(request.getId(), userInfo.getId());
+            Education education = educationOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
+            educationRepository.delete(education);
+
+            return new RemoveInfoEducationResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new RemoveInfoEducationResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new RemoveInfoEducationResponse(new ErrorObject(500, "Something went wrong"));
         }
     }
 

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import tech.na_app.entity.profile.AvailableDocuments;
 import tech.na_app.entity.profile.DrivingLicense;
 import tech.na_app.model.ErrorObject;
+import tech.na_app.model.profile.education.EducationInfo;
 
 import java.math.BigDecimal;
 import java.util.Date;

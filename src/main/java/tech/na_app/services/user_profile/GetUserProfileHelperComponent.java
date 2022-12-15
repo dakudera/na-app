@@ -5,7 +5,7 @@ import tech.na_app.entity.profile.Education;
 import tech.na_app.entity.profile.InternshipAndInstruction;
 import tech.na_app.entity.profile.Profile;
 import tech.na_app.entity.user.User;
-import tech.na_app.model.profile.EducationInfo;
+import tech.na_app.model.profile.education.EducationInfo;
 import tech.na_app.model.profile.GetUserProfileResponse;
 import tech.na_app.model.profile.InstructionInfo;
 

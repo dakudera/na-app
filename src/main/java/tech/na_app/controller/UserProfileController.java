@@ -8,6 +8,7 @@ import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.profile.*;
+import tech.na_app.model.profile.education.*;
 import tech.na_app.services.user_profile.UserProfileService;
 import tech.na_app.utils.HelpUtil;
 import tech.na_app.utils.jwt.AuthChecker;
@@ -35,6 +36,40 @@ public class UserProfileController {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new SaveInfoEducationResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @PostMapping("/edit_info_education")
+    public EditInfoEducationResponse editInfoEducation(
+            @RequestHeader(name = "Authorization") String token, @RequestBody EditInfoEducationRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            log.info(requestId + " Request to /editInfoEducation: " + request);
+            EditInfoEducationResponse response = userProfileService.editInfoEducation(requestId, user, request);
+            log.info(requestId + " Response from /editInfoEducation: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditInfoEducationResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @PostMapping("/remove_info_education")
+    public RemoveInfoEducationResponse removeInfoEducation(
+            @RequestHeader(name = "Authorization") String token, @RequestBody RemoveInfoEducationRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            log.info(requestId + " Request to /removeInfoEducation: " + request);
+            RemoveInfoEducationResponse response = userProfileService.removeInfoEducation(requestId, user, request);
+            log.info(requestId + " Response from /removeInfoEducation: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new RemoveInfoEducationResponse(new ErrorObject(e.getCode(), e.getMessage()));
         }
     }
 
@@ -72,7 +107,7 @@ public class UserProfileController {
         }
     }
 
-    @PostMapping("/save_user_profile")
+    @PostMapping("/save_info")
     public SaveUserProfileResponse saveUserProfile(
             @RequestHeader(name = "Authorization") String token, @RequestBody SaveUserProfileRequest request
     ) {

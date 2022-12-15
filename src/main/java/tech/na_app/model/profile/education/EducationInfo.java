@@ -1,4 +1,4 @@
-package tech.na_app.model.profile;
+package tech.na_app.model.profile.education;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

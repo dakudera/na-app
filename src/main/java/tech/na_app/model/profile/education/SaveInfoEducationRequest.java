@@ -1,4 +1,4 @@
-package tech.na_app.model.profile;
+package tech.na_app.model.profile.education;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
