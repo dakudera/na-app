@@ -42,6 +42,11 @@ public class UserService {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
+            if (!PasswordUtils.isValid(request.getPassword())) {
+                log.info(requestId + " New password not verified");
+                throw new ApiException(400, "Incorrect request data");
+            }
+
             Integer companyId = null;
             if (!request.getRole().equals(UserRoleType.SUPER_ADMIN) && !user.getRole().equals(UserRoleType.SUPER_ADMIN)) {
                 Optional<Company> companyOptional = companyRepository.findById(user.getCompanyId());
