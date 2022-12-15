@@ -56,7 +56,7 @@ public class UserProfileController {
         }
     }
 
-    @PostMapping("/remove_info_education")
+    @DeleteMapping("/remove_info_education")
     public RemoveInfoEducationResponse removeInfoEducation(
             @RequestHeader(name = "Authorization") String token, @RequestBody RemoveInfoEducationRequest request
     ) {
