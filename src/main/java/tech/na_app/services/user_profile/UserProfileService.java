@@ -3,10 +3,7 @@ package tech.na_app.services.user_profile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-import tech.na_app.entity.profile.Education;
-import tech.na_app.entity.profile.EducationSequence;
-import tech.na_app.entity.profile.InternshipAndInstruction;
-import tech.na_app.entity.profile.InternshipAndInstructionSequence;
+import tech.na_app.entity.profile.*;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
@@ -15,8 +12,11 @@ import tech.na_app.model.profile.*;
 import tech.na_app.repository.EducationRepository;
 import tech.na_app.repository.InternshipAndInstructionRepository;
 import tech.na_app.repository.UserRepository;
+import tech.na_app.services.user.UserHelperComponent;
+import tech.na_app.utils.ParameterValidator;
 import tech.na_app.utils.SequenceGeneratorService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +30,7 @@ public class UserProfileService {
     private final InternshipAndInstructionRepository internshipAndInstructionRepository;
     private final UserRepository userRepository;
     private final GetUserProfileHelperComponent getUserProfileHelperComponent;
+    private final UserHelperComponent userHelperComponent;
 
     public SaveInfoEducationResponse saveInfoEducation(String requestId, SaveInfoEducationRequest request) {
         try {
@@ -135,6 +136,54 @@ public class UserProfileService {
         } catch (Exception e) {
             log.error(requestId + " Message: " + e.getMessage());
             return new GetUserProfileResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public SaveUserProfileResponse saveUserProfile(String requestId, SaveUserProfileRequest request) {
+        try {
+            if (request.getId() == null) {
+                throw new ApiException(400, "BAD_REQUEST");
+            }
+
+            Optional<User> userOptional = userRepository.findById(request.getId());
+            if (userOptional.isEmpty()) {
+                log.info(requestId + " User was not found");
+                throw new ApiException(400, "BAD_REQUEST");
+            }
+
+            User user = userOptional.get();
+            user.setUpdate_date(new Date());
+
+            String email = request.getEmail();
+            if (!ParameterValidator.emailIsValid(request.getEmail())) {
+                throw new ApiException(500, "Email is invalid");
+            }
+
+            Profile profile = Profile.builder()
+                    .email(email)
+                    .phone(request.getPhone())
+                    .fio(request.getFio())
+                    .acc_order_number(request.getAcc_order_number())
+                    .acc_order_date(request.getAcc_order_date())
+                    .salary(request.getSalary())
+                    .birthday(request.getBirthday())
+                    .age(userHelperComponent.calculateAge(request.getBirthday()))
+                    .previous_work_exp(request.getPrevious_work_exp())
+                    .previous_info_work_mp(request.getPrevious_info_work_mp())
+                    .sufficient_experience_mp(request.getSufficient_experience_mp())
+                    .registration_address(request.getRegistration_address())
+                    .actual_address(request.getActual_address())
+                    .build();
+            user.setProfile(profile);
+            userRepository.save(user);
+
+            return new SaveUserProfileResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new SaveUserProfileResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new SaveUserProfileResponse(new ErrorObject(500, "Something went wrong"));
         }
     }
 

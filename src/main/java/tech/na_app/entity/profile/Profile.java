@@ -17,6 +17,7 @@ import java.util.Date;
 public class Profile {
 
     private String email;
+    private String phone;
     private String fio;
     private String acc_order_number;
 
@@ -33,8 +34,5 @@ public class Profile {
     private String sufficient_experience_mp;
     private String registration_address;
     private String actual_address;
-
-    private DrivingLicense driving_license;
-    private AvailableDocuments available_documents;
 
 }

@@ -23,6 +23,10 @@ public class SaveUserProfileRequest {
     )
     private String email;
 
+    @Schema(
+            example = "+38012345678"
+    )
+    private String phone;
 
     @Schema(
             example = "Petro Ejik Perdole"

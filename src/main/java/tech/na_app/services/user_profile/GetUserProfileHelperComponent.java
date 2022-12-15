@@ -65,8 +65,6 @@ public class GetUserProfileHelperComponent {
         response.setSufficient_experience_mp(profile.getSufficient_experience_mp());
         response.setRegistration_address(profile.getRegistration_address());
         response.setActual_address(profile.getActual_address());
-        response.setDriving_license(profile.getDriving_license() != null ? profile.getDriving_license() : null);
-        response.setAvailable_documents(profile.getAvailable_documents() != null ? profile.getAvailable_documents() : null);
     }
 
 }

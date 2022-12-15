@@ -45,23 +45,6 @@ public class UserController {
         }
     }
 
-    @PostMapping("/save_user_profile")
-    public SaveUserProfileResponse saveUserProfile(
-            @RequestHeader(name = "Authorization") String token, @RequestBody SaveUserProfileRequest request
-    ) {
-        String requestId = HelpUtil.getUUID();
-        try {
-            authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
-            log.info(requestId + " Request to /saveUserProfile: " + request);
-            SaveUserProfileResponse response = userService.saveUserProfile(requestId, request);
-            log.info(requestId + " Response from /saveUserProfile: " + response);
-            return response;
-        } catch (ApiException e) {
-            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
-            return new SaveUserProfileResponse(new ErrorObject(e.getCode(), e.getMessage()));
-        }
-    }
-
     @GetMapping("/get_all_roles")
     public GetAllUserRolesResponse getAllUserRoles(
             @RequestHeader(name = "Authorization") String token
