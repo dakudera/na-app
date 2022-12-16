@@ -8,6 +8,8 @@ import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.profile.*;
+import tech.na_app.model.profile.driving_license.SaveInfoDrivingLicenseRequest;
+import tech.na_app.model.profile.driving_license.SaveInfoDrivingLicenseResponse;
 import tech.na_app.model.profile.education.*;
 import tech.na_app.services.user_profile.UserProfileService;
 import tech.na_app.utils.HelpUtil;
@@ -21,6 +23,23 @@ public class UserProfileController {
 
     private final UserProfileService userProfileService;
     private final AuthChecker authChecker;
+
+    @PostMapping("/save_info_driving_license")
+    public SaveInfoDrivingLicenseResponse saveInfoDrivingLicense(
+            @RequestHeader(name = "Authorization") String token, @RequestBody SaveInfoDrivingLicenseRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            log.info(requestId + " Request to saveInfoDrivingLicense: " + request);
+            SaveInfoDrivingLicenseResponse response = userProfileService.saveInfoDrivingLicense(requestId, request);
+            log.info(requestId + " Response from saveInfoDrivingLicense: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new SaveInfoDrivingLicenseResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
 
     @PostMapping("/save_info_education")
     public SaveInfoEducationResponse saveInfoEducation(
