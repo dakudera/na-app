@@ -6,7 +6,14 @@ import lombok.Data;
 @Data
 public class EditInfoEducationRequest {
 
+    @Schema(
+            example = "1"
+    )
     private Integer id;
+
+    @Schema(
+            example = "1"
+    )
     private Integer userId;
     @Schema(
             example = "12312313",

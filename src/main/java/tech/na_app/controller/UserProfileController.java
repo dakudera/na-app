@@ -8,8 +8,7 @@ import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.profile.*;
-import tech.na_app.model.profile.driving_license.SaveInfoDrivingLicenseRequest;
-import tech.na_app.model.profile.driving_license.SaveInfoDrivingLicenseResponse;
+import tech.na_app.model.profile.driving_license.*;
 import tech.na_app.model.profile.education.*;
 import tech.na_app.services.user_profile.UserProfileService;
 import tech.na_app.utils.HelpUtil;
@@ -58,6 +57,24 @@ public class UserProfileController {
         }
     }
 
+    @PostMapping("/edit_info_driving_license")
+    public EditInfoDrivingLicenseResponse editInfoDrivingLicense(
+            @RequestHeader(name = "Authorization") String token, @RequestBody EditInfoDrivingLicenseRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            log.info(requestId + " Request to editInfoDrivingLicense: " + request);
+            EditInfoDrivingLicenseResponse response = userProfileService.editInfoDrivingLicense(requestId, request);
+            log.info(requestId + " Response from editInfoDrivingLicense: " + response);
+
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditInfoDrivingLicenseResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
     @PostMapping("/edit_info_education")
     public EditInfoEducationResponse editInfoEducation(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditInfoEducationRequest request
@@ -72,6 +89,23 @@ public class UserProfileController {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new EditInfoEducationResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/remove_info_driving_license")
+    public RemoveInfoDrivingLicenseResponse removeInfoDrivingLicense(
+            @RequestHeader(name = "Authorization") String token, @RequestBody RemoveInfoDrivingLicenseRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            log.info(requestId + " Request to removeInfoDrivingLicense: " + request);
+            RemoveInfoDrivingLicenseResponse response = userProfileService.removeInfoDrivingLicense(requestId, request);
+            log.info(requestId + " Response from removeInfoDrivingLicense: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new RemoveInfoDrivingLicenseResponse(new ErrorObject(e.getCode(), e.getMessage()));
         }
     }
 

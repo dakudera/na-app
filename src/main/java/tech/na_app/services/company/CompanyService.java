@@ -12,7 +12,6 @@ import tech.na_app.model.company.GetCompanyInfoResponse;
 import tech.na_app.model.company.SaveNewCompanyRequest;
 import tech.na_app.model.company.SaveNewCompanyResponse;
 import tech.na_app.repository.CompanyRepository;
-import tech.na_app.repository.UserRepository;
 import tech.na_app.utils.SequenceGeneratorService;
 
 import java.util.ArrayList;
@@ -26,7 +25,6 @@ import java.util.Optional;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
-    private final UserRepository userRepository;
     private final SequenceGeneratorService sequenceGeneratorService;
 
     public SaveNewCompanyResponse saveNewCompany(String requestId, SaveNewCompanyRequest request) {

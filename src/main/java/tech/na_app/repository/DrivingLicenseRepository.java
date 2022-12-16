@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface DrivingLicenseRepository extends MongoRepository<DrivingLicense, Integer> {
 
     Optional<DrivingLicense> findByUserId(Integer userId);
+
+    Optional<DrivingLicense> findByIdAndUserId(Integer id, Integer userId);
 }

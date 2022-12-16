@@ -9,7 +9,12 @@ import java.util.Date;
 import java.util.Set;
 
 @Data
-public class SaveInfoDrivingLicenseRequest {
+public class EditInfoDrivingLicenseRequest {
+
+    @Schema(
+            example = "1"
+    )
+    private Integer id;
 
     @Schema(
             example = "1"

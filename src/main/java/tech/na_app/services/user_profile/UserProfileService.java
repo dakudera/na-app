@@ -152,6 +152,43 @@ public class UserProfileService {
         }
     }
 
+    public EditInfoDrivingLicenseResponse editInfoDrivingLicense(String requestId, EditInfoDrivingLicenseRequest request) {
+        try {
+            if (Objects.isNull(request)) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getUserId()) || Objects.isNull(request.getId())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getCategories()) || request.getCategories().isEmpty()) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getDate_end())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getDate_issue())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            User user = userRepository.findById(request.getUserId())
+                    .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
+            DrivingLicense drivingLicense = drivingLicenseRepository.findByIdAndUserId(request.getId(), user.getId())
+                    .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
+            drivingLicense.setCategories(request.getCategories());
+            drivingLicense.setDate_issue(request.getDate_issue());
+            drivingLicense.setDate_end(request.getDate_end());
+            drivingLicenseRepository.save(drivingLicense);
+
+            return new EditInfoDrivingLicenseResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditInfoDrivingLicenseResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new EditInfoDrivingLicenseResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
     public RemoveInfoEducationResponse removeInfoEducation(String requestId, User user, RemoveInfoEducationRequest request) {
         try {
             User userInfo;
@@ -173,6 +210,26 @@ public class UserProfileService {
         } catch (Exception e) {
             log.error(requestId + " Message: " + e.getMessage());
             return new RemoveInfoEducationResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public RemoveInfoDrivingLicenseResponse removeInfoDrivingLicense(String requestId, RemoveInfoDrivingLicenseRequest request) {
+        try {
+            if (Objects.isNull(request.getUserId()) || Objects.isNull(request.getId())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            User user = userRepository.findById(request.getUserId())
+                    .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
+            DrivingLicense drivingLicense = drivingLicenseRepository.findByIdAndUserId(request.getId(), user.getId())
+                    .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
+            drivingLicenseRepository.delete(drivingLicense);
+            return new RemoveInfoDrivingLicenseResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new RemoveInfoDrivingLicenseResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new RemoveInfoDrivingLicenseResponse(new ErrorObject(500, "Something went wrong"));
         }
     }
 

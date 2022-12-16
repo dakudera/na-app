@@ -7,8 +7,6 @@ import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.UserRoleType;
-import tech.na_app.model.profile.SaveUserProfileRequest;
-import tech.na_app.model.profile.SaveUserProfileResponse;
 import tech.na_app.model.user.GetAllUserRolesResponse;
 import tech.na_app.model.user.ResetPasswordRequest;
 import tech.na_app.model.user.SaveNewUserRequest;
