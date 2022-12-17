@@ -2,13 +2,19 @@ package tech.na_app.model.profile.driving_license;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import tech.na_app.model.enums.DriverLicenceCategory;
 
 import java.util.Date;
 import java.util.Set;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class SaveInfoDrivingLicenseRequest {
 
     @Schema(
