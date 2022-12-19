@@ -18,7 +18,7 @@ import javax.persistence.Transient;
 public class Education {
 
     @Transient
-    public static final String SEQUENCE_NAME = "users_sequence";
+    public static final String SEQUENCE_NAME = "education_sequence";
 
     @Id
     private Integer id;
