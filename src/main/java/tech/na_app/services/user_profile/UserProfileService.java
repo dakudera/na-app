@@ -149,9 +149,6 @@ public class UserProfileService {
             if (Objects.isNull(request)) {
                 throw new ApiException(400, "BAD REQUEST");
             }
-            if (Objects.isNull(request.getId())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
             if (Objects.isNull(request.getCategories()) || request.getCategories().isEmpty()) {
                 throw new ApiException(400, "BAD REQUEST");
             }
@@ -164,7 +161,7 @@ public class UserProfileService {
 
             User userInfo = choosingUser(user, request.getUserId());
 
-            DrivingLicense drivingLicense = drivingLicenseRepository.findByIdAndUserId(request.getId(), userInfo.getId())
+            DrivingLicense drivingLicense = drivingLicenseRepository.findByUserId(userInfo.getId())
                     .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
             drivingLicense.setCategories(request.getCategories());
             drivingLicense.setDate_issue(request.getDate_issue());

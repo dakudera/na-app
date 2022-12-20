@@ -252,7 +252,6 @@ public class UserProfileServiceTest {
         return Stream.of(
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
-                                .id(1)
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(format.parse("15.10.2060"))
@@ -275,7 +274,6 @@ public class UserProfileServiceTest {
 
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
-                                .id(1)
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(format.parse("15.10.2060"))
@@ -323,7 +321,6 @@ public class UserProfileServiceTest {
                 //categories is NULL
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
-                                .id(1)
                                 .categories(null)
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(format.parse("15.10.2060"))
@@ -346,7 +343,6 @@ public class UserProfileServiceTest {
                 //categories are EMPTY
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
-                                .id(1)
                                 .categories(Collections.emptySet())
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(format.parse("15.10.2060"))
@@ -369,7 +365,6 @@ public class UserProfileServiceTest {
                 //date_issue is NULL
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
-                                .id(1)
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
                                 .date_issue(null)
                                 .date_end(format.parse("15.10.2060"))
@@ -392,7 +387,6 @@ public class UserProfileServiceTest {
                 //date_end is NULL
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
-                                .id(1)
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(null)
@@ -415,7 +409,6 @@ public class UserProfileServiceTest {
                 // id is NULL
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
-                                .id(null)
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(format.parse("15.10.2060"))
@@ -438,7 +431,6 @@ public class UserProfileServiceTest {
                 // No license
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
-                                .id(1)
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(format.parse("15.10.2060"))
