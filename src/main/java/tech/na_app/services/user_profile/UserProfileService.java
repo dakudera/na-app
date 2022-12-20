@@ -9,17 +9,16 @@ import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.InternshipAndInstructionType;
 import tech.na_app.model.profile.*;
+import tech.na_app.model.profile.driving_license.*;
 import tech.na_app.model.profile.education.*;
-import tech.na_app.repository.AvailableDocumentsRepository;
-import tech.na_app.repository.EducationRepository;
-import tech.na_app.repository.InternshipAndInstructionRepository;
-import tech.na_app.repository.UserRepository;
+import tech.na_app.repository.*;
 import tech.na_app.services.user.UserHelperComponent;
 import tech.na_app.utils.ParameterValidator;
 import tech.na_app.utils.SequenceGeneratorService;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Log4j2
@@ -33,6 +32,7 @@ public class UserProfileService {
     private final UserRepository userRepository;
     private final GetUserProfileHelperComponent getUserProfileHelperComponent;
     private final UserHelperComponent userHelperComponent;
+    private final DrivingLicenseRepository drivingLicenseRepository;
     private final AvailableDocumentsRepository availableDocumentsRepository;
 
     public SaveInfoEducationResponse saveInfoEducation(String requestId, SaveInfoEducationRequest request) {
@@ -72,6 +72,47 @@ public class UserProfileService {
         }
     }
 
+    public SaveInfoDrivingLicenseResponse saveInfoDrivingLicense(String requestId, SaveInfoDrivingLicenseRequest request) {
+        try {
+            if (Objects.isNull(request)) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getUserId())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getCategories()) || request.getCategories().isEmpty()) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getDate_end())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getDate_issue())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (drivingLicenseRepository.findByUserId(request.getUserId()).isPresent()) {
+                throw new ApiException(400, "User already has driving license");
+            }
+
+            DrivingLicenseSequence sequenceNumber = (DrivingLicenseSequence) sequenceGeneratorService.getSequenceNumber(DrivingLicense.SEQUENCE_NAME, DrivingLicenseSequence.class);
+
+            drivingLicenseRepository.save(DrivingLicense.builder()
+                    .id(sequenceNumber.getSeq())
+                    .userId(request.getUserId())
+                    .categories(request.getCategories())
+                    .date_issue(request.getDate_issue())
+                    .date_end(request.getDate_end())
+                    .build());
+
+            return new SaveInfoDrivingLicenseResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new SaveInfoDrivingLicenseResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new SaveInfoDrivingLicenseResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
     public EditInfoEducationResponse editInfoEducation(String requestId, User user, EditInfoEducationRequest request) {
         try {
             if (request.getCertificate() == null || request.getCertificate().isEmpty()) {
@@ -84,13 +125,7 @@ public class UserProfileService {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
-            User userInfo;
-            if (request.getUserId() != null) {
-                Optional<User> userOptional = userRepository.findById(request.getUserId());
-                userInfo = userOptional.orElse(user);
-            } else {
-                userInfo = user;
-            }
+            User userInfo = choosingUser(user, request.getUserId());
 
             Optional<Education> educationOptional = educationRepository.findByIdAndUserId(request.getId(), userInfo.getId());
             Education education = educationOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
@@ -109,15 +144,46 @@ public class UserProfileService {
         }
     }
 
+    public EditInfoDrivingLicenseResponse editInfoDrivingLicense(String requestId, User user, EditInfoDrivingLicenseRequest request) {
+        try {
+            if (Objects.isNull(request)) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getId())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getCategories()) || request.getCategories().isEmpty()) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getDate_end())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getDate_issue())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            User userInfo = choosingUser(user, request.getUserId());
+
+            DrivingLicense drivingLicense = drivingLicenseRepository.findByIdAndUserId(request.getId(), userInfo.getId())
+                    .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
+            drivingLicense.setCategories(request.getCategories());
+            drivingLicense.setDate_issue(request.getDate_issue());
+            drivingLicense.setDate_end(request.getDate_end());
+            drivingLicenseRepository.save(drivingLicense);
+
+            return new EditInfoDrivingLicenseResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditInfoDrivingLicenseResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new EditInfoDrivingLicenseResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
     public RemoveInfoEducationResponse removeInfoEducation(String requestId, User user, RemoveInfoEducationRequest request) {
         try {
-            User userInfo;
-            if (request.getUserId() != null) {
-                Optional<User> userOptional = userRepository.findById(request.getUserId());
-                userInfo = userOptional.orElse(user);
-            } else {
-                userInfo = user;
-            }
+            User userInfo = choosingUser(user, request.getUserId());
 
             Optional<Education> educationOptional = educationRepository.findByIdAndUserId(request.getId(), userInfo.getId());
             Education education = educationOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
@@ -130,6 +196,26 @@ public class UserProfileService {
         } catch (Exception e) {
             log.error(requestId + " Message: " + e.getMessage());
             return new RemoveInfoEducationResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public RemoveInfoDrivingLicenseResponse removeInfoDrivingLicense(String requestId, User user, RemoveInfoDrivingLicenseRequest request) {
+        try {
+            if (Objects.isNull(request.getUserId()) || Objects.isNull(request.getId())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            User userInfo = choosingUser(user, request.getUserId());
+
+            DrivingLicense drivingLicense = drivingLicenseRepository.findByIdAndUserId(request.getId(), userInfo.getId())
+                    .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
+            drivingLicenseRepository.delete(drivingLicense);
+            return new RemoveInfoDrivingLicenseResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new RemoveInfoDrivingLicenseResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new RemoveInfoDrivingLicenseResponse(new ErrorObject(500, "Something went wrong"));
         }
     }
 
@@ -170,14 +256,10 @@ public class UserProfileService {
 
     public GetUserProfileResponse getUserProfile(String requestId, User user, GetUserProfileRequest request) {
         try {
-            User userInfo;
-            if (request != null && request.getUserId() != null) {
-                Optional<User> userOptional = userRepository.findById(request.getUserId());
-                userInfo = userOptional.orElse(user);
-            } else {
-                userInfo = user;
-            }
+            User userInfo = choosingUser(user, request.getUserId());
 
+            DrivingLicense drivingLicense = drivingLicenseRepository.findByUserId(userInfo.getId())
+                    .orElseGet(DrivingLicense::new);
             List<Education> educations = educationRepository.findAllByUserId(userInfo.getId());
             List<InternshipAndInstruction> internships = internshipAndInstructionRepository
                     .findAllByUserIdAndType(userInfo.getId(), InternshipAndInstructionType.INTERNSHIP);
@@ -185,6 +267,7 @@ public class UserProfileService {
                     .findAllByUserIdAndType(userInfo.getId(), InternshipAndInstructionType.INSTRUCTION);
             GetUserProfileResponse response = new GetUserProfileResponse(new ErrorObject(0));
             response.setId(userInfo.getId());
+            response.setDriving_license(drivingLicense);
             response.setEducationInfo(getUserProfileHelperComponent.buildEducations(educations));
             response.setInternshipInfo(getUserProfileHelperComponent.buildInstructionsAndInternships(internships));
             response.setInstructionInfo(getUserProfileHelperComponent.buildInstructionsAndInternships(instructions));
@@ -251,19 +334,21 @@ public class UserProfileService {
         }
     }
 
+    public User choosingUser(User user, Integer userId) {
+        if (userId != null) {
+            return userRepository.findById(userId).orElse(user);
+        } else {
+            return user;
+        }
+    }
+
     public ExistDocumentResponse saveExistDocument(String requestId, User user, ExistDocumentRequest request) {
         try {
             if (request == null) {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
-            User userInfo;
-            if (request.getUserId() != null) {
-                Optional<User> userOptional = userRepository.findById(request.getUserId());
-                userInfo = userOptional.orElse(user);
-            } else {
-                userInfo = user;
-            }
+            User userInfo = choosingUser(user, request.getUserId());
 
             Optional<AvailableDocuments> availableDocumentsOptional = availableDocumentsRepository.findByUserId(userInfo.getId());
             AvailableDocuments availableDocuments;
@@ -298,6 +383,5 @@ public class UserProfileService {
         }
 
     }
-
 
 }
