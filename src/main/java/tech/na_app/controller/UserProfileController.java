@@ -63,9 +63,9 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to editInfoDrivingLicense: " + request);
-            EditInfoDrivingLicenseResponse response = userProfileService.editInfoDrivingLicense(requestId, request);
+            EditInfoDrivingLicenseResponse response = userProfileService.editInfoDrivingLicense(requestId, user, request);
             log.info(requestId + " Response from editInfoDrivingLicense: " + response);
 
             return response;
@@ -98,9 +98,9 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to removeInfoDrivingLicense: " + request);
-            RemoveInfoDrivingLicenseResponse response = userProfileService.removeInfoDrivingLicense(requestId, request);
+            RemoveInfoDrivingLicenseResponse response = userProfileService.removeInfoDrivingLicense(requestId, user, request);
             log.info(requestId + " Response from removeInfoDrivingLicense: " + response);
             return response;
         } catch (ApiException e) {

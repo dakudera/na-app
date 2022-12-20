@@ -1,12 +1,11 @@
 package tech.na_app.services.user;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.modules.junit4.PowerMockRunner;
+
+import org.mockito.junit.jupiter.MockitoExtension;
 import tech.na_app.entity.profile.Profile;
 import tech.na_app.entity.user.User;
 import tech.na_app.entity.user.UserRolesStore;
@@ -19,11 +18,12 @@ import tech.na_app.utils.TestUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore("javax.management.*")
+
+@ExtendWith({MockitoExtension.class})
 public class EmployeeServiceTest {
 
     @Mock
@@ -33,8 +33,7 @@ public class EmployeeServiceTest {
 
     private EmployeeService employeeService;
 
-
-    @Before
+    @BeforeEach
     public void setUp() {
         employeeService = new EmployeeService(userRolesStoreRepository, userRepository);
     }
@@ -62,7 +61,7 @@ public class EmployeeServiceTest {
                         .description("Водій")
                         .build()
         );
-        PowerMockito.when(userRolesStoreRepository.findAll()).thenReturn(roles);
+        when(userRolesStoreRepository.findAll()).thenReturn(roles);
 
         List<User> users = new ArrayList<>();
         Profile profile = new Profile();
@@ -75,7 +74,7 @@ public class EmployeeServiceTest {
                         .build()
         );
 
-        PowerMockito.when(userRepository.findAllByCompanyId(any())).thenReturn(users);
+        when(userRepository.findAllByCompanyId(any())).thenReturn(users);
 
         GetAllEmployeeResponse allEmployee = employeeService.getAllEmployee(TestUtils.TEST_REQUEST_ID, user);
         assertNotNull(allEmployee.getEmployeeInfo());

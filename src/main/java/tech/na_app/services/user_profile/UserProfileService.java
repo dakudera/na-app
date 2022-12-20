@@ -127,13 +127,7 @@ public class UserProfileService {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
-            User userInfo;
-            if (request.getUserId() != null) {
-                Optional<User> userOptional = userRepository.findById(request.getUserId());
-                userInfo = userOptional.orElse(user);
-            } else {
-                userInfo = user;
-            }
+            User userInfo = choosingUser(user, request.getUserId());
 
             Optional<Education> educationOptional = educationRepository.findByIdAndUserId(request.getId(), userInfo.getId());
             Education education = educationOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
@@ -152,12 +146,12 @@ public class UserProfileService {
         }
     }
 
-    public EditInfoDrivingLicenseResponse editInfoDrivingLicense(String requestId, EditInfoDrivingLicenseRequest request) {
+    public EditInfoDrivingLicenseResponse editInfoDrivingLicense(String requestId, User user, EditInfoDrivingLicenseRequest request) {
         try {
             if (Objects.isNull(request)) {
                 throw new ApiException(400, "BAD REQUEST");
             }
-            if (Objects.isNull(request.getUserId()) || Objects.isNull(request.getId())) {
+            if (Objects.isNull(request.getId())) {
                 throw new ApiException(400, "BAD REQUEST");
             }
             if (Objects.isNull(request.getCategories()) || request.getCategories().isEmpty()) {
@@ -170,9 +164,9 @@ public class UserProfileService {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
-            User user = userRepository.findById(request.getUserId())
-                    .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
-            DrivingLicense drivingLicense = drivingLicenseRepository.findByIdAndUserId(request.getId(), user.getId())
+            User userInfo = choosingUser(user, request.getUserId());
+
+            DrivingLicense drivingLicense = drivingLicenseRepository.findByIdAndUserId(request.getId(), userInfo.getId())
                     .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
             drivingLicense.setCategories(request.getCategories());
             drivingLicense.setDate_issue(request.getDate_issue());
@@ -191,13 +185,7 @@ public class UserProfileService {
 
     public RemoveInfoEducationResponse removeInfoEducation(String requestId, User user, RemoveInfoEducationRequest request) {
         try {
-            User userInfo;
-            if (request.getUserId() != null) {
-                Optional<User> userOptional = userRepository.findById(request.getUserId());
-                userInfo = userOptional.orElse(user);
-            } else {
-                userInfo = user;
-            }
+            User userInfo = choosingUser(user, request.getUserId());
 
             Optional<Education> educationOptional = educationRepository.findByIdAndUserId(request.getId(), userInfo.getId());
             Education education = educationOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
@@ -213,14 +201,14 @@ public class UserProfileService {
         }
     }
 
-    public RemoveInfoDrivingLicenseResponse removeInfoDrivingLicense(String requestId, RemoveInfoDrivingLicenseRequest request) {
+    public RemoveInfoDrivingLicenseResponse removeInfoDrivingLicense(String requestId, User user, RemoveInfoDrivingLicenseRequest request) {
         try {
             if (Objects.isNull(request.getUserId()) || Objects.isNull(request.getId())) {
                 throw new ApiException(400, "BAD REQUEST");
             }
-            User user = userRepository.findById(request.getUserId())
-                    .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
-            DrivingLicense drivingLicense = drivingLicenseRepository.findByIdAndUserId(request.getId(), user.getId())
+            User userInfo = choosingUser(user, request.getUserId());
+
+            DrivingLicense drivingLicense = drivingLicenseRepository.findByIdAndUserId(request.getId(), userInfo.getId())
                     .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
             drivingLicenseRepository.delete(drivingLicense);
             return new RemoveInfoDrivingLicenseResponse(new ErrorObject(0));
@@ -270,13 +258,7 @@ public class UserProfileService {
 
     public GetUserProfileResponse getUserProfile(String requestId, User user, GetUserProfileRequest request) {
         try {
-            User userInfo;
-            if (request != null && request.getUserId() != null) {
-                Optional<User> userOptional = userRepository.findById(request.getUserId());
-                userInfo = userOptional.orElse(user);
-            } else {
-                userInfo = user;
-            }
+            User userInfo = choosingUser(user, request.getUserId());
 
             DrivingLicense drivingLicense = drivingLicenseRepository.findByUserId(userInfo.getId())
                     .orElseGet(DrivingLicense::new);
@@ -351,6 +333,16 @@ public class UserProfileService {
         } catch (Exception e) {
             log.error(requestId + " Message: " + e.getMessage());
             return new SaveUserProfileResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public User choosingUser(User user, Integer userId) {
+        if (userId != null) {
+            log.info("Edit or remove other user info");
+            return userRepository.findById(userId).orElse(user);
+        } else {
+            log.info("Self edit or remove info");
+            return user;
         }
     }
 
