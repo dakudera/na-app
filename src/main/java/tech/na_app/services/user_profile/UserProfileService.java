@@ -10,6 +10,7 @@ import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.InternshipAndInstructionType;
 import tech.na_app.model.profile.*;
 import tech.na_app.model.profile.education.*;
+import tech.na_app.repository.AvailableDocumentsRepository;
 import tech.na_app.repository.EducationRepository;
 import tech.na_app.repository.InternshipAndInstructionRepository;
 import tech.na_app.repository.UserRepository;
@@ -32,6 +33,7 @@ public class UserProfileService {
     private final UserRepository userRepository;
     private final GetUserProfileHelperComponent getUserProfileHelperComponent;
     private final UserHelperComponent userHelperComponent;
+    private final AvailableDocumentsRepository availableDocumentsRepository;
 
     public SaveInfoEducationResponse saveInfoEducation(String requestId, SaveInfoEducationRequest request) {
         try {
@@ -248,5 +250,54 @@ public class UserProfileService {
             return new SaveUserProfileResponse(new ErrorObject(500, "Something went wrong"));
         }
     }
+
+    public ExistDocumentResponse saveExistDocument(String requestId, User user, ExistDocumentRequest request) {
+        try {
+            if (request == null) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            User userInfo;
+            if (request.getUserId() != null) {
+                Optional<User> userOptional = userRepository.findById(request.getUserId());
+                userInfo = userOptional.orElse(user);
+            } else {
+                userInfo = user;
+            }
+
+            Optional<AvailableDocuments> availableDocumentsOptional = availableDocumentsRepository.findByUserId(userInfo.getId());
+            AvailableDocuments availableDocuments;
+            // do update
+            if (availableDocumentsOptional.isPresent()) {
+                availableDocuments = availableDocumentsOptional.get();
+
+                availableDocuments.setIpn(request.getIpn());
+                availableDocuments.setPassport(request.getPassport());
+                availableDocuments.setEmployment_history(request.getEmployment_history());
+                availableDocuments.setHealth_certificate(request.getHealth_certificate());
+                availableDocuments.setMilitary_registration_doc(request.getMilitary_registration_doc());
+            } else { // do save new entry
+                availableDocuments = AvailableDocuments.builder()
+                        .ipn(request.getIpn())
+                        .passport(request.getPassport())
+                        .employment_history(request.getEmployment_history())
+                        .health_certificate(request.getHealth_certificate())
+                        .military_registration_doc(request.getMilitary_registration_doc())
+                        .build();
+            }
+            availableDocumentsRepository.save(availableDocuments);
+
+
+            return new ExistDocumentResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new ExistDocumentResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new ExistDocumentResponse(new ErrorObject(500, "Something went wrong"));
+        }
+
+    }
+
 
 }
