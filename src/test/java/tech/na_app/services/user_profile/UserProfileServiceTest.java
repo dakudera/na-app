@@ -10,8 +10,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import tech.na_app.entity.profile.DrivingLicense;
 import tech.na_app.entity.profile.DrivingLicenseSequence;
+import tech.na_app.entity.user.User;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.DriverLicenceCategory;
+import tech.na_app.model.profile.driving_license.EditInfoDrivingLicenseRequest;
+import tech.na_app.model.profile.driving_license.EditInfoDrivingLicenseResponse;
 import tech.na_app.model.profile.driving_license.SaveInfoDrivingLicenseRequest;
 import tech.na_app.model.profile.driving_license.SaveInfoDrivingLicenseResponse;
 import tech.na_app.repository.DrivingLicenseRepository;
@@ -24,6 +27,7 @@ import tech.na_app.utils.TestUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -64,6 +68,45 @@ public class UserProfileServiceTest {
                 userRepository, getUserProfileHelperComponent, userHelperComponent, drivingLicenseRepository);
     }
 
+    @ParameterizedTest
+    @MethodSource("saveInfoDrivingLicense$GoodDataSet")
+    public void saveInfoDrivingLicense$GoodRequest(SaveInfoDrivingLicenseRequest request, SaveInfoDrivingLicenseResponse expectedResponse,
+                                                   Integer mockedUserId, Optional<DrivingLicense> mockedDrivingLicense
+    ) {
+        //Given
+        lenient().when(drivingLicenseRepository.findByUserId(mockedUserId)).thenReturn(mockedDrivingLicense);
+        lenient().when((DrivingLicenseSequence) sequenceGeneratorService.getSequenceNumber(DrivingLicense.SEQUENCE_NAME, DrivingLicenseSequence.class))
+                .thenReturn(DrivingLicenseSequence.builder()
+                        .id("test")
+                        .seq(1)
+                        .build());
+        //When
+        SaveInfoDrivingLicenseResponse response = userProfileService.saveInfoDrivingLicense(TestUtils.TEST_REQUEST_ID, request);
+        //Then
+        assertEquals(expectedResponse, response);
+    }
+
+    // todo more positive case
+    @SneakyThrows
+    private static Stream<Arguments> saveInfoDrivingLicense$GoodDataSet() {
+        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        return Stream.of(
+                Arguments.of(
+                        SaveInfoDrivingLicenseRequest.builder()
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .userId(1)
+                                .build(),
+
+                        SaveInfoDrivingLicenseResponse.builder()
+                                .error(new ErrorObject(0))
+                                .build(),
+                        1,
+                        Optional.empty()
+                )
+        );
+    }
 
     @ParameterizedTest
     @MethodSource("saveInfoDrivingLicense$BadDataSet")
@@ -92,6 +135,21 @@ public class UserProfileServiceTest {
                 Arguments.of(
                         SaveInfoDrivingLicenseRequest.builder()
                                 .categories(null)
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .userId(1)
+                                .build(),
+
+                        SaveInfoDrivingLicenseResponse.builder()
+                                .error(new ErrorObject(400, "BAD REQUEST"))
+                                .build(),
+                        1,
+                        Optional.empty()
+                ),
+                //categories are EMPTY
+                Arguments.of(
+                        SaveInfoDrivingLicenseRequest.builder()
+                                .categories(Collections.emptySet())
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(format.parse("15.10.2060"))
                                 .userId(1)
@@ -168,6 +226,232 @@ public class UserProfileServiceTest {
                                 .date_end(format.parse("15.10.2060"))
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
                                 .build())
+                )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("editInfoDrivingLicense$GoodDataSet")
+    public void editInfoDrivingLicense$GoodRequest(EditInfoDrivingLicenseRequest request, EditInfoDrivingLicenseResponse expectedResponse,
+                                                   Integer mockedUserId, Integer mockedId, Optional<DrivingLicense> mockedDrivingLicense
+    ) {
+        //Given
+        User user = User.builder().id(mockedUserId).build();
+
+        lenient().when(drivingLicenseRepository.findByIdAndUserId(mockedId, mockedUserId)).thenReturn(mockedDrivingLicense);
+        lenient().when(userRepository.findById(mockedUserId)).thenReturn(Optional.of(User.builder().id(1).build()));
+
+        //When
+        EditInfoDrivingLicenseResponse response = userProfileService.editInfoDrivingLicense(TestUtils.TEST_REQUEST_ID, user, request);
+        //Then
+        assertEquals(expectedResponse, response);
+    }
+
+    @SneakyThrows
+    private static Stream<Arguments> editInfoDrivingLicense$GoodDataSet() {
+        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        return Stream.of(
+                Arguments.of(
+                        EditInfoDrivingLicenseRequest.builder()
+                                .id(1)
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .userId(1)
+                                .build(),
+
+                        EditInfoDrivingLicenseResponse.builder()
+                                .error(new ErrorObject(0))
+                                .build(),
+                        1,
+                        1,
+                        Optional.of(DrivingLicense.builder()
+                                .id(1)
+                                .userId(1)
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .build())
+                ),
+
+                Arguments.of(
+                        EditInfoDrivingLicenseRequest.builder()
+                                .id(1)
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .userId(null)
+                                .build(),
+
+                        EditInfoDrivingLicenseResponse.builder()
+                                .error(new ErrorObject(0))
+                                .build(),
+                        1,
+                        1,
+                        Optional.of(DrivingLicense.builder()
+                                .id(1)
+                                .userId(1)
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .build())
+                )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("editInfoDrivingLicense$BadDataSet")
+    public void editInfoDrivingLicense$BadRequest(EditInfoDrivingLicenseRequest request, EditInfoDrivingLicenseResponse expectedResponse,
+                                                  Integer mockedUserId, Integer mockedId, Optional<DrivingLicense> mockedDrivingLicense
+    ) {
+        //Given
+        User user = User.builder().id(mockedUserId).build();
+
+        lenient().when(drivingLicenseRepository.findByIdAndUserId(mockedId, mockedUserId)).thenReturn(mockedDrivingLicense);
+        lenient().when(userRepository.findById(mockedUserId)).thenReturn(Optional.of(User.builder().id(1).build()));
+
+        //When
+        EditInfoDrivingLicenseResponse response = userProfileService.editInfoDrivingLicense(TestUtils.TEST_REQUEST_ID, user, request);
+        //Then
+        assertEquals(expectedResponse, response);
+    }
+
+
+    @SneakyThrows
+    private static Stream<Arguments> editInfoDrivingLicense$BadDataSet() {
+        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        return Stream.of(
+                //categories is NULL
+                Arguments.of(
+                        EditInfoDrivingLicenseRequest.builder()
+                                .id(1)
+                                .categories(null)
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .userId(1)
+                                .build(),
+
+                        EditInfoDrivingLicenseResponse.builder()
+                                .error(new ErrorObject(400, "BAD REQUEST"))
+                                .build(),
+                        1,
+                        1,
+                        Optional.of(DrivingLicense.builder()
+                                .id(1)
+                                .userId(1)
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .build())
+                ),
+                //categories are EMPTY
+                Arguments.of(
+                        EditInfoDrivingLicenseRequest.builder()
+                                .id(1)
+                                .categories(Collections.emptySet())
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .userId(1)
+                                .build(),
+
+                        EditInfoDrivingLicenseResponse.builder()
+                                .error(new ErrorObject(400, "BAD REQUEST"))
+                                .build(),
+                        1,
+                        1,
+                        Optional.of(DrivingLicense.builder()
+                                .id(1)
+                                .userId(1)
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .build())
+                ),
+                //date_issue is NULL
+                Arguments.of(
+                        EditInfoDrivingLicenseRequest.builder()
+                                .id(1)
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .date_issue(null)
+                                .date_end(format.parse("15.10.2060"))
+                                .userId(1)
+                                .build(),
+
+                        EditInfoDrivingLicenseResponse.builder()
+                                .error(new ErrorObject(400, "BAD REQUEST"))
+                                .build(),
+                        1,
+                        1,
+                        Optional.of(DrivingLicense.builder()
+                                .id(1)
+                                .userId(1)
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .build())
+                ),
+                //date_end is NULL
+                Arguments.of(
+                        EditInfoDrivingLicenseRequest.builder()
+                                .id(1)
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(null)
+                                .userId(1)
+                                .build(),
+
+                        EditInfoDrivingLicenseResponse.builder()
+                                .error(new ErrorObject(400, "BAD REQUEST"))
+                                .build(),
+                        1,
+                        1,
+                        Optional.of(DrivingLicense.builder()
+                                .id(1)
+                                .userId(1)
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .build())
+                ),
+                // id is NULL
+                Arguments.of(
+                        EditInfoDrivingLicenseRequest.builder()
+                                .id(null)
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .userId(1)
+                                .build(),
+
+                        EditInfoDrivingLicenseResponse.builder()
+                                .error(new ErrorObject(400, "BAD REQUEST"))
+                                .build(),
+                        1,
+                        1,
+                        Optional.of(DrivingLicense.builder()
+                                .id(1)
+                                .userId(1)
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .build())
+                ),
+                // No license
+                Arguments.of(
+                        EditInfoDrivingLicenseRequest.builder()
+                                .id(1)
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .userId(1)
+                                .build(),
+
+                        EditInfoDrivingLicenseResponse.builder()
+                                .error(new ErrorObject(400, "BAD REQUEST"))
+                                .build(),
+                        1,
+                        1,
+                        Optional.empty()
                 )
         );
     }

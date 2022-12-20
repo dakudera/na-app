@@ -338,10 +338,8 @@ public class UserProfileService {
 
     public User choosingUser(User user, Integer userId) {
         if (userId != null) {
-            log.info("Edit or remove other user info");
             return userRepository.findById(userId).orElse(user);
         } else {
-            log.info("Self edit or remove info");
             return user;
         }
     }
