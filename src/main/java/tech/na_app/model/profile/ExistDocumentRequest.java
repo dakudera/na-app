@@ -1,27 +1,13 @@
-package tech.na_app.entity.profile;
+package tech.na_app.model.profile;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import tech.na_app.entity.profile.HealthCertificate;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Document(collection = "available_documents")
-public class AvailableDocuments {
+public class ExistDocumentRequest {
 
-    @Transient
-    public static final String SEQUENCE_NAME = "available_documents_sequence";
-
-    @Id
-    private Integer id;
+    private Integer userId;
 
     @Schema(
             example = "AE123456",
@@ -47,6 +33,6 @@ public class AvailableDocuments {
     )
     private String military_registration_doc;
     private HealthCertificate health_certificate;
-    private Integer userId;
+
 
 }

@@ -177,4 +177,21 @@ public class UserProfileController {
         }
     }
 
+    @PostMapping("/exist_document")
+    public ExistDocumentResponse existDocument(
+            @RequestHeader(name = "Authorization") String token, @RequestBody ExistDocumentRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            log.info(requestId + " Request to /existDocument: " + request);
+            ExistDocumentResponse response = userProfileService.saveExistDocument(requestId, user, request);
+            log.info(requestId + " Response from /existDocument: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new ExistDocumentResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
 }

@@ -17,10 +17,7 @@ import tech.na_app.model.profile.driving_license.EditInfoDrivingLicenseRequest;
 import tech.na_app.model.profile.driving_license.EditInfoDrivingLicenseResponse;
 import tech.na_app.model.profile.driving_license.SaveInfoDrivingLicenseRequest;
 import tech.na_app.model.profile.driving_license.SaveInfoDrivingLicenseResponse;
-import tech.na_app.repository.DrivingLicenseRepository;
-import tech.na_app.repository.EducationRepository;
-import tech.na_app.repository.InternshipAndInstructionRepository;
-import tech.na_app.repository.UserRepository;
+import tech.na_app.repository.*;
 import tech.na_app.services.user.UserHelperComponent;
 import tech.na_app.utils.SequenceGeneratorService;
 import tech.na_app.utils.TestUtils;
@@ -58,6 +55,8 @@ public class UserProfileServiceTest {
 
     @Mock
     private DrivingLicenseRepository drivingLicenseRepository;
+    @Mock
+    private AvailableDocumentsRepository availableDocumentsRepository;
 
     private UserProfileService userProfileService;
 
@@ -65,7 +64,7 @@ public class UserProfileServiceTest {
     @BeforeEach
     public void setUp() {
         userProfileService = new UserProfileService(educationRepository, sequenceGeneratorService, internshipAndInstructionRepository,
-                userRepository, getUserProfileHelperComponent, userHelperComponent, drivingLicenseRepository);
+                userRepository, getUserProfileHelperComponent, userHelperComponent, drivingLicenseRepository, availableDocumentsRepository);
     }
 
     @ParameterizedTest
