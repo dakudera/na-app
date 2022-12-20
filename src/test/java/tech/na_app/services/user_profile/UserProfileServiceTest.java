@@ -2,7 +2,6 @@ package tech.na_app.services.user_profile;
 
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -29,7 +28,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static org.mockito.Mockito.lenient;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @ExtendWith({MockitoExtension.class})
 public class UserProfileServiceTest {
@@ -67,9 +67,11 @@ public class UserProfileServiceTest {
 
     @ParameterizedTest
     @MethodSource("saveInfoDrivingLicense$BadDataSet")
-    public void saveInfoDrivingLicense$BadRequest(SaveInfoDrivingLicenseRequest request, SaveInfoDrivingLicenseResponse expectedResponse) {
+    public void saveInfoDrivingLicense$BadRequest(SaveInfoDrivingLicenseRequest request, SaveInfoDrivingLicenseResponse expectedResponse,
+                                                  Integer mockedUserId, Optional<DrivingLicense> mockedDrivingLicense
+    ) {
         //Given
-        lenient().when(drivingLicenseRepository.findByUserId(request.getUserId())).thenReturn(Optional.empty());
+        lenient().when(drivingLicenseRepository.findByUserId(mockedUserId)).thenReturn(mockedDrivingLicense);
         lenient().when((DrivingLicenseSequence) sequenceGeneratorService.getSequenceNumber(DrivingLicense.SEQUENCE_NAME, DrivingLicenseSequence.class))
                 .thenReturn(DrivingLicenseSequence.builder()
                         .id("test")
@@ -78,8 +80,7 @@ public class UserProfileServiceTest {
         //When
         SaveInfoDrivingLicenseResponse response = userProfileService.saveInfoDrivingLicense(TestUtils.TEST_REQUEST_ID, request);
         //Then
-        Assertions.assertEquals(expectedResponse, response);
-
+        assertEquals(expectedResponse, response);
     }
 
 
@@ -87,42 +88,52 @@ public class UserProfileServiceTest {
     private static Stream<Arguments> saveInfoDrivingLicense$BadDataSet() {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         return Stream.of(
+                //categories is NULL
                 Arguments.of(
                         SaveInfoDrivingLicenseRequest.builder()
                                 .categories(null)
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(format.parse("15.10.2060"))
-                                .userId(25)
+                                .userId(1)
                                 .build(),
 
                         SaveInfoDrivingLicenseResponse.builder()
                                 .error(new ErrorObject(400, "BAD REQUEST"))
-                                .build()
+                                .build(),
+                        1,
+                        Optional.empty()
                 ),
+                //date_issue is NULL
                 Arguments.of(
                         SaveInfoDrivingLicenseRequest.builder()
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
                                 .date_issue(null)
                                 .date_end(format.parse("15.10.2060"))
-                                .userId(25)
+                                .userId(1)
                                 .build(),
 
                         SaveInfoDrivingLicenseResponse.builder()
                                 .error(new ErrorObject(400, "BAD REQUEST"))
-                                .build()
+                                .build(),
+                        1,
+                        Optional.empty()
                 ),
+                //date_end is NULL
                 Arguments.of(
                         SaveInfoDrivingLicenseRequest.builder()
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(null)
-                                .userId(25)
+                                .userId(1)
                                 .build(),
 
                         SaveInfoDrivingLicenseResponse.builder()
                                 .error(new ErrorObject(400, "BAD REQUEST"))
-                                .build()
+                                .build(),
+                        1,
+                        Optional.empty()
                 ),
+                //userId is NULL
                 Arguments.of(
                         SaveInfoDrivingLicenseRequest.builder()
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
@@ -133,12 +144,31 @@ public class UserProfileServiceTest {
 
                         SaveInfoDrivingLicenseResponse.builder()
                                 .error(new ErrorObject(400, "BAD REQUEST"))
-                                .build()
+                                .build(),
+                        1,
+                        Optional.empty()
+                ),
+                //User already has driving license
+                Arguments.of(
+                        SaveInfoDrivingLicenseRequest.builder()
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .userId(1)
+                                .build(),
+
+                        SaveInfoDrivingLicenseResponse.builder()
+                                .error(new ErrorObject(400, "User already has driving license"))
+                                .build(),
+                        1,
+                        Optional.of(DrivingLicense.builder()
+                                .id(1)
+                                .userId(1)
+                                .date_issue(format.parse("15.10.2022"))
+                                .date_end(format.parse("15.10.2060"))
+                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
+                                .build())
                 )
         );
-    }
-
-    @Test
-    void editInfoDrivingLicense() {
     }
 }
