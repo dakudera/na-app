@@ -23,11 +23,8 @@ import java.util.Set;
 @Document("driving_license")
 public class DrivingLicense {
 
-    @Transient
-    public static final String SEQUENCE_NAME = "driving_license_sequence";
-
     @Id
-    private Integer id;
+    private String id;
 
     private Set<DriverLicenceCategory> categories;
 

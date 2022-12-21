@@ -93,10 +93,7 @@ public class UserProfileService {
                 throw new ApiException(400, "User already has driving license");
             }
 
-            DrivingLicenseSequence sequenceNumber = (DrivingLicenseSequence) sequenceGeneratorService.getSequenceNumber(DrivingLicense.SEQUENCE_NAME, DrivingLicenseSequence.class);
-
             drivingLicenseRepository.save(DrivingLicense.builder()
-                    .id(sequenceNumber.getSeq())
                     .userId(request.getUserId())
                     .categories(request.getCategories())
                     .date_issue(request.getDate_issue())

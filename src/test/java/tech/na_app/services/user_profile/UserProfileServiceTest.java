@@ -74,11 +74,6 @@ public class UserProfileServiceTest {
     ) {
         //Given
         lenient().when(drivingLicenseRepository.findByUserId(mockedUserId)).thenReturn(mockedDrivingLicense);
-        lenient().when((DrivingLicenseSequence) sequenceGeneratorService.getSequenceNumber(DrivingLicense.SEQUENCE_NAME, DrivingLicenseSequence.class))
-                .thenReturn(DrivingLicenseSequence.builder()
-                        .id("test")
-                        .seq(1)
-                        .build());
         //When
         SaveInfoDrivingLicenseResponse response = userProfileService.saveInfoDrivingLicense(TestUtils.TEST_REQUEST_ID, request);
         //Then
@@ -114,11 +109,6 @@ public class UserProfileServiceTest {
     ) {
         //Given
         lenient().when(drivingLicenseRepository.findByUserId(mockedUserId)).thenReturn(mockedDrivingLicense);
-        lenient().when((DrivingLicenseSequence) sequenceGeneratorService.getSequenceNumber(DrivingLicense.SEQUENCE_NAME, DrivingLicenseSequence.class))
-                .thenReturn(DrivingLicenseSequence.builder()
-                        .id("test")
-                        .seq(1)
-                        .build());
         //When
         SaveInfoDrivingLicenseResponse response = userProfileService.saveInfoDrivingLicense(TestUtils.TEST_REQUEST_ID, request);
         //Then
@@ -219,7 +209,7 @@ public class UserProfileServiceTest {
                                 .build(),
                         1,
                         Optional.of(DrivingLicense.builder()
-                                .id(1)
+                                .id("1")
                                 .userId(1)
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(format.parse("15.10.2060"))
@@ -263,7 +253,7 @@ public class UserProfileServiceTest {
                                 .build(),
                         1,
                         Optional.of(DrivingLicense.builder()
-                                .id(1)
+                                .id("1")
                                 .userId(1)
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(format.parse("15.10.2060"))
@@ -284,7 +274,7 @@ public class UserProfileServiceTest {
                                 .build(),
                         1,
                         Optional.of(DrivingLicense.builder()
-                                .id(1)
+                                .id("1")
                                 .userId(1)
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(format.parse("15.10.2060"))
@@ -330,7 +320,7 @@ public class UserProfileServiceTest {
                                 .build(),
                         1,
                         Optional.of(DrivingLicense.builder()
-                                .id(1)
+                                .id("1")
                                 .userId(1)
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(format.parse("15.10.2060"))
@@ -351,7 +341,7 @@ public class UserProfileServiceTest {
                                 .build(),
                         1,
                         Optional.of(DrivingLicense.builder()
-                                .id(1)
+                                .id("1")
                                 .userId(1)
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(format.parse("15.10.2060"))
@@ -372,7 +362,7 @@ public class UserProfileServiceTest {
                                 .build(),
                         1,
                         Optional.of(DrivingLicense.builder()
-                                .id(1)
+                                .id("1")
                                 .userId(1)
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(format.parse("15.10.2060"))
@@ -393,7 +383,7 @@ public class UserProfileServiceTest {
                                 .build(),
                         1,
                         Optional.of(DrivingLicense.builder()
-                                .id(1)
+                                .id("1")
                                 .userId(1)
                                 .date_issue(format.parse("15.10.2022"))
                                 .date_end(format.parse("15.10.2060"))
