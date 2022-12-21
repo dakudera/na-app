@@ -10,6 +10,7 @@ import java.util.Date;
 @Data
 public class SaveInternshipRequest {
 
+    private Integer id;
     @Schema(
             example = "1",
             type = "integer"

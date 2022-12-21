@@ -29,7 +29,7 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to saveInfoDrivingLicense: " + request);
             SaveInfoDrivingLicenseResponse response = userProfileService.saveInfoDrivingLicense(requestId, request);
             log.info(requestId + " Response from saveInfoDrivingLicense: " + response);
@@ -46,7 +46,7 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /saveInfoEducation: " + request);
             SaveInfoEducationResponse response = userProfileService.saveInfoEducation(requestId, request);
             log.info(requestId + " Response from /saveInfoEducation: " + response);
@@ -63,7 +63,7 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to editInfoDrivingLicense: " + request);
             EditInfoDrivingLicenseResponse response = userProfileService.editInfoDrivingLicense(requestId, user, request);
             log.info(requestId + " Response from editInfoDrivingLicense: " + response);
@@ -81,7 +81,7 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /editInfoEducation: " + request);
             EditInfoEducationResponse response = userProfileService.editInfoEducation(requestId, user, request);
             log.info(requestId + " Response from /editInfoEducation: " + response);
@@ -98,7 +98,7 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to removeInfoDrivingLicense: " + request);
             RemoveInfoDrivingLicenseResponse response = userProfileService.removeInfoDrivingLicense(requestId, user, request);
             log.info(requestId + " Response from removeInfoDrivingLicense: " + response);
@@ -115,7 +115,7 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /removeInfoEducation: " + request);
             RemoveInfoEducationResponse response = userProfileService.removeInfoEducation(requestId, user, request);
             log.info(requestId + " Response from /removeInfoEducation: " + response);
@@ -132,10 +132,27 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /saveInternship: " + request);
-            SaveInternshipResponse response = userProfileService.saveInternship(requestId, request);
+            SaveInternshipResponse response = userProfileService.saveInternship(requestId, user, request);
             log.info(requestId + " Response from /saveInternship: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new SaveInternshipResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/remove_internship")
+    public SaveInternshipResponse removeInternship(
+            @RequestHeader(name = "Authorization") String token, @RequestBody RemoveInternshipRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            log.info(requestId + " Request to /removeInternship: " + request);
+            SaveInternshipResponse response = userProfileService.removeInternship(requestId, user, request);
+            log.info(requestId + " Response from /removeInternship: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
@@ -149,7 +166,7 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /saveInternship: " + request);
             GetUserProfileResponse response = userProfileService.getUserProfile(requestId, user, request);
             log.info(requestId + " Response from /saveInternship: " + response);
@@ -166,7 +183,7 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /saveUserProfile: " + request);
             SaveUserProfileResponse response = userProfileService.saveUserProfile(requestId, request);
             log.info(requestId + " Response from /saveUserProfile: " + response);
@@ -183,7 +200,7 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /existDocument: " + request);
             ExistDocumentResponse response = userProfileService.saveExistDocument(requestId, user, request);
             log.info(requestId + " Response from /existDocument: " + response);

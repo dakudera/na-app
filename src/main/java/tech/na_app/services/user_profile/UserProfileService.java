@@ -216,7 +216,7 @@ public class UserProfileService {
         }
     }
 
-    public SaveInternshipResponse saveInternship(String requestId, SaveInternshipRequest request) {
+    public SaveInternshipResponse saveInternship(String requestId, User user, SaveInternshipRequest request) {
         try {
             if (request.getUserId() == null) {
                 throw new ApiException(400, "BAD REQUEST");
@@ -228,18 +228,49 @@ public class UserProfileService {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
+            User userInfo = choosingUser(user, request.getUserId());
 
-            InternshipAndInstructionSequence sequenceNumber = (InternshipAndInstructionSequence) sequenceGeneratorService
-                    .getSequenceNumber(InternshipAndInstruction.SEQUENCE_NAME, InternshipAndInstructionSequence.class);
-            internshipAndInstructionRepository.save(
-                    InternshipAndInstruction.builder()
-                            .id(sequenceNumber.getSeq())
-                            .userId(request.getUserId())
-                            .type(request.getType())
-                            .date(request.getDate())
-                            .doc_number(request.getDoc_number())
-                            .build()
-            );
+            if (request.getId() == null) {
+                InternshipAndInstructionSequence sequenceNumber = (InternshipAndInstructionSequence) sequenceGeneratorService
+                        .getSequenceNumber(InternshipAndInstruction.SEQUENCE_NAME, InternshipAndInstructionSequence.class);
+                internshipAndInstructionRepository.save(
+                        InternshipAndInstruction.builder()
+                                .id(sequenceNumber.getSeq())
+                                .userId(userInfo.getId())
+                                .type(request.getType())
+                                .date(request.getDate())
+                                .doc_number(request.getDoc_number())
+                                .build()
+                );
+            } else {
+                internshipAndInstructionRepository.save(
+                        InternshipAndInstruction.builder()
+                                .id(request.getId())
+                                .userId(userInfo.getId())
+                                .type(request.getType())
+                                .date(request.getDate())
+                                .doc_number(request.getDoc_number())
+                                .build()
+                );
+            }
+
+            return new SaveInternshipResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new SaveInternshipResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new SaveInternshipResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public SaveInternshipResponse removeInternship(String requestId, User user, RemoveInternshipRequest request) {
+        try {
+            User userInfo = choosingUser(user, request.getUserId());
+
+            Optional<InternshipAndInstruction> internshipAndInstructionOptional = internshipAndInstructionRepository.findByUserIdAndId(userInfo.getId(), request.getId());
+            InternshipAndInstruction internshipAndInstruction = internshipAndInstructionOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
+            internshipAndInstructionRepository.delete(internshipAndInstruction);
 
             return new SaveInternshipResponse(new ErrorObject(0));
         } catch (ApiException e) {
@@ -262,12 +293,15 @@ public class UserProfileService {
                     .findAllByUserIdAndType(userInfo.getId(), InternshipAndInstructionType.INTERNSHIP);
             List<InternshipAndInstruction> instructions = internshipAndInstructionRepository
                     .findAllByUserIdAndType(userInfo.getId(), InternshipAndInstructionType.INSTRUCTION);
+            AvailableDocuments availableDocuments = availableDocumentsRepository.findByUserId(userInfo.getId())
+                    .orElseGet(AvailableDocuments::new);
             GetUserProfileResponse response = new GetUserProfileResponse(new ErrorObject(0));
             response.setId(userInfo.getId());
             response.setDriving_license(drivingLicense);
             response.setEducationInfo(getUserProfileHelperComponent.buildEducations(educations));
             response.setInternshipInfo(getUserProfileHelperComponent.buildInstructionsAndInternships(internships));
             response.setInstructionInfo(getUserProfileHelperComponent.buildInstructionsAndInternships(instructions));
+            response.setAvailable_documents(availableDocuments);
 
             if (userInfo.getProfile() != null) {
                 getUserProfileHelperComponent.fillUserProfile(userInfo, response);
