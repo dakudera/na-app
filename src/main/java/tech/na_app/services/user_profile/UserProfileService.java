@@ -407,7 +407,6 @@ public class UserProfileService {
             }
             availableDocumentsRepository.save(availableDocuments);
 
-
             return new ExistDocumentResponse(new ErrorObject(0));
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
