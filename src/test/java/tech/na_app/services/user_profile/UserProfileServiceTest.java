@@ -9,7 +9,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import tech.na_app.entity.profile.DrivingLicense;
-import tech.na_app.entity.profile.DrivingLicenseSequence;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.DriverLicenceCategory;
