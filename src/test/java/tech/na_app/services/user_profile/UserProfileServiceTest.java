@@ -232,12 +232,12 @@ public class UserProfileServiceTest {
     @ParameterizedTest
     @MethodSource("editInfoDrivingLicense$GoodDataSet")
     public void editInfoDrivingLicense$GoodRequest(EditInfoDrivingLicenseRequest request, EditInfoDrivingLicenseResponse expectedResponse,
-                                                   Integer mockedUserId, Integer mockedId, Optional<DrivingLicense> mockedDrivingLicense
+                                                   Integer mockedUserId, Optional<DrivingLicense> mockedDrivingLicense
     ) {
         //Given
         User user = User.builder().id(mockedUserId).build();
 
-        lenient().when(drivingLicenseRepository.findByIdAndUserId(mockedId, mockedUserId)).thenReturn(mockedDrivingLicense);
+        lenient().when(drivingLicenseRepository.findByUserId(mockedUserId)).thenReturn(mockedDrivingLicense);
         lenient().when(userRepository.findById(mockedUserId)).thenReturn(Optional.of(User.builder().id(1).build()));
 
         //When
@@ -262,7 +262,6 @@ public class UserProfileServiceTest {
                                 .error(new ErrorObject(0))
                                 .build(),
                         1,
-                        1,
                         Optional.of(DrivingLicense.builder()
                                 .id(1)
                                 .userId(1)
@@ -284,7 +283,6 @@ public class UserProfileServiceTest {
                                 .error(new ErrorObject(0))
                                 .build(),
                         1,
-                        1,
                         Optional.of(DrivingLicense.builder()
                                 .id(1)
                                 .userId(1)
@@ -299,12 +297,12 @@ public class UserProfileServiceTest {
     @ParameterizedTest
     @MethodSource("editInfoDrivingLicense$BadDataSet")
     public void editInfoDrivingLicense$BadRequest(EditInfoDrivingLicenseRequest request, EditInfoDrivingLicenseResponse expectedResponse,
-                                                  Integer mockedUserId, Integer mockedId, Optional<DrivingLicense> mockedDrivingLicense
+                                                  Integer mockedUserId, Optional<DrivingLicense> mockedDrivingLicense
     ) {
         //Given
         User user = User.builder().id(mockedUserId).build();
 
-        lenient().when(drivingLicenseRepository.findByIdAndUserId(mockedId, mockedUserId)).thenReturn(mockedDrivingLicense);
+        lenient().when(drivingLicenseRepository.findByUserId(mockedUserId)).thenReturn(mockedDrivingLicense);
         lenient().when(userRepository.findById(mockedUserId)).thenReturn(Optional.of(User.builder().id(1).build()));
 
         //When
@@ -318,7 +316,7 @@ public class UserProfileServiceTest {
     private static Stream<Arguments> editInfoDrivingLicense$BadDataSet() {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         return Stream.of(
-                //categories is NULL
+//                categories is NULL
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
                                 .categories(null)
@@ -330,7 +328,6 @@ public class UserProfileServiceTest {
                         EditInfoDrivingLicenseResponse.builder()
                                 .error(new ErrorObject(400, "BAD REQUEST"))
                                 .build(),
-                        1,
                         1,
                         Optional.of(DrivingLicense.builder()
                                 .id(1)
@@ -353,7 +350,6 @@ public class UserProfileServiceTest {
                                 .error(new ErrorObject(400, "BAD REQUEST"))
                                 .build(),
                         1,
-                        1,
                         Optional.of(DrivingLicense.builder()
                                 .id(1)
                                 .userId(1)
@@ -374,7 +370,6 @@ public class UserProfileServiceTest {
                         EditInfoDrivingLicenseResponse.builder()
                                 .error(new ErrorObject(400, "BAD REQUEST"))
                                 .build(),
-                        1,
                         1,
                         Optional.of(DrivingLicense.builder()
                                 .id(1)
@@ -397,29 +392,6 @@ public class UserProfileServiceTest {
                                 .error(new ErrorObject(400, "BAD REQUEST"))
                                 .build(),
                         1,
-                        1,
-                        Optional.of(DrivingLicense.builder()
-                                .id(1)
-                                .userId(1)
-                                .date_issue(format.parse("15.10.2022"))
-                                .date_end(format.parse("15.10.2060"))
-                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
-                                .build())
-                ),
-                // id is NULL
-                Arguments.of(
-                        EditInfoDrivingLicenseRequest.builder()
-                                .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
-                                .date_issue(format.parse("15.10.2022"))
-                                .date_end(format.parse("15.10.2060"))
-                                .userId(1)
-                                .build(),
-
-                        EditInfoDrivingLicenseResponse.builder()
-                                .error(new ErrorObject(400, "BAD REQUEST"))
-                                .build(),
-                        1,
-                        1,
                         Optional.of(DrivingLicense.builder()
                                 .id(1)
                                 .userId(1)
@@ -440,7 +412,6 @@ public class UserProfileServiceTest {
                         EditInfoDrivingLicenseResponse.builder()
                                 .error(new ErrorObject(400, "BAD REQUEST"))
                                 .build(),
-                        1,
                         1,
                         Optional.empty()
                 )
