@@ -402,6 +402,7 @@ public class UserProfileService {
                         .employment_history(request.getEmployment_history())
                         .health_certificate(request.getHealth_certificate())
                         .military_registration_doc(request.getMilitary_registration_doc())
+                        .userId(userInfo.getId())
                         .build();
             }
             availableDocumentsRepository.save(availableDocuments);
