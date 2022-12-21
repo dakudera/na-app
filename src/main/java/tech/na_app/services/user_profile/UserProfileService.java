@@ -359,7 +359,7 @@ public class UserProfileService {
                 availableDocuments.setHealth_certificate(request.getHealth_certificate());
                 availableDocuments.setMilitary_registration_doc(request.getMilitary_registration_doc());
             } else { // do save new entry
-                AvailableDocumentsSequence sequenceNumber = (AvailableDocumentsSequence) sequenceGeneratorService.getSequenceNumber(AvailableDocuments.SEQUENCE_NAME, DrivingLicenseSequence.class);
+                AvailableDocumentsSequence sequenceNumber = (AvailableDocumentsSequence) sequenceGeneratorService.getSequenceNumber(AvailableDocuments.SEQUENCE_NAME, AvailableDocumentsSequence.class);
 
                 availableDocuments = AvailableDocuments.builder()
                         .id(sequenceNumber.getSeq())
