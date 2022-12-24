@@ -200,7 +200,7 @@ public class UserProfileService {
             }
             User userInfo = choosingUser(user, request.getUserId());
 
-            DrivingLicense drivingLicense = drivingLicenseRepository.findByIdAndUserId(request.getId(), userInfo.getId())
+            DrivingLicense drivingLicense = drivingLicenseRepository.findByUserId(userInfo.getId())
                     .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
             drivingLicenseRepository.delete(drivingLicense);
             return new RemoveInfoDrivingLicenseResponse(new ErrorObject(0));

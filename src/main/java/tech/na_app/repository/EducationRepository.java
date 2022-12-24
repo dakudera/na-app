@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface EducationRepository extends MongoRepository<Education, String> {
+public interface EducationRepository extends MongoRepository<Education, Integer> {
 
     List<Education> findAllByUserId(Integer userId);
 

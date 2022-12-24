@@ -7,7 +7,7 @@ import tech.na_app.entity.profile.AvailableDocuments;
 import java.util.Optional;
 
 @Repository
-public interface AvailableDocumentsRepository extends MongoRepository<AvailableDocuments, Integer> {
+public interface AvailableDocumentsRepository extends MongoRepository<AvailableDocuments, String> {
 
     Optional<AvailableDocuments> findByUserId(Integer userId);
 
