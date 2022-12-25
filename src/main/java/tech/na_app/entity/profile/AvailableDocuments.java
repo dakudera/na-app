@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 @Data
 @Builder
@@ -17,11 +16,8 @@ import javax.persistence.Transient;
 @Document(collection = "available_documents")
 public class AvailableDocuments {
 
-    @Transient
-    public static final String SEQUENCE_NAME = "available_documents_sequence";
-
     @Id
-    private Integer id;
+    private String id;
 
     @Schema(
             example = "AE123456",
