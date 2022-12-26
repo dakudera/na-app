@@ -6,8 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tech.na_app.entity.profile.AvailableDocuments;
-import tech.na_app.entity.profile.DrivingLicense;
+import tech.na_app.model.profile.driving_license.DrivingLicense;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.profile.education.EducationInfo;
 
