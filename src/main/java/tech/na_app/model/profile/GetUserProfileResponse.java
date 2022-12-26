@@ -32,6 +32,10 @@ public class GetUserProfileResponse {
     )
     private String email;
 
+    @Schema(
+            example = "380999999999"
+    )
+    private String phone;
 
     @Schema(
             example = "Petro Ejik Perdole"
