@@ -7,9 +7,8 @@ import tech.na_app.entity.profile.DrivingLicense;
 import java.util.Optional;
 
 @Repository
-public interface DrivingLicenseRepository extends MongoRepository<DrivingLicense, Integer> {
+public interface DrivingLicenseRepository extends MongoRepository<DrivingLicense, String> {
 
     Optional<DrivingLicense> findByUserId(Integer userId);
 
-    Optional<DrivingLicense> findByIdAndUserId(Integer id, Integer userId);
 }

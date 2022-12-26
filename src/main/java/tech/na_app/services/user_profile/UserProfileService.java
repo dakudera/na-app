@@ -93,10 +93,7 @@ public class UserProfileService {
                 throw new ApiException(400, "User already has driving license");
             }
 
-            DrivingLicenseSequence sequenceNumber = (DrivingLicenseSequence) sequenceGeneratorService.getSequenceNumber(DrivingLicense.SEQUENCE_NAME, DrivingLicenseSequence.class);
-
             drivingLicenseRepository.save(DrivingLicense.builder()
-                    .id(sequenceNumber.getSeq())
                     .userId(request.getUserId())
                     .categories(request.getCategories())
                     .date_issue(request.getDate_issue())
@@ -203,7 +200,7 @@ public class UserProfileService {
             }
             User userInfo = choosingUser(user, request.getUserId());
 
-            DrivingLicense drivingLicense = drivingLicenseRepository.findByIdAndUserId(request.getId(), userInfo.getId())
+            DrivingLicense drivingLicense = drivingLicenseRepository.findByUserId(userInfo.getId())
                     .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
             drivingLicenseRepository.delete(drivingLicense);
             return new RemoveInfoDrivingLicenseResponse(new ErrorObject(0));
@@ -393,10 +390,8 @@ public class UserProfileService {
                 availableDocuments.setHealth_certificate(request.getHealth_certificate());
                 availableDocuments.setMilitary_registration_doc(request.getMilitary_registration_doc());
             } else { // do save new entry
-                AvailableDocumentsSequence sequenceNumber = (AvailableDocumentsSequence) sequenceGeneratorService.getSequenceNumber(AvailableDocuments.SEQUENCE_NAME, AvailableDocumentsSequence.class);
 
                 availableDocuments = AvailableDocuments.builder()
-                        .id(sequenceNumber.getSeq())
                         .ipn(request.getIpn())
                         .passport(request.getPassport())
                         .employment_history(request.getEmployment_history())
