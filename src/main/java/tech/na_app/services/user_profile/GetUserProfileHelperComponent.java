@@ -53,6 +53,7 @@ public class GetUserProfileHelperComponent {
     void fillUserProfile(User userInfo, GetUserProfileResponse response) {
         Profile profile = userInfo.getProfile();
         response.setEmail(profile.getEmail());
+        response.setPhone(profile.getPhone());
         response.setFio(profile.getFio());
         response.setAcc_order_number(profile.getAcc_order_number());
         response.setAcc_order_date(profile.getAcc_order_date());
