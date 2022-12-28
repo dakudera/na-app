@@ -13,7 +13,6 @@ import tech.na_app.model.enums.InternshipAndInstructionType;
 import tech.na_app.model.profile.*;
 import tech.na_app.model.profile.driving_license.*;
 import tech.na_app.model.profile.education.*;
-import tech.na_app.model.user.SelectedUser;
 import tech.na_app.repository.*;
 import tech.na_app.services.user.UserHelperComponent;
 import tech.na_app.utils.ParameterValidator;
@@ -125,7 +124,7 @@ public class UserProfileService {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
-            User userInfo = choosingUser(user, request.getUserId()).getUser();
+            User userInfo = choosingUser(user, request.getUserId());
 
             Optional<Education> educationOptional = educationRepository.findByIdAndUserId(request.getId(), userInfo.getId());
             Education education = educationOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
@@ -159,7 +158,7 @@ public class UserProfileService {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
-            User userInfo = choosingUser(user, request.getUserId()).getUser();
+            User userInfo = choosingUser(user, request.getUserId());
 
             DrivingLicense drivingLicense = drivingLicenseRepository.findByUserId(userInfo.getId())
                     .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
@@ -180,7 +179,7 @@ public class UserProfileService {
 
     public RemoveInfoEducationResponse removeInfoEducation(String requestId, User user, RemoveInfoEducationRequest request) {
         try {
-            User userInfo = choosingUser(user, request.getUserId()).getUser();
+            User userInfo = choosingUser(user, request.getUserId());
 
             Optional<Education> educationOptional = educationRepository.findByIdAndUserId(request.getId(), userInfo.getId());
             Education education = educationOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
@@ -201,7 +200,7 @@ public class UserProfileService {
             if (Objects.isNull(request.getUserId())) {
                 throw new ApiException(400, "BAD REQUEST");
             }
-            User userInfo = choosingUser(user, request.getUserId()).getUser();
+            User userInfo = choosingUser(user, request.getUserId());
 
             DrivingLicense drivingLicense = drivingLicenseRepository.findByUserId(userInfo.getId())
                     .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
@@ -228,7 +227,7 @@ public class UserProfileService {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
-            User userInfo = choosingUser(user, request.getUserId()).getUser();
+            User userInfo = choosingUser(user, request.getUserId());
 
             if (request.getId() == null) {
                 InternshipAndInstructionSequence sequenceNumber = (InternshipAndInstructionSequence) sequenceGeneratorService
@@ -266,7 +265,7 @@ public class UserProfileService {
 
     public SaveInternshipResponse removeInternship(String requestId, User user, RemoveInternshipRequest request) {
         try {
-            User userInfo = choosingUser(user, request.getUserId()).getUser();
+            User userInfo = choosingUser(user, request.getUserId());
 
             Optional<InternshipAndInstruction> internshipAndInstructionOptional = internshipAndInstructionRepository.findByUserIdAndId(userInfo.getId(), request.getId());
             InternshipAndInstruction internshipAndInstruction = internshipAndInstructionOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
@@ -284,7 +283,7 @@ public class UserProfileService {
 
     public GetUserProfileResponse getUserProfile(String requestId, User user, GetUserProfileRequest request) {
         try {
-            User userInfo = choosingUser(user, request.getUserId()).getUser();
+            User userInfo = choosingUser(user, request.getUserId());
 
             DrivingLicense drivingLicense = drivingLicenseRepository.findByUserId(userInfo.getId())
                     .orElseGet(DrivingLicense::new);
@@ -371,7 +370,7 @@ public class UserProfileService {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
-            User userInfo = choosingUser(user, request.getUserId()).getUser();
+            User userInfo = choosingUser(user, request.getUserId());
 
             Optional<AvailableDocuments> availableDocumentsOptional = availableDocumentsRepository.findByUserId(userInfo.getId());
             AvailableDocuments availableDocuments;
@@ -422,14 +421,8 @@ public class UserProfileService {
                 throw new ApiException(500, "Email is invalid");
             }
 
-            SelectedUser selectedUser = choosingUser(userThatMakeRequest, request.getId());
+            User userInfo = choosingUser(userThatMakeRequest, request.getId());
 
-            if (userThatMakeRequest.getRole().getValue() >= selectedUser.getUser().getRole().getValue() && !selectedUser.getIsSelfUser() ||
-                    userThatMakeRequest.getRole().getValue() > request.getRole().getValue()) {
-                throw new ApiException(500, "denied");
-            }
-
-            User userInfo = selectedUser.getUser();
             Profile profile = Profile.builder()
                     .email(email)
                     .phone(request.getPhone())
@@ -460,20 +453,14 @@ public class UserProfileService {
         }
     }
 
-    public SelectedUser choosingUser(User user, Integer userId) {
+    public User choosingUser(User user, Integer userId) {
         if (Objects.nonNull(userId)) {
             User otherUser = userRepository.findById(userId).orElseThrow(() -> new ApiException(400, "User was not found"));
             log.info("Other user {}", otherUser);
-            return SelectedUser.builder()
-                    .user(otherUser)
-                    .isSelfUser(false)
-                    .build();
+            return otherUser;
         } else {
             log.info("Self user {}", user);
-            return SelectedUser.builder()
-                    .user(user)
-                    .isSelfUser(true)
-                    .build();
+            return user;
         }
     }
 

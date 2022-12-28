@@ -431,10 +431,10 @@ public class UserProfileServiceTest {
     private static Stream<Arguments> editUserProfile$GoodDataSet() {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         return Stream.of(
-                //-1-// CHIEF_ACCOUNTANT try to change self user from CHIEF_ACCOUNTANT to DRIVER
+                //-1-// CHIEF_ACCOUNTANT try to change self user from CHIEF_ACCOUNTANT to EXECUTIVE_DIRECTOR
                 Arguments.of(
                         EditUserProfileRequest.builder()
-                                .role(UserRoleType.DRIVER)
+                                .role(UserRoleType.EXECUTIVE_DIRECTOR)
                                 .email("absdba@gmail.com")
                                 .phone("+380662744888")
                                 .fio("ВАСИЛЬ")
@@ -465,7 +465,7 @@ public class UserProfileServiceTest {
                                 .role(UserRoleType.CHIEF_ACCOUNTANT)
                                 .build())
                 ),
-                //-2-// SUPER_ADMIN try to change other user from DIRECTOR to EXECUTIVE_DIRECTOR
+                //-2-// CHIEF_ACCOUNTANT try to change other user from DIRECTOR to EXECUTIVE_DIRECTOR
                 Arguments.of(
                         EditUserProfileRequest.builder()
                                 .id(1)
@@ -491,7 +491,7 @@ public class UserProfileServiceTest {
                         //User that make request
                         User.builder()
                                 .id(777)
-                                .role(UserRoleType.SUPER_ADMIN)
+                                .role(UserRoleType.CHIEF_ACCOUNTANT)
                                 .build(),
 
                         //Another user
@@ -501,7 +501,7 @@ public class UserProfileServiceTest {
                                 .build())
 
                 ),
-                //-3-// SUPER_ADMIN try to change other user from EXECUTIVE_DIRECTOR to DIRECTOR
+                //-3-// CHIEF_ACCOUNTANT try to change other user from EXECUTIVE_DIRECTOR to DIRECTOR
                 Arguments.of(
                         EditUserProfileRequest.builder()
                                 .id(1)
@@ -527,7 +527,7 @@ public class UserProfileServiceTest {
                         //User that make request
                         User.builder()
                                 .id(777)
-                                .role(UserRoleType.SUPER_ADMIN)
+                                .role(UserRoleType.CHIEF_ACCOUNTANT)
                                 .build(),
 
                         //Another user
@@ -557,111 +557,7 @@ public class UserProfileServiceTest {
     private static Stream<Arguments> editUserProfile$BadDataSet() {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         return Stream.of(
-                //-1-// CHIEF_ACCOUNTANT try to change other user from CHIEF_ACCOUNTANT to DRIVER
-                Arguments.of(
-                        EditUserProfileRequest.builder()
-                                .id(1)
-                                .role(UserRoleType.DRIVER)
-                                .email("absdba@gmail.com")
-                                .phone("+380662744888")
-                                .fio("ВАСИЛЬ")
-                                .acc_order_number("123456")
-                                .acc_order_date(format.parse("15.10.2022"))
-                                .salary(BigDecimal.valueOf(12563))
-                                .birthday(format.parse("13.11.1983"))
-                                .previous_work_exp("10")
-                                .previous_info_work_mp("12")
-                                .sufficient_experience_mp("12")
-                                .registration_address("Dnipro city, Faina street")
-                                .actual_address("Dnipro city, Faina street")
-                                .build(),
-
-                        EditUserProfileResponse.builder()
-                                .error(new ErrorObject(500, "denied"))
-                                .build(),
-
-                        //User that make request
-                        User.builder()
-                                .id(777)
-                                .role(UserRoleType.CHIEF_ACCOUNTANT)
-                                .build(),
-
-                        //Another user
-                        Optional.of(User.builder()
-                                .id(1)
-                                .role(UserRoleType.CHIEF_ACCOUNTANT)
-                                .build())
-                ),
-                //-2-// CHIEF_ACCOUNTANT try to change self user from CHIEF_ACCOUNTANT to DIRECTOR
-                Arguments.of(
-                        EditUserProfileRequest.builder()
-                                .role(UserRoleType.DIRECTOR)
-                                .email("absdba@gmail.com")
-                                .phone("+380662744888")
-                                .fio("ВАСИЛЬ")
-                                .acc_order_number("123456")
-                                .acc_order_date(format.parse("15.10.2022"))
-                                .salary(BigDecimal.valueOf(12563))
-                                .birthday(format.parse("13.11.1983"))
-                                .previous_work_exp("10")
-                                .previous_info_work_mp("12")
-                                .sufficient_experience_mp("12")
-                                .registration_address("Dnipro city, Faina street")
-                                .actual_address("Dnipro city, Faina street")
-                                .build(),
-
-                        EditUserProfileResponse.builder()
-                                .error(new ErrorObject(500, "denied"))
-                                .build(),
-
-                        //User that make request
-                        User.builder()
-                                .id(777)
-                                .role(UserRoleType.CHIEF_ACCOUNTANT)
-                                .build(),
-
-                        //Another user
-                        Optional.of(User.builder()
-                                .id(1)
-                                .role(UserRoleType.CHIEF_ACCOUNTANT)
-                                .build())
-                ),
-                //-3-// CHIEF_ACCOUNTANT try to change another user from DIRECTOR to CHIEF_ACCOUNTANT
-                Arguments.of(
-                        EditUserProfileRequest.builder()
-                                .id(1)
-                                .role(UserRoleType.CHIEF_ACCOUNTANT)
-                                .email("absdba@gmail.com")
-                                .phone("+380662744888")
-                                .fio("ВАСИЛЬ")
-                                .acc_order_number("123456")
-                                .acc_order_date(format.parse("15.10.2022"))
-                                .salary(BigDecimal.valueOf(12563))
-                                .birthday(format.parse("13.11.1983"))
-                                .previous_work_exp("10")
-                                .previous_info_work_mp("12")
-                                .sufficient_experience_mp("12")
-                                .registration_address("Dnipro city, Faina street")
-                                .actual_address("Dnipro city, Faina street")
-                                .build(),
-
-                        EditUserProfileResponse.builder()
-                                .error(new ErrorObject(500, "denied"))
-                                .build(),
-
-                        //User that make request
-                        User.builder()
-                                .id(777)
-                                .role(UserRoleType.CHIEF_ACCOUNTANT)
-                                .build(),
-
-                        //Another user
-                        Optional.of(User.builder()
-                                .id(1)
-                                .role(UserRoleType.DIRECTOR)
-                                .build())
-                ),
-                //-4-// not valid email
+                //-1-// not valid email
                 Arguments.of(
                         EditUserProfileRequest.builder()
                                 .id(1)
@@ -696,7 +592,7 @@ public class UserProfileServiceTest {
                                 .role(UserRoleType.DIRECTOR)
                                 .build())
                 ),
-                //-5-// role is NULL
+                //-2-// role is NULL
                 Arguments.of(
                         EditUserProfileRequest.builder()
                                 .id(1)
@@ -731,7 +627,7 @@ public class UserProfileServiceTest {
                                 .role(UserRoleType.DIRECTOR)
                                 .build())
                 ),
-                //-6-// request is NULL
+                //-3-// request is NULL
                 Arguments.of(
                         null,
 
@@ -751,7 +647,7 @@ public class UserProfileServiceTest {
                                 .role(UserRoleType.DIRECTOR)
                                 .build())
                 ),
-                //-7-// Another user is NULL or EMPTY
+                //-4-// Another user is NULL or EMPTY
                 Arguments.of(
                         EditUserProfileRequest.builder()
                                 .id(1)

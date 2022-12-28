@@ -23,9 +23,6 @@ public class EditUserProfileRequest {
     )
     private Integer id;
 
-    @Schema(
-            example = "Механік"
-    )
     private UserRoleType role;
 
     @Schema(
