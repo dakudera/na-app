@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.profile.driving_license.DrivingLicense;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.profile.education.EducationInfo;
@@ -25,6 +26,8 @@ public class GetUserProfileResponse {
             example = "1"
     )
     private Integer id;
+
+    private UserRoleType role;
 
     @Schema(
             example = "test@gmail.com"
