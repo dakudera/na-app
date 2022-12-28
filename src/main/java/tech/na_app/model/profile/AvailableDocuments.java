@@ -1,23 +1,17 @@
-package tech.na_app.entity.profile;
+package tech.na_app.model.profile;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.persistence.Id;
+import tech.na_app.entity.profile.HealthCertificate;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "available_documents")
 public class AvailableDocuments {
-
-    @Id
-    private String id;
 
     @Schema(
             example = "AE123456",
@@ -43,6 +37,5 @@ public class AvailableDocuments {
     )
     private String military_registration_doc;
     private HealthCertificate health_certificate;
-    private Integer userId;
 
 }

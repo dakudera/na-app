@@ -3,6 +3,8 @@ package tech.na_app.services.user_profile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import tech.na_app.entity.profile.AvailableDocuments;
+import tech.na_app.entity.profile.DrivingLicense;
 import tech.na_app.entity.profile.*;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
@@ -94,10 +96,7 @@ public class UserProfileService {
                 throw new ApiException(400, "User already has driving license");
             }
 
-            DrivingLicenseSequence sequenceNumber = (DrivingLicenseSequence) sequenceGeneratorService.getSequenceNumber(DrivingLicense.SEQUENCE_NAME, DrivingLicenseSequence.class);
-
             drivingLicenseRepository.save(DrivingLicense.builder()
-                    .id(sequenceNumber.getSeq())
                     .userId(request.getUserId())
                     .categories(request.getCategories())
                     .date_issue(request.getDate_issue())
@@ -199,12 +198,12 @@ public class UserProfileService {
 
     public RemoveInfoDrivingLicenseResponse removeInfoDrivingLicense(String requestId, User user, RemoveInfoDrivingLicenseRequest request) {
         try {
-            if (Objects.isNull(request.getUserId()) || Objects.isNull(request.getId())) {
+            if (Objects.isNull(request.getUserId())) {
                 throw new ApiException(400, "BAD REQUEST");
             }
             User userInfo = choosingUser(user, request.getUserId()).getUser();
 
-            DrivingLicense drivingLicense = drivingLicenseRepository.findByIdAndUserId(request.getId(), userInfo.getId())
+            DrivingLicense drivingLicense = drivingLicenseRepository.findByUserId(userInfo.getId())
                     .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
             drivingLicenseRepository.delete(drivingLicense);
             return new RemoveInfoDrivingLicenseResponse(new ErrorObject(0));
@@ -298,11 +297,11 @@ public class UserProfileService {
                     .orElseGet(AvailableDocuments::new);
             GetUserProfileResponse response = new GetUserProfileResponse(new ErrorObject(0));
             response.setId(userInfo.getId());
-            response.setDriving_license(drivingLicense);
+            response.setDriving_license(getUserProfileHelperComponent.fillDriverLicense(drivingLicense));
             response.setEducationInfo(getUserProfileHelperComponent.buildEducations(educations));
             response.setInternshipInfo(getUserProfileHelperComponent.buildInstructionsAndInternships(internships));
             response.setInstructionInfo(getUserProfileHelperComponent.buildInstructionsAndInternships(instructions));
-            response.setAvailable_documents(availableDocuments);
+            response.setAvailable_documents(getUserProfileHelperComponent.fillDriverLicense(availableDocuments));
 
             if (userInfo.getProfile() != null) {
                 getUserProfileHelperComponent.fillUserProfile(userInfo, response);
@@ -386,10 +385,8 @@ public class UserProfileService {
                 availableDocuments.setHealth_certificate(request.getHealth_certificate());
                 availableDocuments.setMilitary_registration_doc(request.getMilitary_registration_doc());
             } else { // do save new entry
-                AvailableDocumentsSequence sequenceNumber = (AvailableDocumentsSequence) sequenceGeneratorService.getSequenceNumber(AvailableDocuments.SEQUENCE_NAME, AvailableDocumentsSequence.class);
 
                 availableDocuments = AvailableDocuments.builder()
-                        .id(sequenceNumber.getSeq())
                         .ipn(request.getIpn())
                         .passport(request.getPassport())
                         .employment_history(request.getEmployment_history())

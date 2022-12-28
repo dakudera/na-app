@@ -1,9 +1,7 @@
 package tech.na_app.services.user_profile;
 
 import org.springframework.stereotype.Component;
-import tech.na_app.entity.profile.Education;
-import tech.na_app.entity.profile.InternshipAndInstruction;
-import tech.na_app.entity.profile.Profile;
+import tech.na_app.entity.profile.*;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.profile.GetUserProfileResponse;
 import tech.na_app.model.profile.InstructionInfo;
@@ -55,6 +53,7 @@ public class GetUserProfileHelperComponent {
     void fillUserProfile(User userInfo, GetUserProfileResponse response) {
         Profile profile = userInfo.getProfile();
         response.setEmail(profile.getEmail());
+        response.setPhone(profile.getPhone());
         response.setFio(profile.getFio());
         response.setAcc_order_number(profile.getAcc_order_number());
         response.setAcc_order_date(profile.getAcc_order_date());
@@ -65,6 +64,25 @@ public class GetUserProfileHelperComponent {
         response.setSufficient_experience_mp(profile.getSufficient_experience_mp());
         response.setRegistration_address(profile.getRegistration_address());
         response.setActual_address(profile.getActual_address());
+    }
+
+    tech.na_app.model.profile.driving_license.DrivingLicense fillDriverLicense(DrivingLicense drivingLicense) {
+        tech.na_app.model.profile.driving_license.DrivingLicense driving = new tech.na_app.model.profile.driving_license.DrivingLicense();
+        driving.setCategories(drivingLicense.getCategories());
+        driving.setDate_issue(drivingLicense.getDate_issue());
+        driving.setDate_end(drivingLicense.getDate_end());
+        return driving;
+    }
+
+
+    tech.na_app.model.profile.AvailableDocuments fillDriverLicense(AvailableDocuments availableDocuments) {
+        tech.na_app.model.profile.AvailableDocuments documents = new tech.na_app.model.profile.AvailableDocuments();
+        documents.setEmployment_history(availableDocuments.getEmployment_history());
+        documents.setIpn(availableDocuments.getIpn());
+        documents.setPassport(availableDocuments.getPassport());
+        documents.setMilitary_registration_doc(availableDocuments.getMilitary_registration_doc());
+        documents.setHealth_certificate(availableDocuments.getHealth_certificate());
+        return documents;
     }
 
 }
