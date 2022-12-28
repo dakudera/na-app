@@ -11,6 +11,7 @@ import tech.na_app.model.enums.InternshipAndInstructionType;
 import tech.na_app.model.profile.*;
 import tech.na_app.model.profile.driving_license.*;
 import tech.na_app.model.profile.education.*;
+import tech.na_app.model.user.SelectedUser;
 import tech.na_app.repository.*;
 import tech.na_app.services.user.UserHelperComponent;
 import tech.na_app.utils.ParameterValidator;
@@ -125,7 +126,7 @@ public class UserProfileService {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
-            User userInfo = choosingUser(user, request.getUserId());
+            User userInfo = choosingUser(user, request.getUserId()).getUser();
 
             Optional<Education> educationOptional = educationRepository.findByIdAndUserId(request.getId(), userInfo.getId());
             Education education = educationOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
@@ -159,7 +160,7 @@ public class UserProfileService {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
-            User userInfo = choosingUser(user, request.getUserId());
+            User userInfo = choosingUser(user, request.getUserId()).getUser();
 
             DrivingLicense drivingLicense = drivingLicenseRepository.findByUserId(userInfo.getId())
                     .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
@@ -180,7 +181,7 @@ public class UserProfileService {
 
     public RemoveInfoEducationResponse removeInfoEducation(String requestId, User user, RemoveInfoEducationRequest request) {
         try {
-            User userInfo = choosingUser(user, request.getUserId());
+            User userInfo = choosingUser(user, request.getUserId()).getUser();
 
             Optional<Education> educationOptional = educationRepository.findByIdAndUserId(request.getId(), userInfo.getId());
             Education education = educationOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
@@ -201,7 +202,7 @@ public class UserProfileService {
             if (Objects.isNull(request.getUserId()) || Objects.isNull(request.getId())) {
                 throw new ApiException(400, "BAD REQUEST");
             }
-            User userInfo = choosingUser(user, request.getUserId());
+            User userInfo = choosingUser(user, request.getUserId()).getUser();
 
             DrivingLicense drivingLicense = drivingLicenseRepository.findByIdAndUserId(request.getId(), userInfo.getId())
                     .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
@@ -228,7 +229,7 @@ public class UserProfileService {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
-            User userInfo = choosingUser(user, request.getUserId());
+            User userInfo = choosingUser(user, request.getUserId()).getUser();
 
             if (request.getId() == null) {
                 InternshipAndInstructionSequence sequenceNumber = (InternshipAndInstructionSequence) sequenceGeneratorService
@@ -266,7 +267,7 @@ public class UserProfileService {
 
     public SaveInternshipResponse removeInternship(String requestId, User user, RemoveInternshipRequest request) {
         try {
-            User userInfo = choosingUser(user, request.getUserId());
+            User userInfo = choosingUser(user, request.getUserId()).getUser();
 
             Optional<InternshipAndInstruction> internshipAndInstructionOptional = internshipAndInstructionRepository.findByUserIdAndId(userInfo.getId(), request.getId());
             InternshipAndInstruction internshipAndInstruction = internshipAndInstructionOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
@@ -284,7 +285,7 @@ public class UserProfileService {
 
     public GetUserProfileResponse getUserProfile(String requestId, User user, GetUserProfileRequest request) {
         try {
-            User userInfo = choosingUser(user, request.getUserId());
+            User userInfo = choosingUser(user, request.getUserId()).getUser();
 
             DrivingLicense drivingLicense = drivingLicenseRepository.findByUserId(userInfo.getId())
                     .orElseGet(DrivingLicense::new);
@@ -365,21 +366,13 @@ public class UserProfileService {
         }
     }
 
-    public User choosingUser(User user, Integer userId) {
-        if (userId != null) {
-            return userRepository.findById(userId).orElse(user);
-        } else {
-            return user;
-        }
-    }
-
     public ExistDocumentResponse saveExistDocument(String requestId, User user, ExistDocumentRequest request) {
         try {
             if (request == null) {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
-            User userInfo = choosingUser(user, request.getUserId());
+            User userInfo = choosingUser(user, request.getUserId()).getUser();
 
             Optional<AvailableDocuments> availableDocumentsOptional = availableDocumentsRepository.findByUserId(userInfo.getId());
             AvailableDocuments availableDocuments;
@@ -416,6 +409,75 @@ public class UserProfileService {
             return new ExistDocumentResponse(new ErrorObject(500, "Something went wrong"));
         }
 
+    }
+
+    public EditUserProfileResponse editUserProfile(String requestId, User userThatMakeRequest, EditUserProfileRequest request) {
+        try {
+            if (Objects.isNull(request)) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getRole())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            String email = request.getEmail();
+            if (!ParameterValidator.emailIsValid(request.getEmail())) {
+                throw new ApiException(500, "Email is invalid");
+            }
+
+            SelectedUser selectedUser = choosingUser(userThatMakeRequest, request.getId());
+
+            if (userThatMakeRequest.getRole().getValue() >= selectedUser.getUser().getRole().getValue() && !selectedUser.getIsSelfUser() ||
+                    userThatMakeRequest.getRole().getValue() > request.getRole().getValue()) {
+                throw new ApiException(500, "denied");
+            }
+
+            User userInfo = selectedUser.getUser();
+            Profile profile = Profile.builder()
+                    .email(email)
+                    .phone(request.getPhone())
+                    .fio(request.getFio())
+                    .acc_order_number(request.getAcc_order_number())
+                    .acc_order_date(request.getAcc_order_date())
+                    .salary(request.getSalary())
+                    .birthday(request.getBirthday())
+                    .age(userHelperComponent.calculateAge(request.getBirthday()))
+                    .previous_work_exp(request.getPrevious_work_exp())
+                    .previous_info_work_mp(request.getPrevious_info_work_mp())
+                    .sufficient_experience_mp(request.getSufficient_experience_mp())
+                    .registration_address(request.getRegistration_address())
+                    .actual_address(request.getActual_address())
+                    .build();
+            userInfo.setRole(request.getRole());
+            userInfo.setProfile(profile);
+            userInfo.setUpdate_date(new Date());
+            userRepository.save(userInfo);
+
+            return new EditUserProfileResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditUserProfileResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new EditUserProfileResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public SelectedUser choosingUser(User user, Integer userId) {
+        if (Objects.nonNull(userId)) {
+            User otherUser = userRepository.findById(userId).orElseThrow(() -> new ApiException(400, "User was not found"));
+            log.info("Other user {}", otherUser);
+            return SelectedUser.builder()
+                    .user(otherUser)
+                    .isSelfUser(false)
+                    .build();
+        } else {
+            log.info("Self user {}", user);
+            return SelectedUser.builder()
+                    .user(user)
+                    .isSelfUser(true)
+                    .build();
+        }
     }
 
 }
