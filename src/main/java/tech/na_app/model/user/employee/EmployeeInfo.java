@@ -16,12 +16,14 @@ public class EmployeeInfo {
             example = "1"
     )
     private Integer id;
+
     @Schema(
             example = "Vasil"
     )
     private String fio;
+
     @Schema(
-            example = "Driver"
+            example = "Водій"
     )
     private String role;
 

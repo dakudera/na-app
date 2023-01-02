@@ -211,4 +211,21 @@ public class UserProfileController {
         }
     }
 
+    @PostMapping("/edit_user_profile")
+    public EditUserProfileResponse editUserProfile(
+            @RequestHeader(name = "Authorization") String token, @RequestBody EditUserProfileRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            log.info(requestId + " Request to editUserProfile: " + request);
+            EditUserProfileResponse response = userProfileService.editUserProfile(requestId, user, request);
+            log.info(requestId + " Response from editUserProfile: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditUserProfileResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
 }

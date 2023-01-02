@@ -7,23 +7,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tech.na_app.model.enums.UserRoleType;
-import tech.na_app.model.profile.driving_license.DrivingLicense;
-import tech.na_app.model.ErrorObject;
-import tech.na_app.model.profile.education.EducationInfo;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class GetUserProfileResponse {
+@NoArgsConstructor
+public class EditUserProfileRequest {
 
     @Schema(
-            title = " user id",
-            example = "1"
+            example = "1",
+            title = " user id"
     )
     private Integer id;
 
@@ -35,7 +31,7 @@ public class GetUserProfileResponse {
     private String email;
 
     @Schema(
-            example = "380999999999"
+            example = "+38012345678"
     )
     private String phone;
 
@@ -62,7 +58,6 @@ public class GetUserProfileResponse {
             type = "number"
     )
     private BigDecimal salary;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
     @Schema(
             example = "01.10.1993",
@@ -100,16 +95,5 @@ public class GetUserProfileResponse {
             type = "string"
     )
     private String actual_address;
-    private DrivingLicense driving_license;
-    private AvailableDocuments available_documents;
-    private List<EducationInfo> educationInfo;
-    private List<InstructionInfo> internshipInfo;
-    private List<InstructionInfo> instructionInfo;
-
-    private ErrorObject error;
-
-    public GetUserProfileResponse(ErrorObject error) {
-        this.error = error;
-    }
 
 }
