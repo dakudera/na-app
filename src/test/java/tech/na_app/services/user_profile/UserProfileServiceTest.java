@@ -12,6 +12,9 @@ import tech.na_app.entity.profile.DrivingLicense;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.DriverLicenceCategory;
+import tech.na_app.model.enums.UserRoleType;
+import tech.na_app.model.profile.EditUserProfileRequest;
+import tech.na_app.model.profile.EditUserProfileResponse;
 import tech.na_app.model.profile.driving_license.EditInfoDrivingLicenseRequest;
 import tech.na_app.model.profile.driving_license.EditInfoDrivingLicenseResponse;
 import tech.na_app.model.profile.driving_license.SaveInfoDrivingLicenseRequest;
@@ -21,6 +24,7 @@ import tech.na_app.services.user.UserHelperComponent;
 import tech.na_app.utils.SequenceGeneratorService;
 import tech.na_app.utils.TestUtils;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -84,6 +88,7 @@ public class UserProfileServiceTest {
     private static Stream<Arguments> saveInfoDrivingLicense$GoodDataSet() {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         return Stream.of(
+                //-1-//
                 Arguments.of(
                         SaveInfoDrivingLicenseRequest.builder()
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
@@ -119,7 +124,7 @@ public class UserProfileServiceTest {
     private static Stream<Arguments> saveInfoDrivingLicense$BadDataSet() {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         return Stream.of(
-                //categories is NULL
+                //-1-// categories is NULL
                 Arguments.of(
                         SaveInfoDrivingLicenseRequest.builder()
                                 .categories(null)
@@ -134,7 +139,7 @@ public class UserProfileServiceTest {
                         1,
                         Optional.empty()
                 ),
-                //categories are EMPTY
+                //-2-// categories are EMPTY
                 Arguments.of(
                         SaveInfoDrivingLicenseRequest.builder()
                                 .categories(Collections.emptySet())
@@ -149,7 +154,7 @@ public class UserProfileServiceTest {
                         1,
                         Optional.empty()
                 ),
-                //date_issue is NULL
+                //-3-// date_issue is NULL
                 Arguments.of(
                         SaveInfoDrivingLicenseRequest.builder()
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
@@ -164,7 +169,7 @@ public class UserProfileServiceTest {
                         1,
                         Optional.empty()
                 ),
-                //date_end is NULL
+                //-4-// date_end is NULL
                 Arguments.of(
                         SaveInfoDrivingLicenseRequest.builder()
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
@@ -179,7 +184,7 @@ public class UserProfileServiceTest {
                         1,
                         Optional.empty()
                 ),
-                //userId is NULL
+                //-5-// userId is NULL
                 Arguments.of(
                         SaveInfoDrivingLicenseRequest.builder()
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
@@ -194,7 +199,7 @@ public class UserProfileServiceTest {
                         1,
                         Optional.empty()
                 ),
-                //User already has driving license
+                //-6-// User already has driving license
                 Arguments.of(
                         SaveInfoDrivingLicenseRequest.builder()
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
@@ -239,6 +244,7 @@ public class UserProfileServiceTest {
     private static Stream<Arguments> editInfoDrivingLicense$GoodDataSet() {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         return Stream.of(
+                //-1-// edit other user
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
@@ -260,6 +266,7 @@ public class UserProfileServiceTest {
                                 .build())
                 ),
 
+                //-2-// edit self user
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
@@ -305,7 +312,7 @@ public class UserProfileServiceTest {
     private static Stream<Arguments> editInfoDrivingLicense$BadDataSet() {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         return Stream.of(
-//                categories is NULL
+                //-1-// categories is NULL
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
                                 .categories(null)
@@ -326,7 +333,7 @@ public class UserProfileServiceTest {
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
                                 .build())
                 ),
-                //categories are EMPTY
+                //-2-// categories are EMPTY
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
                                 .categories(Collections.emptySet())
@@ -347,7 +354,7 @@ public class UserProfileServiceTest {
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
                                 .build())
                 ),
-                //date_issue is NULL
+                //-3-// date_issue is NULL
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
@@ -368,7 +375,7 @@ public class UserProfileServiceTest {
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
                                 .build())
                 ),
-                //date_end is NULL
+                //-4-// date_end is NULL
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
@@ -389,7 +396,7 @@ public class UserProfileServiceTest {
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
                                 .build())
                 ),
-                // No license
+                //-5-// No license
                 Arguments.of(
                         EditInfoDrivingLicenseRequest.builder()
                                 .categories(Set.of(DriverLicenceCategory.C, DriverLicenceCategory.B))
@@ -402,6 +409,274 @@ public class UserProfileServiceTest {
                                 .error(new ErrorObject(400, "BAD REQUEST"))
                                 .build(),
                         1,
+                        Optional.empty()
+                )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("editUserProfile$GoodDataSet")
+    void editUserProfile$GoodRequest(EditUserProfileRequest request, EditUserProfileResponse expectedResponse,
+                                     User mockedUser, Optional<User> mockedAnotherUser
+    ) {
+        //Given
+        lenient().when(userRepository.findById(1)).thenReturn(mockedAnotherUser);
+        //When
+        EditUserProfileResponse response = userProfileService.editUserProfile(TestUtils.TEST_REQUEST_ID, mockedUser, request);
+        //Then
+        assertEquals(expectedResponse, response);
+    }
+
+    @SneakyThrows
+    private static Stream<Arguments> editUserProfile$GoodDataSet() {
+        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        return Stream.of(
+                //-1-// CHIEF_ACCOUNTANT try to change self user from CHIEF_ACCOUNTANT to EXECUTIVE_DIRECTOR
+                Arguments.of(
+                        EditUserProfileRequest.builder()
+                                .role(UserRoleType.EXECUTIVE_DIRECTOR)
+                                .email("absdba@gmail.com")
+                                .phone("+380662744888")
+                                .fio("ВАСИЛЬ")
+                                .acc_order_number("123456")
+                                .acc_order_date(format.parse("15.10.2022"))
+                                .salary(BigDecimal.valueOf(12563))
+                                .birthday(format.parse("13.11.1983"))
+                                .previous_work_exp("10")
+                                .previous_info_work_mp("12")
+                                .sufficient_experience_mp("12")
+                                .registration_address("Dnipro city, Faina street")
+                                .actual_address("Dnipro city, Faina street")
+                                .build(),
+
+                        EditUserProfileResponse.builder()
+                                .error(new ErrorObject(0))
+                                .build(),
+
+                        //User that make request
+                        User.builder()
+                                .id(777)
+                                .role(UserRoleType.CHIEF_ACCOUNTANT)
+                                .build(),
+
+                        //Another user
+                        Optional.of(User.builder()
+                                .id(1)
+                                .role(UserRoleType.CHIEF_ACCOUNTANT)
+                                .build())
+                ),
+                //-2-// CHIEF_ACCOUNTANT try to change other user from DIRECTOR to EXECUTIVE_DIRECTOR
+                Arguments.of(
+                        EditUserProfileRequest.builder()
+                                .id(1)
+                                .role(UserRoleType.EXECUTIVE_DIRECTOR)
+                                .email("absdba@gmail.com")
+                                .phone("+380662744888")
+                                .fio("ВАСИЛЬ")
+                                .acc_order_number("123456")
+                                .acc_order_date(format.parse("15.10.2022"))
+                                .salary(BigDecimal.valueOf(12563))
+                                .birthday(format.parse("13.11.1983"))
+                                .previous_work_exp("10")
+                                .previous_info_work_mp("12")
+                                .sufficient_experience_mp("12")
+                                .registration_address("Dnipro city, Faina street")
+                                .actual_address("Dnipro city, Faina street")
+                                .build(),
+
+                        EditUserProfileResponse.builder()
+                                .error(new ErrorObject(0))
+                                .build(),
+
+                        //User that make request
+                        User.builder()
+                                .id(777)
+                                .role(UserRoleType.CHIEF_ACCOUNTANT)
+                                .build(),
+
+                        //Another user
+                        Optional.of(User.builder()
+                                .id(1)
+                                .role(UserRoleType.DIRECTOR)
+                                .build())
+
+                ),
+                //-3-// CHIEF_ACCOUNTANT try to change other user from EXECUTIVE_DIRECTOR to DIRECTOR
+                Arguments.of(
+                        EditUserProfileRequest.builder()
+                                .id(1)
+                                .role(UserRoleType.DIRECTOR)
+                                .email("absdba@gmail.com")
+                                .phone("+380662744888")
+                                .fio("ВАСИЛЬ")
+                                .acc_order_number("123456")
+                                .acc_order_date(format.parse("15.10.2022"))
+                                .salary(BigDecimal.valueOf(12563))
+                                .birthday(format.parse("13.11.1983"))
+                                .previous_work_exp("10")
+                                .previous_info_work_mp("12")
+                                .sufficient_experience_mp("12")
+                                .registration_address("Dnipro city, Faina street")
+                                .actual_address("Dnipro city, Faina street")
+                                .build(),
+
+                        EditUserProfileResponse.builder()
+                                .error(new ErrorObject(0))
+                                .build(),
+
+                        //User that make request
+                        User.builder()
+                                .id(777)
+                                .role(UserRoleType.CHIEF_ACCOUNTANT)
+                                .build(),
+
+                        //Another user
+                        Optional.of(User.builder()
+                                .id(1)
+                                .role(UserRoleType.EXECUTIVE_DIRECTOR)
+                                .build())
+
+                )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("editUserProfile$BadDataSet")
+    void editUserProfile$BadRequest(EditUserProfileRequest request, EditUserProfileResponse expectedResponse,
+                                    User mockedUser, Optional<User> mockedAnotherUser
+    ) {
+        //Given
+        lenient().when(userRepository.findById(1)).thenReturn(mockedAnotherUser);
+        //When
+        EditUserProfileResponse response = userProfileService.editUserProfile(TestUtils.TEST_REQUEST_ID, mockedUser, request);
+        //Then
+        assertEquals(expectedResponse, response);
+    }
+
+    @SneakyThrows
+    private static Stream<Arguments> editUserProfile$BadDataSet() {
+        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        return Stream.of(
+                //-1-// not valid email
+                Arguments.of(
+                        EditUserProfileRequest.builder()
+                                .id(1)
+                                .role(UserRoleType.EXECUTIVE_DIRECTOR)
+                                .email("dssak34ojqw")
+                                .phone("+380662744888")
+                                .fio("ВАСИЛЬ")
+                                .acc_order_number("123456")
+                                .acc_order_date(format.parse("15.10.2022"))
+                                .salary(BigDecimal.valueOf(12563))
+                                .birthday(format.parse("13.11.1983"))
+                                .previous_work_exp("10")
+                                .previous_info_work_mp("12")
+                                .sufficient_experience_mp("12")
+                                .registration_address("Dnipro city, Faina street")
+                                .actual_address("Dnipro city, Faina street")
+                                .build(),
+
+                        EditUserProfileResponse.builder()
+                                .error(new ErrorObject(500, "Email is invalid"))
+                                .build(),
+
+                        //User that make request
+                        User.builder()
+                                .id(777)
+                                .role(UserRoleType.SUPER_ADMIN)
+                                .build(),
+
+                        //Another user
+                        Optional.of(User.builder()
+                                .id(1)
+                                .role(UserRoleType.DIRECTOR)
+                                .build())
+                ),
+                //-2-// role is NULL
+                Arguments.of(
+                        EditUserProfileRequest.builder()
+                                .id(1)
+                                .role(null)
+                                .email("absdba@gmail.com")
+                                .phone("+380662744888")
+                                .fio("ВАСИЛЬ")
+                                .acc_order_number("123456")
+                                .acc_order_date(format.parse("15.10.2022"))
+                                .salary(BigDecimal.valueOf(12563))
+                                .birthday(format.parse("13.11.1983"))
+                                .previous_work_exp("10")
+                                .previous_info_work_mp("12")
+                                .sufficient_experience_mp("12")
+                                .registration_address("Dnipro city, Faina street")
+                                .actual_address("Dnipro city, Faina street")
+                                .build(),
+
+                        EditUserProfileResponse.builder()
+                                .error(new ErrorObject(400, "BAD REQUEST"))
+                                .build(),
+
+                        //User that make request
+                        User.builder()
+                                .id(777)
+                                .role(UserRoleType.SUPER_ADMIN)
+                                .build(),
+
+                        //Another user
+                        Optional.of(User.builder()
+                                .id(1)
+                                .role(UserRoleType.DIRECTOR)
+                                .build())
+                ),
+                //-3-// request is NULL
+                Arguments.of(
+                        null,
+
+                        EditUserProfileResponse.builder()
+                                .error(new ErrorObject(400, "BAD REQUEST"))
+                                .build(),
+
+                        //User that make request
+                        User.builder()
+                                .id(777)
+                                .role(UserRoleType.SUPER_ADMIN)
+                                .build(),
+
+                        //Another user
+                        Optional.of(User.builder()
+                                .id(1)
+                                .role(UserRoleType.DIRECTOR)
+                                .build())
+                ),
+                //-4-// Another user is NULL or EMPTY
+                Arguments.of(
+                        EditUserProfileRequest.builder()
+                                .id(1)
+                                .role(UserRoleType.EXECUTIVE_DIRECTOR)
+                                .email("absdba@gmail.com")
+                                .phone("+380662744888")
+                                .fio("ВАСИЛЬ")
+                                .acc_order_number("123456")
+                                .acc_order_date(format.parse("15.10.2022"))
+                                .salary(BigDecimal.valueOf(12563))
+                                .birthday(format.parse("13.11.1983"))
+                                .previous_work_exp("10")
+                                .previous_info_work_mp("12")
+                                .sufficient_experience_mp("12")
+                                .registration_address("Dnipro city, Faina street")
+                                .actual_address("Dnipro city, Faina street")
+                                .build(),
+
+                        EditUserProfileResponse.builder()
+                                .error(new ErrorObject(400, "User was not found"))
+                                .build(),
+
+                        //User that make request
+                        User.builder()
+                                .id(777)
+                                .role(UserRoleType.SUPER_ADMIN)
+                                .build(),
+
+                        //Another user
                         Optional.empty()
                 )
         );
