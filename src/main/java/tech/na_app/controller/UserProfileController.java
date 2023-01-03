@@ -29,8 +29,9 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to saveInfoDrivingLicense: " + request);
+            log.info(requestId + " User: " + user);
             SaveInfoDrivingLicenseResponse response = userProfileService.saveInfoDrivingLicense(requestId, request);
             log.info(requestId + " Response from saveInfoDrivingLicense: " + response);
             return response;
@@ -46,8 +47,9 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /saveInfoEducation: " + request);
+            log.info(requestId + " User: " + user);
             SaveInfoEducationResponse response = userProfileService.saveInfoEducation(requestId, request);
             log.info(requestId + " Response from /saveInfoEducation: " + response);
             return response;
@@ -65,6 +67,7 @@ public class UserProfileController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to editInfoDrivingLicense: " + request);
+            log.info(requestId + " User: " + user);
             EditInfoDrivingLicenseResponse response = userProfileService.editInfoDrivingLicense(requestId, user, request);
             log.info(requestId + " Response from editInfoDrivingLicense: " + response);
 
@@ -83,6 +86,7 @@ public class UserProfileController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /editInfoEducation: " + request);
+            log.info(requestId + " User: " + user);
             EditInfoEducationResponse response = userProfileService.editInfoEducation(requestId, user, request);
             log.info(requestId + " Response from /editInfoEducation: " + response);
             return response;
@@ -100,6 +104,7 @@ public class UserProfileController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to removeInfoDrivingLicense: " + request);
+            log.info(requestId + " User: " + user);
             RemoveInfoDrivingLicenseResponse response = userProfileService.removeInfoDrivingLicense(requestId, user, request);
             log.info(requestId + " Response from removeInfoDrivingLicense: " + response);
             return response;
@@ -117,6 +122,7 @@ public class UserProfileController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /removeInfoEducation: " + request);
+            log.info(requestId + " User: " + user);
             RemoveInfoEducationResponse response = userProfileService.removeInfoEducation(requestId, user, request);
             log.info(requestId + " Response from /removeInfoEducation: " + response);
             return response;
@@ -134,6 +140,7 @@ public class UserProfileController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /saveInternship: " + request);
+            log.info(requestId + " User: " + user);
             SaveInternshipResponse response = userProfileService.saveInternship(requestId, user, request);
             log.info(requestId + " Response from /saveInternship: " + response);
             return response;
@@ -151,6 +158,7 @@ public class UserProfileController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /removeInternship: " + request);
+            log.info(requestId + " User: " + user);
             SaveInternshipResponse response = userProfileService.removeInternship(requestId, user, request);
             log.info(requestId + " Response from /removeInternship: " + response);
             return response;
@@ -168,6 +176,7 @@ public class UserProfileController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /saveInternship: " + request);
+            log.info(requestId + " User: " + user);
             GetUserProfileResponse response = userProfileService.getUserProfile(requestId, user, request);
             log.info(requestId + " Response from /saveInternship: " + response);
             return response;
@@ -183,8 +192,9 @@ public class UserProfileController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /saveUserProfile: " + request);
+            log.info(requestId + " User: " + user);
             SaveUserProfileResponse response = userProfileService.saveUserProfile(requestId, request);
             log.info(requestId + " Response from /saveUserProfile: " + response);
             return response;
@@ -202,6 +212,7 @@ public class UserProfileController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /existDocument: " + request);
+            log.info(requestId + " User: " + user);
             ExistDocumentResponse response = userProfileService.saveExistDocument(requestId, user, request);
             log.info(requestId + " Response from /existDocument: " + response);
             return response;

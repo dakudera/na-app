@@ -31,6 +31,7 @@ public class RoleButtonsController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /getAllowedButtons");
+            log.info(requestId + " User: " + user);
             GetAllowedButtonsResponse response = roleButtonsService.getAllowedButtons(requestId, user);
             log.info(requestId + " Response from /getAllowedButtons: " + response);
             return response;
