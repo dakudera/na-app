@@ -97,11 +97,21 @@ public class TransportConverter {
     }
 
     public GetAllTransportResponse.Transport convertToTransport(Transport transport) {
+        String brand = null, state_number = null, nomenclature_name = null;
+
+        if (transport.getTransport_card() != null) {
+            nomenclature_name = transport.getTransport_card().getNomenclature_name();
+            if (transport.getTransport_card().getTechnical_certificate() != null) {
+                brand = transport.getTransport_card().getTechnical_certificate().getTechnical_certificate_dop_info().getBrand();
+                state_number = transport.getTransport_card().getTechnical_certificate().getTechnical_certificate_dop_info().getState_number();
+            }
+        }
+
         return GetAllTransportResponse.Transport.builder()
                 .id(transport.getId())
-                .brand(transport.getTransport_card().getTechnical_certificate().getTechnical_certificate_dop_info().getBrand())
-                .state_number(transport.getTransport_card().getTechnical_certificate().getTechnical_certificate_dop_info().getState_number())
-                .nomenclature_name(transport.getTransport_card().getNomenclature_name())
+                .brand(brand)
+                .state_number(state_number)
+                .nomenclature_name(nomenclature_name)
                 .transport_status(transport.getTransport_status())
                 .build();
     }
