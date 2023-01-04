@@ -108,10 +108,7 @@ public class TransportService {
 
     public EditTransportUsingReasonInfoResponse editTransportUsingReasonInfo(String requestId, EditTransportUsingReasonInfoRequest request) {
         try {
-            if (Objects.isNull(request)) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getGeneral_info()) || Objects.isNull(request.getId())) {
+            if (Objects.isNull(request) || Objects.isNull(request.getId())) {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
