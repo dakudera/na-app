@@ -117,12 +117,11 @@ public class TransportService {
 
 
             tech.na_app.entity.transport.UsingReasonInfo buildUsingReasonInfo = tech.na_app.entity.transport.UsingReasonInfo.builder()
-                    .num_and_name_contract(transport.getTransport_card().getUsing_reason_info().getNum_and_name_contract())
-                    .date_start(transport.getTransport_card().getUsing_reason_info().getDate_start())
-                    .is_contract_fixed_term(transport.getTransport_card().getUsing_reason_info().getIs_contract_fixed_term())
-                    .date_end(transport.getTransport_card().getUsing_reason_info().getDate_end())
-                    .date_next_start(transport.getTransport_card()
-                            .getUsing_reason_info().getDate_next_start())
+                    .num_and_name_contract(request.getUsing_reason_info().getNum_and_name_contract())
+                    .date_start(request.getUsing_reason_info().getDate_start())
+                    .is_contract_fixed_term(request.getUsing_reason_info().getIs_contract_fixed_term())
+                    .date_end(request.getUsing_reason_info().getDate_end())
+                    .date_next_start(request.getUsing_reason_info().getDate_next_start())
                     .build();
 
             if (transport.getTransport_card() != null) {

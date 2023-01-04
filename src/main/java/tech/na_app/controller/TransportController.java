@@ -89,4 +89,23 @@ public class TransportController {
             return new EditTransportGeneralInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
         }
     }
+
+    @PostMapping("edit/using_reason_info")
+    public EditTransportUsingReasonInfoResponse editUsingReasonInfo(
+            @RequestHeader(name = "Authorization") String token, @RequestBody EditTransportUsingReasonInfoRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+
+            log.info(requestId + " Request to /editUsingReasonInfo");
+            log.info(requestId + " User: " + user);
+            EditTransportUsingReasonInfoResponse response = transportService.editTransportUsingReasonInfo(requestId, request);
+            log.info(requestId + " Response from /editUsingReasonInfo: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditTransportUsingReasonInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
 }
