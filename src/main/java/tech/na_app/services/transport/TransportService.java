@@ -106,6 +106,49 @@ public class TransportService {
         }
     }
 
+    public EditTransportUsingReasonInfoResponse editTransportUsingReasonInfo(String requestId, EditTransportUsingReasonInfoRequest request) {
+        try {
+            if (Objects.isNull(request)) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getGeneral_info()) || Objects.isNull(request.getId())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            Optional<Transport> transportOptional = transportRepository.findById(request.getId());
+            Transport transport = transportOptional.orElseThrow(() -> new ApiException(404, "Not Found"));
+
+
+            tech.na_app.entity.transport.UsingReasonInfo buildUsingReasonInfo = tech.na_app.entity.transport.UsingReasonInfo.builder()
+                    .num_and_name_contract(transport.getTransport_card().getUsing_reason_info().getNum_and_name_contract())
+                    .date_start(transport.getTransport_card().getUsing_reason_info().getDate_start())
+                    .is_contract_fixed_term(transport.getTransport_card().getUsing_reason_info().getIs_contract_fixed_term())
+                    .date_end(transport.getTransport_card().getUsing_reason_info().getDate_end())
+                    .date_next_start(transport.getTransport_card()
+                            .getUsing_reason_info().getDate_next_start())
+                    .build();
+
+            if (transport.getTransport_card() != null) {
+                transport.getTransport_card().setUsing_reason_info(buildUsingReasonInfo);
+            } else {
+                TransportCard transport_card = TransportCard
+                        .builder()
+                        .using_reason_info(buildUsingReasonInfo)
+                        .build();
+                transport.setTransport_card(transport_card);
+            }
+            transportRepository.save(transport);
+
+            return new EditTransportUsingReasonInfoResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditTransportUsingReasonInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new EditTransportUsingReasonInfoResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
     public GetTransportInfoResponse getTransportInfo(String requestId, User user, GetTransportInfoRequest request) {
         try {
             if (Objects.isNull(request) || Objects.isNull(request.getId()) || Objects.isNull(user.getCompanyId())) {
