@@ -5,6 +5,7 @@ import tech.na_app.entity.transport.*;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.enums.TransportStatus;
 import tech.na_app.model.transport.GetAllTransportResponse;
+import tech.na_app.model.transport.GetTransportInfoResponse;
 import tech.na_app.model.transport.SaveNewTransportRequest;
 
 import java.util.Date;
@@ -89,6 +90,78 @@ public class TransportConverter {
                                 .build() : null)
                         .build() : null)
                 .companyId(user.getCompanyId())
+                .build();
+    }
+
+
+    public GetTransportInfoResponse convertToTransportModel(Transport transport) {
+        return GetTransportInfoResponse.builder()
+                .nomenclature_name(transport.getTransport_card().getNomenclature_name())
+                .technical_certificate(Objects.nonNull(transport.getTransport_card().getTechnical_certificate())
+                        ? tech.na_app.model.transport.TechnicalCertificate
+                        .builder()
+                        .num_and_series(transport.getTransport_card()
+                                .getTechnical_certificate().getNum_and_series())
+                        .issued_by(transport.getTransport_card()
+                                .getTechnical_certificate().getIssued_by())
+                        .date_end(transport.getTransport_card()
+                                .getTechnical_certificate().getDate_end())
+                        .date_issue(transport.getTransport_card()
+                                .getTechnical_certificate().getDate_issue())
+                        .technical_certificate_dop_info(Objects.nonNull(transport.getTransport_card()
+                                .getTechnical_certificate().getTechnical_certificate_dop_info())
+                                ? tech.na_app.model.transport.TechnicalCertificateDopInfo.builder()
+                                .brand(transport.getTransport_card()
+                                        .getTechnical_certificate().getTechnical_certificate_dop_info().getBrand())
+                                .state_number(transport.getTransport_card()
+                                        .getTechnical_certificate().getTechnical_certificate_dop_info().getState_number())
+                                .VIN_code(transport.getTransport_card()
+                                        .getTechnical_certificate().getTechnical_certificate_dop_info().getVIN_code())
+                                .colour(transport.getTransport_card()
+                                        .getTechnical_certificate().getTechnical_certificate_dop_info().getColour())
+                                .date_issue(transport.getTransport_card()
+                                        .getTechnical_certificate().getTechnical_certificate_dop_info().getDate_issue())
+                                .seats(transport.getTransport_card()
+                                        .getTechnical_certificate().getTechnical_certificate_dop_info().getSeats())
+                                .full_weight(transport.getTransport_card()
+                                        .getTechnical_certificate().getTechnical_certificate_dop_info().getFull_weight())
+                                .empty_weight(transport.getTransport_card()
+                                        .getTechnical_certificate().getTechnical_certificate_dop_info().getEmpty_weight())
+                                .category(transport.getTransport_card()
+                                        .getTechnical_certificate().getTechnical_certificate_dop_info().getCategory())
+                                .fuel(transport.getTransport_card()
+                                        .getTechnical_certificate().getTechnical_certificate_dop_info().getFuel())
+                                .body_type(transport.getTransport_card()
+                                        .getTechnical_certificate().getTechnical_certificate_dop_info().getBody_type())
+                                .engine_volume(transport.getTransport_card()
+                                        .getTechnical_certificate().getTechnical_certificate_dop_info().getEngine_volume())
+                                .engine_power(transport.getTransport_card()
+                                        .getTechnical_certificate().getTechnical_certificate_dop_info().getEngine_power())
+                                .environmental_standard(transport.getTransport_card()
+                                        .getTechnical_certificate().getTechnical_certificate_dop_info().getEnvironmental_standard())
+                                .build() : null)
+                        .build() : null)
+                .using_reason_info(Objects.nonNull(transport.getTransport_card().getUsing_reason_info())
+                        ? tech.na_app.model.transport.UsingReasonInfo.builder()
+                        .num_and_name_contract(transport.getTransport_card()
+                                .getUsing_reason_info().getNum_and_name_contract())
+                        .date_start(transport.getTransport_card()
+                                .getUsing_reason_info().getDate_start())
+                        .is_contract_fixed_term(transport.getTransport_card()
+                                .getUsing_reason_info().getIs_contract_fixed_term())
+                        .date_end(transport.getTransport_card()
+                                .getUsing_reason_info().getDate_end())
+                        .date_next_start(transport.getTransport_card()
+                                .getUsing_reason_info().getDate_next_start())
+                        .build() : null)
+                .general_info(Objects.nonNull(transport.getTransport_card().getGeneral_info())
+                        ? tech.na_app.model.transport.GeneralInfo.builder()
+                        .mileage(transport.getTransport_card().getGeneral_info().getMileage())
+                        .fuel_tank_volume(transport.getTransport_card().getGeneral_info().getFuel_tank_volume())
+                        .height(transport.getTransport_card().getGeneral_info().getHeight())
+                        .width(transport.getTransport_card().getGeneral_info().getWidth())
+                        .length(transport.getTransport_card().getGeneral_info().getLength())
+                        .build() : null)
                 .build();
     }
 

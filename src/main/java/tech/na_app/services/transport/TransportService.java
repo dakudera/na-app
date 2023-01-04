@@ -69,11 +69,11 @@ public class TransportService {
             if (Objects.isNull(request)) {
                 throw new ApiException(400, "BAD REQUEST");
             }
-            if (Objects.isNull(request.getGeneral_info()) || Objects.isNull(request.getCarId())) {
+            if (Objects.isNull(request.getGeneral_info()) || Objects.isNull(request.getId())) {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
-            Optional<Transport> transportOptional = transportRepository.findById(request.getCarId());
+            Optional<Transport> transportOptional = transportRepository.findById(request.getId());
             Transport transport = transportOptional.orElseThrow(() -> new ApiException(404, "Not Found"));
 
 
@@ -105,5 +105,27 @@ public class TransportService {
             return new EditTransportGeneralInfoResponse(new ErrorObject(500, "Something went wrong"));
         }
     }
+
+    public GetTransportInfoResponse getTransportInfo(String requestId, User user, GetTransportInfoRequest request){
+        try {
+            if (Objects.isNull(request) || Objects.isNull(request.getId()) || Objects.isNull(user.getCompanyId())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            Optional<Transport> transportOptional = transportRepository.findByIdAndCompanyId(request.getId(), user.getCompanyId());
+            Transport transport = transportOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
+
+            return transportConverter.convertToTransportModel(transport);
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new GetTransportInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new GetTransportInfoResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+
+
 
 }

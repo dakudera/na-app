@@ -2,7 +2,10 @@ package tech.na_app.model.transport;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import tech.na_app.model.enums.EnvironmentalStandard;
 import tech.na_app.model.enums.Fuel;
 
@@ -10,6 +13,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TechnicalCertificateDopInfo {
 
     @Schema(

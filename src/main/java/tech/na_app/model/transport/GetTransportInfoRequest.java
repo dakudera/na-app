@@ -3,9 +3,8 @@ package tech.na_app.model.transport;
 import lombok.Data;
 
 @Data
-public class EditTransportGeneralInfoRequest {
+public class GetTransportInfoRequest {
 
     private Integer id;
-    private GeneralInfo general_info;
 
 }

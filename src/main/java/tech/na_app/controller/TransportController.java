@@ -55,6 +55,22 @@ public class TransportController {
         }
     }
 
+    @PostMapping("/get_transport_info")
+    public GetTransportInfoResponse getTransportInfo(@RequestHeader(name = "Authorization") String token, @RequestBody GetTransportInfoRequest request) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            log.info(requestId + " Request to /getTransportInfo");
+            log.info(requestId + " User: " + user);
+            GetTransportInfoResponse response = transportService.getTransportInfo(requestId, user, request);
+            log.info(requestId + " Response from /getTransportInfo: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new GetTransportInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
     @PostMapping("edit/general_info")
     public EditTransportGeneralInfoResponse editGeneralInfo(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditTransportGeneralInfoRequest request
