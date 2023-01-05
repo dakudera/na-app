@@ -30,8 +30,9 @@ public class CompanyController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            authChecker.checkToken(token, UserRoleType.SUPER_ADMIN);
+            User user = authChecker.checkToken(token, UserRoleType.SUPER_ADMIN);
             log.info(requestId + " Request to /saveNewCompany: " + request);
+            log.info(requestId + " User: " + user);
             SaveNewCompanyResponse response = companyService.saveNewCompany(requestId, request);
             log.info(requestId + " Response from /saveNewCompany: " + response);
             return response;
@@ -47,6 +48,7 @@ public class CompanyController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.SUPER_ADMIN);
             log.info(requestId + " Request to /getAllCompany");
+            log.info(requestId + " User: " + user);
             GetAllCompanyResponse response = companyService.getAllCompanies(requestId);
             log.info(requestId + " Response from /getAllCompany: " + response);
             return response;
@@ -62,6 +64,7 @@ public class CompanyController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /getCompanyInfo");
+            log.info(requestId + " User: " + user);
             GetCompanyInfoResponse response = companyService.getCompanyInfo(requestId, user);
             log.info(requestId + " Response from /getCompanyInfo: " + response);
             return response;

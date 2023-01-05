@@ -47,4 +47,13 @@ public class User implements Serializable {
 
     private Integer companyId;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", role=" + role +
+                '}';
+    }
+
 }

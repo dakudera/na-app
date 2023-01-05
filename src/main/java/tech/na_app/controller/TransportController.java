@@ -33,6 +33,7 @@ public class TransportController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to /saveNewTransport: " + request);
+            log.info(requestId + " User: " + user);
             SaveNewTransportResponse response = transportService.saveNewTransport(requestId, request, user);
             log.info(requestId + " Response from /saveNewTransport: " + response);
             return response;
@@ -48,12 +49,67 @@ public class TransportController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to /getAllTransport");
+            log.info(requestId + " User: " + user);
             GetAllTransportResponse response = transportService.getAllTransport(requestId, user);
             log.info(requestId + " Response from /getAllTransport: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new GetAllTransportResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @PostMapping("/get_transport_info")
+    public GetTransportInfoResponse getTransportInfo(@RequestHeader(name = "Authorization") String token, @RequestBody GetTransportInfoRequest request) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            log.info(requestId + " Request to /getTransportInfo");
+            log.info(requestId + " User: " + user);
+            GetTransportInfoResponse response = transportService.getTransportInfo(requestId, user, request);
+            log.info(requestId + " Response from /getTransportInfo: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new GetTransportInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @PostMapping("edit/general_info")
+    public EditTransportGeneralInfoResponse editGeneralInfo(
+            @RequestHeader(name = "Authorization") String token, @RequestBody EditTransportGeneralInfoRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+
+            log.info(requestId + " Request to /editGeneralInfo");
+            log.info(requestId + " User: " + user);
+            EditTransportGeneralInfoResponse response = transportService.editTransportGeneralInfo(requestId, request);
+            log.info(requestId + " Response from /editGeneralInfo: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditTransportGeneralInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @PostMapping("edit/using_reason_info")
+    public EditTransportUsingReasonInfoResponse editUsingReasonInfo(
+            @RequestHeader(name = "Authorization") String token, @RequestBody EditTransportUsingReasonInfoRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+
+            log.info(requestId + " Request to /editUsingReasonInfo");
+            log.info(requestId + " User: " + user);
+            EditTransportUsingReasonInfoResponse response = transportService.editTransportUsingReasonInfo(requestId, request);
+            log.info(requestId + " Response from /editUsingReasonInfo: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditTransportUsingReasonInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
         }
     }
 

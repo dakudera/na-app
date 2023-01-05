@@ -52,6 +52,7 @@ public class GetUserProfileHelperComponent {
 
     void fillUserProfile(User userInfo, GetUserProfileResponse response) {
         Profile profile = userInfo.getProfile();
+        response.setRole(userInfo.getRole());
         response.setEmail(profile.getEmail());
         response.setPhone(profile.getPhone());
         response.setFio(profile.getFio());

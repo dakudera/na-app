@@ -34,6 +34,7 @@ public class UserController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to /saveNewUser: " + request);
+            log.info(requestId + " User: " + user);
             SaveNewUserResponse response = userService.saveNewUser(requestId, user, request);
             log.info(requestId + " Response from /saveNewUser: " + response);
             return response;
@@ -49,8 +50,9 @@ public class UserController {
     ) {
         String requestId = HelpUtil.getUUID();
         try {
-            authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to /saveUserProfile");
+            log.info(requestId + " User: " + user);
             GetAllUserRolesResponse response = userService.getAllUserRoles(requestId);
             log.info(requestId + " Response from /saveUserProfile: " + response);
             return response;
@@ -68,6 +70,7 @@ public class UserController {
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /saveUserProfile: " + request);
+            log.info(requestId + " User: " + user);
             ErrorObject response = userService.resetPassword(requestId, user, request);
             log.info(requestId + " Response from /saveUserProfile: " + response);
             return response;
@@ -84,6 +87,7 @@ public class UserController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            log.info(requestId + " User: " + user);
             GetAllEmployeeResponse response = employeeService.getAllEmployee(requestId, user);
             log.info(requestId + " Response from /getEmployeeList: " + response);
             return response;

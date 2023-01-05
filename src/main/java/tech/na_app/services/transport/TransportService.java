@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import tech.na_app.converter.TransportConverter;
+import tech.na_app.entity.transport.GeneralInfo;
 import tech.na_app.entity.transport.Transport;
+import tech.na_app.entity.transport.TransportCard;
 import tech.na_app.entity.transport.TransportSequence;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
@@ -20,6 +22,7 @@ import tech.na_app.utils.SequenceGeneratorService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Log4j2
 @Service
@@ -64,6 +67,110 @@ public class TransportService {
             return new GetAllTransportResponse(new ErrorObject(500, e.getMessage()));
         }
     }
+
+    public EditTransportGeneralInfoResponse editTransportGeneralInfo(String requestId, EditTransportGeneralInfoRequest request) {
+        try {
+            if (Objects.isNull(request)) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getGeneral_info()) || Objects.isNull(request.getId())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            Optional<Transport> transportOptional = transportRepository.findById(request.getId());
+            Transport transport = transportOptional.orElseThrow(() -> new ApiException(404, "Not Found"));
+
+
+            GeneralInfo buildGeneralInfo = GeneralInfo.builder()
+                    .width(request.getGeneral_info().getWidth())
+                    .height(request.getGeneral_info().getHeight())
+                    .length(request.getGeneral_info().getLength())
+                    .fuel_tank_volume(request.getGeneral_info().getFuel_tank_volume())
+                    .mileage(request.getGeneral_info().getMileage())
+                    .build();
+
+            if (transport.getTransport_card() != null) {
+                transport.getTransport_card().setGeneral_info(buildGeneralInfo);
+            } else {
+                TransportCard transport_card = TransportCard
+                        .builder()
+                        .general_info(buildGeneralInfo)
+                        .build();
+                transport.setTransport_card(transport_card);
+            }
+            transportRepository.save(transport);
+
+            return new EditTransportGeneralInfoResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditTransportGeneralInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new EditTransportGeneralInfoResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public EditTransportUsingReasonInfoResponse editTransportUsingReasonInfo(String requestId, EditTransportUsingReasonInfoRequest request) {
+        try {
+            if (Objects.isNull(request) || Objects.isNull(request.getId())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            Optional<Transport> transportOptional = transportRepository.findById(request.getId());
+            Transport transport = transportOptional.orElseThrow(() -> new ApiException(404, "Not Found"));
+
+
+            tech.na_app.entity.transport.UsingReasonInfo buildUsingReasonInfo = tech.na_app.entity.transport.UsingReasonInfo.builder()
+                    .num_and_name_contract(request.getUsing_reason_info().getNum_and_name_contract())
+                    .date_start(request.getUsing_reason_info().getDate_start())
+                    .is_contract_fixed_term(request.getUsing_reason_info().getIs_contract_fixed_term())
+                    .date_end(request.getUsing_reason_info().getDate_end())
+                    .date_next_start(request.getUsing_reason_info().getDate_next_start())
+                    .build();
+
+            if (transport.getTransport_card() != null) {
+                transport.getTransport_card().setUsing_reason_info(buildUsingReasonInfo);
+            } else {
+                TransportCard transport_card = TransportCard
+                        .builder()
+                        .using_reason_info(buildUsingReasonInfo)
+                        .build();
+                transport.setTransport_card(transport_card);
+            }
+            transportRepository.save(transport);
+
+            return new EditTransportUsingReasonInfoResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditTransportUsingReasonInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new EditTransportUsingReasonInfoResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public GetTransportInfoResponse getTransportInfo(String requestId, User user, GetTransportInfoRequest request) {
+        try {
+            if (Objects.isNull(request) || Objects.isNull(request.getId()) || Objects.isNull(user.getCompanyId())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            Optional<Transport> transportOptional = transportRepository.findByIdAndCompanyId(request.getId(), user.getCompanyId());
+            Transport transport = transportOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
+
+
+            GetTransportInfoResponse response = transportConverter.convertToTransportModel(transport);
+            response.setError(new ErrorObject(0));
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new GetTransportInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new GetTransportInfoResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
 
     public EditTechnicalCertificateResponse editTechnicalCertificate(String requestId, User user, EditTechnicalCertificateRequest request) {
         try {
