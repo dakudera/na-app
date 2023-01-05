@@ -1,4 +1,4 @@
-package tech.na_app.model.transport;
+package tech.na_app.model.transport.using_reason;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

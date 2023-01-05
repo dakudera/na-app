@@ -1,4 +1,4 @@
-package tech.na_app.model.transport;
+package tech.na_app.model.transport.general_info;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;

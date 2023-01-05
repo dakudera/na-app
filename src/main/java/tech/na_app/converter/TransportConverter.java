@@ -98,7 +98,7 @@ public class TransportConverter {
         return GetTransportInfoResponse.builder()
                 .nomenclature_name(transport.getTransport_card().getNomenclature_name())
                 .technical_certificate(Objects.nonNull(transport.getTransport_card().getTechnical_certificate())
-                        ? tech.na_app.model.transport.TechnicalCertificate
+                        ? tech.na_app.model.transport.technical_certificate.TechnicalCertificate
                         .builder()
                         .num_and_series(transport.getTransport_card()
                                 .getTechnical_certificate().getNum_and_series())
@@ -142,7 +142,7 @@ public class TransportConverter {
                                 .build() : null)
                         .build() : null)
                 .using_reason_info(Objects.nonNull(transport.getTransport_card().getUsing_reason_info())
-                        ? tech.na_app.model.transport.UsingReasonInfo.builder()
+                        ? tech.na_app.model.transport.using_reason.UsingReasonInfo.builder()
                         .num_and_name_contract(transport.getTransport_card()
                                 .getUsing_reason_info().getNum_and_name_contract())
                         .date_start(transport.getTransport_card()
@@ -155,7 +155,7 @@ public class TransportConverter {
                                 .getUsing_reason_info().getDate_next_start())
                         .build() : null)
                 .general_info(Objects.nonNull(transport.getTransport_card().getGeneral_info())
-                        ? tech.na_app.model.transport.GeneralInfo.builder()
+                        ? tech.na_app.model.transport.general_info.GeneralInfo.builder()
                         .mileage(transport.getTransport_card().getGeneral_info().getMileage())
                         .fuel_tank_volume(transport.getTransport_card().getGeneral_info().getFuel_tank_volume())
                         .height(transport.getTransport_card().getGeneral_info().getHeight())

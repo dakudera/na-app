@@ -13,8 +13,12 @@ import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.transport.*;
+import tech.na_app.model.transport.general_info.EditTransportGeneralInfoRequest;
+import tech.na_app.model.transport.general_info.EditTransportGeneralInfoResponse;
 import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateRequest;
 import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateResponse;
+import tech.na_app.model.transport.using_reason.EditTransportUsingReasonInfoRequest;
+import tech.na_app.model.transport.using_reason.EditTransportUsingReasonInfoResponse;
 import tech.na_app.repository.TransportRepository;
 import tech.na_app.utils.SequenceGeneratorService;
 
