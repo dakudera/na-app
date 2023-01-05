@@ -10,6 +10,8 @@ import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.transport.GetAllTransportResponse;
 import tech.na_app.model.transport.SaveNewTransportRequest;
 import tech.na_app.model.transport.SaveNewTransportResponse;
+import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateRequest;
+import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateResponse;
 import tech.na_app.services.transport.TransportService;
 import tech.na_app.utils.HelpUtil;
 import tech.na_app.utils.jwt.AuthChecker;
@@ -52,6 +54,23 @@ public class TransportController {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new GetAllTransportResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @PostMapping("/edit_technical_certificate")
+    public EditTechnicalCertificateResponse editTechnicalCertificate(
+            @RequestHeader(name = "Authorization") String token, @RequestBody EditTechnicalCertificateRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            log.info(requestId + " Request to /editTechnicalCertificate: " + request);
+            EditTechnicalCertificateResponse response = transportService.editTechnicalCertificate(requestId, user, request);
+            log.info(requestId + " Response from /editTechnicalCertificate: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditTechnicalCertificateResponse(new ErrorObject(e.getCode(), e.getMessage()));
         }
     }
 }

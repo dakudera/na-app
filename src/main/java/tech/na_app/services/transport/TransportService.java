@@ -13,6 +13,8 @@ import tech.na_app.model.ErrorObject;
 import tech.na_app.model.transport.GetAllTransportResponse;
 import tech.na_app.model.transport.SaveNewTransportRequest;
 import tech.na_app.model.transport.SaveNewTransportResponse;
+import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateRequest;
+import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateResponse;
 import tech.na_app.repository.TransportRepository;
 import tech.na_app.utils.SequenceGeneratorService;
 
@@ -60,6 +62,19 @@ public class TransportService {
         } catch (Exception e) {
             log.error(requestId + " Error: " + 500 + " Message: " + e.getMessage());
             return new GetAllTransportResponse(new ErrorObject(500, e.getMessage()));
+        }
+    }
+
+    public EditTechnicalCertificateResponse editTechnicalCertificate(String requestId, User user, EditTechnicalCertificateRequest request) {
+        try {
+
+            return new EditTechnicalCertificateResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditTechnicalCertificateResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new EditTechnicalCertificateResponse(new ErrorObject(500, "Something went wrong"));
         }
     }
 
