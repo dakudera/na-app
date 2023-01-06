@@ -13,6 +13,8 @@ import tech.na_app.model.ErrorObject;
 import tech.na_app.model.transport.*;
 import tech.na_app.model.transport.general_info.EditTransportGeneralInfoRequest;
 import tech.na_app.model.transport.general_info.EditTransportGeneralInfoResponse;
+import tech.na_app.model.transport.nomenclature_name.EditNomenclatureNameRequest;
+import tech.na_app.model.transport.nomenclature_name.EditNomenclatureNameResponse;
 import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateRequest;
 import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateResponse;
 import tech.na_app.model.transport.using_reason.EditTransportUsingReasonInfoRequest;
@@ -209,6 +211,41 @@ public class TransportService {
         } catch (Exception e) {
             log.error(requestId + " Message: " + e.getMessage());
             return new EditTechnicalCertificateResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public EditNomenclatureNameResponse editNomenclatureName(String requestId, EditNomenclatureNameRequest request) {
+        try {
+            if (Objects.isNull(request)) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            if (Objects.isNull(request.getNomenclature_name()) || Objects.isNull(request.getId())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            Transport transport = transportRepository.findById(request.getId())
+                    .orElseThrow(() -> new ApiException(404, "Not Found"));
+
+
+            if (transport.getTransport_card() != null) {
+                transport.getTransport_card().setNomenclature_name(request.getNomenclature_name());
+            } else {
+                TransportCard transport_card = TransportCard
+                        .builder()
+                        .nomenclature_name(request.getNomenclature_name())
+                        .build();
+                transport.setTransport_card(transport_card);
+            }
+            transportRepository.save(transport);
+
+            return new EditNomenclatureNameResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditNomenclatureNameResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new EditNomenclatureNameResponse(new ErrorObject(500, "Something went wrong"));
         }
     }
 
