@@ -122,8 +122,10 @@ public class TransportController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+
             log.info(requestId + " Request to /editTechnicalCertificate: " + request);
-            EditTechnicalCertificateResponse response = transportService.editTechnicalCertificate(requestId, user, request);
+            log.info(requestId + " User: " + user);
+            EditTechnicalCertificateResponse response = transportService.editTechnicalCertificate(requestId, request);
             log.info(requestId + " Response from /editTechnicalCertificate: " + response);
             return response;
         } catch (ApiException e) {

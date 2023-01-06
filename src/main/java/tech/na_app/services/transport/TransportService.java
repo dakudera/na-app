@@ -5,10 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import tech.na_app.converter.TransportConverter;
-import tech.na_app.entity.transport.GeneralInfo;
-import tech.na_app.entity.transport.Transport;
+import tech.na_app.entity.transport.*;
 import tech.na_app.entity.transport.TransportCard;
-import tech.na_app.entity.transport.TransportSequence;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
@@ -122,7 +120,7 @@ public class TransportService {
             Transport transport = transportOptional.orElseThrow(() -> new ApiException(404, "Not Found"));
 
 
-            tech.na_app.entity.transport.UsingReasonInfo buildUsingReasonInfo = tech.na_app.entity.transport.UsingReasonInfo.builder()
+            UsingReasonInfo buildUsingReasonInfo = UsingReasonInfo.builder()
                     .num_and_name_contract(request.getUsing_reason_info().getNum_and_name_contract())
                     .date_start(request.getUsing_reason_info().getDate_start())
                     .is_contract_fixed_term(request.getUsing_reason_info().getIs_contract_fixed_term())
@@ -174,8 +172,35 @@ public class TransportService {
     }
 
 
-    public EditTechnicalCertificateResponse editTechnicalCertificate(String requestId, User user, EditTechnicalCertificateRequest request) {
+    public EditTechnicalCertificateResponse editTechnicalCertificate(String requestId, EditTechnicalCertificateRequest request) {
         try {
+            if (Objects.isNull(request)) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+            if (Objects.isNull(request.getTechnical_certificate()) || Objects.isNull(request.getId())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            Transport transport = transportRepository.findById(request.getId())
+                    .orElseThrow(() -> new ApiException(404, "Not Found"));
+
+            TechnicalCertificate buildTechnicalCertificate = TechnicalCertificate.builder()
+                    .num_and_series(request.getTechnical_certificate().getNum_and_series())
+                    .issued_by(request.getTechnical_certificate().getIssued_by())
+                    .date_end(request.getTechnical_certificate().getDate_end())
+                    .date_issue(request.getTechnical_certificate().getDate_issue())
+                    .build();
+
+            if (transport.getTransport_card() != null) {
+                transport.getTransport_card().setTechnical_certificate(buildTechnicalCertificate);
+            } else {
+                TransportCard transport_card = TransportCard
+                        .builder()
+                        .technical_certificate(buildTechnicalCertificate)
+                        .build();
+                transport.setTransport_card(transport_card);
+            }
+            transportRepository.save(transport);
 
             return new EditTechnicalCertificateResponse(new ErrorObject(0));
         } catch (ApiException e) {
