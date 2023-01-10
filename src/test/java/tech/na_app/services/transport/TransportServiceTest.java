@@ -11,16 +11,23 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import tech.na_app.converter.TransportConverter;
 import tech.na_app.entity.transport.Transport;
 import tech.na_app.model.ErrorObject;
+import tech.na_app.model.enums.EnvironmentalStandard;
+import tech.na_app.model.enums.Fuel;
 import tech.na_app.model.transport.nomenclature_name.EditNomenclatureNameRequest;
 import tech.na_app.model.transport.nomenclature_name.EditNomenclatureNameResponse;
 import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateRequest;
 import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateResponse;
+import tech.na_app.model.transport.technical_certificate_dop_info.EditTechnicalCertificateDopInfoRequest;
+import tech.na_app.model.transport.technical_certificate_dop_info.EditTechnicalCertificateDopInfoResponse;
+import tech.na_app.model.transport.technical_certificate_dop_info.TechnicalCertificateDopInfo;
 import tech.na_app.repository.TransportRepository;
 import tech.na_app.utils.SequenceGeneratorService;
 import tech.na_app.utils.TestUtils;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -290,8 +297,163 @@ class TransportServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("")
-    void editTechnicalCertificateDopInfo$BadRequest() {
+    @MethodSource("editTechnicalCertificateDopInfo$BadDataSet")
+    void editTechnicalCertificateDopInfo$BadRequest(EditTechnicalCertificateDopInfoRequest request, EditTechnicalCertificateDopInfoResponse expectedResponse,
+                                                    Optional<Transport> mockedTransport
+    ) {
+        //Given
+        lenient().when(transportRepository.findById(1)).thenReturn(mockedTransport);
+        //When
+        EditTechnicalCertificateDopInfoResponse response = transportService.editTechnicalCertificateDopInfo(TestUtils.TEST_REQUEST_ID, request);
+        //Then
+        assertEquals(expectedResponse, response);
+    }
 
+    @SneakyThrows
+    private static Stream<Arguments> editTechnicalCertificateDopInfo$BadDataSet() {
+        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        return Stream.of(
+
+                //-1-// request is NULL
+                Arguments.of(
+                        null,
+
+                        EditTechnicalCertificateDopInfoResponse.builder()
+                                .error(new ErrorObject(400, "BAD REQUEST"))
+                                .build(),
+
+                        Optional.of(Transport.builder()
+                                .id(1)
+                                .build())
+                ),
+
+                //-2-// nomenclature_name is NULL
+                Arguments.of(
+                        EditTechnicalCertificateDopInfoRequest.builder()
+                                .id(1)
+                                .technical_certificate_dop_info(null)
+                                .build(),
+
+                        EditTechnicalCertificateDopInfoResponse.builder()
+                                .error(new ErrorObject(400, "BAD REQUEST"))
+                                .build(),
+
+                        Optional.of(Transport.builder()
+                                .id(1)
+                                .build())
+                ),
+
+                //-3-// not fond transport in DB
+                Arguments.of(
+                        EditTechnicalCertificateDopInfoRequest.builder()
+                                .id(1)
+                                .technical_certificate_dop_info(TechnicalCertificateDopInfo.builder()
+                                        .brand("MAN")
+                                        .state_number("AE0000BB")
+                                        .VIN_code("4Y1SL65848Z411439")
+                                        .colour("Black")
+                                        .date_issue(format.parse("15.10.2022"))
+                                        .seats((short) 3)
+                                        .full_weight(BigDecimal.valueOf(20145))
+                                        .empty_weight(BigDecimal.valueOf(9930))
+                                        .category("B3")
+                                        .fuel(Fuel.DIESEL)
+                                        .body_type("xxx")
+                                        .engine_volume(BigDecimal.valueOf(10518))
+                                        .engine_power(BigDecimal.valueOf(324))
+                                        .environmental_standard(EnvironmentalStandard.EURO_5)
+                                        .build())
+                                .build(),
+
+                        EditTechnicalCertificateDopInfoResponse.builder()
+                                .error(new ErrorObject(404, "Not Found"))
+                                .build(),
+
+                        Optional.empty()
+                ),
+
+                //-4-// id is NULL
+                Arguments.of(
+                        EditTechnicalCertificateDopInfoRequest.builder()
+                                .id(null)
+                                .technical_certificate_dop_info(TechnicalCertificateDopInfo.builder()
+                                        .brand("MAN")
+                                        .state_number("AE0000BB")
+                                        .VIN_code("4Y1SL65848Z411439")
+                                        .colour("Black")
+                                        .date_issue(format.parse("15.10.2022"))
+                                        .seats((short) 3)
+                                        .full_weight(BigDecimal.valueOf(20145))
+                                        .empty_weight(BigDecimal.valueOf(9930))
+                                        .category("B3")
+                                        .fuel(Fuel.DIESEL)
+                                        .body_type("xxx")
+                                        .engine_volume(BigDecimal.valueOf(10518))
+                                        .engine_power(BigDecimal.valueOf(324))
+                                        .environmental_standard(EnvironmentalStandard.EURO_5)
+                                        .build())
+                                .build(),
+
+                        EditTechnicalCertificateDopInfoResponse.builder()
+                                .error(new ErrorObject(400, "BAD REQUEST"))
+                                .build(),
+
+                        Optional.of(Transport.builder()
+                                .id(1)
+                                .build())
+                )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("editTechnicalCertificateDopInfo$GoodDataSet")
+    void editTechnicalCertificateDopInfo$GoodRequest(EditTechnicalCertificateDopInfoRequest request, EditTechnicalCertificateDopInfoResponse expectedResponse,
+                                                     Optional<Transport> mockedTransport
+    ) {
+        //Given
+        lenient().when(transportRepository.findById(1)).thenReturn(mockedTransport);
+        //When
+        EditTechnicalCertificateDopInfoResponse response = transportService.editTechnicalCertificateDopInfo(TestUtils.TEST_REQUEST_ID, request);
+        //Then
+        assertEquals(expectedResponse, response);
+    }
+
+    @SneakyThrows
+    private static Stream<Arguments> editTechnicalCertificateDopInfo$GoodDataSet() {
+        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        return Stream.of(
+
+                //-1-//
+                Arguments.of(
+                        EditTechnicalCertificateDopInfoRequest.builder()
+                                .id(1)
+                                .technical_certificate_dop_info(TechnicalCertificateDopInfo.builder()
+                                        .brand("MAN")
+                                        .state_number("AE0000BB")
+                                        .VIN_code("4Y1SL65848Z411439")
+                                        .colour("Black")
+                                        .date_issue(format.parse("15.10.2022"))
+                                        .seats((short) 3)
+                                        .full_weight(BigDecimal.valueOf(20145))
+                                        .empty_weight(BigDecimal.valueOf(9930))
+                                        .category("B3")
+                                        .fuel(Fuel.DIESEL)
+                                        .body_type("xxx")
+                                        .engine_volume(BigDecimal.valueOf(10518))
+                                        .engine_power(BigDecimal.valueOf(324))
+                                        .environmental_standard(EnvironmentalStandard.EURO_5)
+                                        .build())
+                                .build(),
+
+                        EditTechnicalCertificateDopInfoResponse.builder()
+                                .error(new ErrorObject(0))
+                                .build(),
+
+                        Optional.of(Transport.builder()
+                                .id(1)
+                                .build()
+                        )
+                )
+        );
     }
 }
