@@ -117,7 +117,7 @@ public class TransportController {
         }
     }
 
-    @PostMapping("/edit_technical_certificate")
+    @PostMapping("edit/technical_certificate")
     public EditTechnicalCertificateResponse editTechnicalCertificate(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditTechnicalCertificateRequest request
     ) {
@@ -136,7 +136,7 @@ public class TransportController {
         }
     }
 
-    @PostMapping("/edit_nomenclature_name")
+    @PostMapping("edit/nomenclature_name")
     public EditNomenclatureNameResponse editNomenclatureName(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditNomenclatureNameRequest request
     ) {
