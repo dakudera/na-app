@@ -1,4 +1,4 @@
-package tech.na_app.model.transport;
+package tech.na_app.model.transport.technical_certificate;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import tech.na_app.model.transport.TechnicalCertificateDopInfo;
 
 import java.util.Date;
 

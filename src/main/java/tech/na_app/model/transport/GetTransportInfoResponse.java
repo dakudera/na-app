@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tech.na_app.model.ErrorObject;
+import tech.na_app.model.transport.general_info.GeneralInfo;
+import tech.na_app.model.transport.technical_certificate.TechnicalCertificate;
+import tech.na_app.model.transport.using_reason.UsingReasonInfo;
 
 @Data
 @Builder

@@ -8,6 +8,14 @@ import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
 import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.transport.*;
+import tech.na_app.model.transport.general_info.EditTransportGeneralInfoRequest;
+import tech.na_app.model.transport.general_info.EditTransportGeneralInfoResponse;
+import tech.na_app.model.transport.nomenclature_name.EditNomenclatureNameRequest;
+import tech.na_app.model.transport.nomenclature_name.EditNomenclatureNameResponse;
+import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateRequest;
+import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateResponse;
+import tech.na_app.model.transport.using_reason.EditTransportUsingReasonInfoRequest;
+import tech.na_app.model.transport.using_reason.EditTransportUsingReasonInfoResponse;
 import tech.na_app.services.transport.TransportService;
 import tech.na_app.utils.HelpUtil;
 import tech.na_app.utils.jwt.AuthChecker;
@@ -106,6 +114,44 @@ public class TransportController {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new EditTransportUsingReasonInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @PostMapping("edit/technical_certificate")
+    public EditTechnicalCertificateResponse editTechnicalCertificate(
+            @RequestHeader(name = "Authorization") String token, @RequestBody EditTechnicalCertificateRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+
+            log.info(requestId + " Request to /editTechnicalCertificate: " + request);
+            log.info(requestId + " User: " + user);
+            EditTechnicalCertificateResponse response = transportService.editTechnicalCertificate(requestId, request);
+            log.info(requestId + " Response from /editTechnicalCertificate: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditTechnicalCertificateResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @PostMapping("edit/nomenclature_name")
+    public EditNomenclatureNameResponse editNomenclatureName(
+            @RequestHeader(name = "Authorization") String token, @RequestBody EditNomenclatureNameRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+
+            log.info(requestId + " Request to /editNomenclatureName: " + request);
+            log.info(requestId + " User: " + user);
+            EditNomenclatureNameResponse response = transportService.editNomenclatureName(requestId, request);
+            log.info(requestId + " Response from /editTechnicalCertificate: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditNomenclatureNameResponse(new ErrorObject(e.getCode(), e.getMessage()));
         }
     }
 }
