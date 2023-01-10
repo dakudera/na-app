@@ -264,22 +264,7 @@ public class TransportService {
             Transport transport = transportRepository.findById(request.getId())
                     .orElseThrow(() -> new ApiException(404, "Not Found"));
 
-            TechnicalCertificateDopInfo buildTechnicalCertificateDopInfo = TechnicalCertificateDopInfo.builder()
-                    .brand(request.getTechnical_certificate_dop_info().getBrand())
-                    .state_number(request.getTechnical_certificate_dop_info().getState_number())
-                    .VIN_code(request.getTechnical_certificate_dop_info().getVIN_code())
-                    .colour(request.getTechnical_certificate_dop_info().getColour())
-                    .date_issue(request.getTechnical_certificate_dop_info().getDate_issue())
-                    .seats(request.getTechnical_certificate_dop_info().getSeats())
-                    .full_weight(request.getTechnical_certificate_dop_info().getFull_weight())
-                    .empty_weight(request.getTechnical_certificate_dop_info().getEmpty_weight())
-                    .category(request.getTechnical_certificate_dop_info().getCategory())
-                    .fuel(request.getTechnical_certificate_dop_info().getFuel())
-                    .body_type(request.getTechnical_certificate_dop_info().getBody_type())
-                    .engine_volume(request.getTechnical_certificate_dop_info().getEngine_volume())
-                    .engine_power(request.getTechnical_certificate_dop_info().getEngine_power())
-                    .environmental_standard(request.getTechnical_certificate_dop_info().getEnvironmental_standard())
-                    .build();
+            TechnicalCertificateDopInfo buildTechnicalCertificateDopInfo = transportConverter.convertToTechnicalCertificateDopInfoEntity(request);
 
             if (transport.getTransport_card() != null && transport.getTransport_card().getTechnical_certificate() != null) {
                 transport.getTransport_card().getTechnical_certificate().setTechnical_certificate_dop_info(buildTechnicalCertificateDopInfo);

@@ -7,6 +7,7 @@ import tech.na_app.model.enums.TransportStatus;
 import tech.na_app.model.transport.GetAllTransportResponse;
 import tech.na_app.model.transport.GetTransportInfoResponse;
 import tech.na_app.model.transport.SaveNewTransportRequest;
+import tech.na_app.model.transport.technical_certificate_dop_info.EditTechnicalCertificateDopInfoRequest;
 
 import java.util.Date;
 import java.util.List;
@@ -186,6 +187,25 @@ public class TransportConverter {
                 .state_number(state_number)
                 .nomenclature_name(nomenclature_name)
                 .transport_status(transport.getTransport_status())
+                .build();
+    }
+
+    public TechnicalCertificateDopInfo convertToTechnicalCertificateDopInfoEntity(EditTechnicalCertificateDopInfoRequest technicalCertificateDopInfo) {
+        return TechnicalCertificateDopInfo.builder()
+                .brand(technicalCertificateDopInfo.getTechnical_certificate_dop_info().getBrand())
+                .state_number(technicalCertificateDopInfo.getTechnical_certificate_dop_info().getState_number())
+                .VIN_code(technicalCertificateDopInfo.getTechnical_certificate_dop_info().getVIN_code())
+                .colour(technicalCertificateDopInfo.getTechnical_certificate_dop_info().getColour())
+                .date_issue(technicalCertificateDopInfo.getTechnical_certificate_dop_info().getDate_issue())
+                .seats(technicalCertificateDopInfo.getTechnical_certificate_dop_info().getSeats())
+                .full_weight(technicalCertificateDopInfo.getTechnical_certificate_dop_info().getFull_weight())
+                .empty_weight(technicalCertificateDopInfo.getTechnical_certificate_dop_info().getEmpty_weight())
+                .category(technicalCertificateDopInfo.getTechnical_certificate_dop_info().getCategory())
+                .fuel(technicalCertificateDopInfo.getTechnical_certificate_dop_info().getFuel())
+                .body_type(technicalCertificateDopInfo.getTechnical_certificate_dop_info().getBody_type())
+                .engine_volume(technicalCertificateDopInfo.getTechnical_certificate_dop_info().getEngine_volume())
+                .engine_power(technicalCertificateDopInfo.getTechnical_certificate_dop_info().getEngine_power())
+                .environmental_standard(technicalCertificateDopInfo.getTechnical_certificate_dop_info().getEnvironmental_standard())
                 .build();
     }
 }
