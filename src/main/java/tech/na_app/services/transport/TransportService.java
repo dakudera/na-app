@@ -17,6 +17,8 @@ import tech.na_app.model.transport.nomenclature_name.EditNomenclatureNameRequest
 import tech.na_app.model.transport.nomenclature_name.EditNomenclatureNameResponse;
 import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateRequest;
 import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateResponse;
+import tech.na_app.model.transport.technical_certificate_dop_info.EditTechnicalCertificateDopInfoRequest;
+import tech.na_app.model.transport.technical_certificate_dop_info.EditTechnicalCertificateDopInfoResponse;
 import tech.na_app.model.transport.using_reason.EditTransportUsingReasonInfoRequest;
 import tech.na_app.model.transport.using_reason.EditTransportUsingReasonInfoResponse;
 import tech.na_app.repository.TransportRepository;
@@ -246,6 +248,59 @@ public class TransportService {
         } catch (Exception e) {
             log.error(requestId + " Message: " + e.getMessage());
             return new EditNomenclatureNameResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public EditTechnicalCertificateDopInfoResponse editTechnicalCertificateDopInfo(String requestId, EditTechnicalCertificateDopInfoRequest request) {
+        try {
+            if (Objects.isNull(request)) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            if (Objects.isNull(request.getTechnical_certificate_dop_info()) || Objects.isNull(request.getId())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            Transport transport = transportRepository.findById(request.getId())
+                    .orElseThrow(() -> new ApiException(404, "Not Found"));
+
+            TechnicalCertificateDopInfo buildTechnicalCertificateDopInfo = TechnicalCertificateDopInfo.builder()
+                    .brand(request.getTechnical_certificate_dop_info().getBrand())
+                    .state_number(request.getTechnical_certificate_dop_info().getState_number())
+                    .VIN_code(request.getTechnical_certificate_dop_info().getVIN_code())
+                    .colour(request.getTechnical_certificate_dop_info().getColour())
+                    .date_issue(request.getTechnical_certificate_dop_info().getDate_issue())
+                    .seats(request.getTechnical_certificate_dop_info().getSeats())
+                    .full_weight(request.getTechnical_certificate_dop_info().getFull_weight())
+                    .empty_weight(request.getTechnical_certificate_dop_info().getEmpty_weight())
+                    .category(request.getTechnical_certificate_dop_info().getCategory())
+                    .fuel(request.getTechnical_certificate_dop_info().getFuel())
+                    .body_type(request.getTechnical_certificate_dop_info().getBody_type())
+                    .engine_volume(request.getTechnical_certificate_dop_info().getEngine_volume())
+                    .engine_power(request.getTechnical_certificate_dop_info().getEngine_power())
+                    .environmental_standard(request.getTechnical_certificate_dop_info().getEnvironmental_standard())
+                    .build();
+
+            if (transport.getTransport_card() != null && transport.getTransport_card().getTechnical_certificate() != null) {
+                transport.getTransport_card().getTechnical_certificate().setTechnical_certificate_dop_info(buildTechnicalCertificateDopInfo);
+            } else {
+                TransportCard transport_card = TransportCard
+                        .builder()
+                        .technical_certificate(TechnicalCertificate.builder()
+                                .technical_certificate_dop_info(buildTechnicalCertificateDopInfo)
+                                .build())
+                        .build();
+                transport.setTransport_card(transport_card);
+            }
+            transportRepository.save(transport);
+
+            return new EditTechnicalCertificateDopInfoResponse(new ErrorObject(0));
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditTechnicalCertificateDopInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new EditTechnicalCertificateDopInfoResponse(new ErrorObject(500, "Something went wrong"));
         }
     }
 

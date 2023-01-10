@@ -288,4 +288,10 @@ class TransportServiceTest {
                 )
         );
     }
+
+    @ParameterizedTest
+    @MethodSource("")
+    void editTechnicalCertificateDopInfo$BadRequest() {
+
+    }
 }

@@ -1,4 +1,4 @@
-package tech.na_app.model.transport;
+package tech.na_app.model.transport.technical_certificate_dop_info;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -14,11 +14,14 @@ import tech.na_app.model.transport.nomenclature_name.EditNomenclatureNameRequest
 import tech.na_app.model.transport.nomenclature_name.EditNomenclatureNameResponse;
 import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateRequest;
 import tech.na_app.model.transport.technical_certificate.EditTechnicalCertificateResponse;
+import tech.na_app.model.transport.technical_certificate_dop_info.EditTechnicalCertificateDopInfoRequest;
+import tech.na_app.model.transport.technical_certificate_dop_info.EditTechnicalCertificateDopInfoResponse;
 import tech.na_app.model.transport.using_reason.EditTransportUsingReasonInfoRequest;
 import tech.na_app.model.transport.using_reason.EditTransportUsingReasonInfoResponse;
 import tech.na_app.services.transport.TransportService;
 import tech.na_app.utils.HelpUtil;
 import tech.na_app.utils.jwt.AuthChecker;
+
 
 @Log4j2
 @RestController
@@ -152,6 +155,25 @@ public class TransportController {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new EditNomenclatureNameResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @PostMapping("edit/technical_certificate_dop_info")
+    public EditTechnicalCertificateDopInfoResponse editTechnicalCertificateDopInfo(
+            @RequestHeader(name = "Authorization") String token, @RequestBody EditTechnicalCertificateDopInfoRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+
+            log.info(requestId + " Request to /editTechnicalCertificateDopInfo: " + request);
+            log.info(requestId + " User: " + user);
+            EditTechnicalCertificateDopInfoResponse response = transportService.editTechnicalCertificateDopInfo(requestId, request);
+            log.info(requestId + " Response from /editTechnicalCertificateDopInfo: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditTechnicalCertificateDopInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
         }
     }
 }

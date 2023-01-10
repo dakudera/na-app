@@ -110,7 +110,7 @@ public class TransportConverter {
                                 .getTechnical_certificate().getDate_issue())
                         .technical_certificate_dop_info(Objects.nonNull(transport.getTransport_card()
                                 .getTechnical_certificate().getTechnical_certificate_dop_info())
-                                ? tech.na_app.model.transport.TechnicalCertificateDopInfo.builder()
+                                ? tech.na_app.model.transport.technical_certificate_dop_info.TechnicalCertificateDopInfo.builder()
                                 .brand(transport.getTransport_card()
                                         .getTechnical_certificate().getTechnical_certificate_dop_info().getBrand())
                                 .state_number(transport.getTransport_card()
