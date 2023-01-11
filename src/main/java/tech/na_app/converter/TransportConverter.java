@@ -175,7 +175,8 @@ public class TransportConverter {
 
         if (transport.getTransport_card() != null) {
             nomenclature_name = transport.getTransport_card().getNomenclature_name();
-            if (transport.getTransport_card().getTechnical_certificate() != null) {
+            if (transport.getTransport_card().getTechnical_certificate() != null
+                    && transport.getTransport_card().getTechnical_certificate().getTechnical_certificate_dop_info() != null) {
                 brand = transport.getTransport_card().getTechnical_certificate().getTechnical_certificate_dop_info().getBrand();
                 state_number = transport.getTransport_card().getTechnical_certificate().getTechnical_certificate_dop_info().getState_number();
             }
