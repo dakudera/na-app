@@ -51,10 +51,10 @@ public class UserController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
-            log.info(requestId + " Request to /saveUserProfile");
+            log.info(requestId + " Request to /getAllUserRoles");
             log.info(requestId + " User: " + user);
             GetAllUserRolesResponse response = userService.getAllUserRoles(requestId);
-            log.info(requestId + " Response from /saveUserProfile: " + response);
+            log.info(requestId + " Response from /getAllUserRoles: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
@@ -69,10 +69,10 @@ public class UserController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
-            log.info(requestId + " Request to /saveUserProfile: " + request);
+            log.info(requestId + " Request to /resetPassword: " + request);
             log.info(requestId + " User: " + user);
             ErrorObject response = userService.resetPassword(requestId, user, request);
-            log.info(requestId + " Response from /saveUserProfile: " + response);
+            log.info(requestId + " Response from /resetPassword: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
@@ -87,6 +87,7 @@ public class UserController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            log.info(requestId + " Request to /getEmployeeList");
             log.info(requestId + " User: " + user);
             GetAllEmployeeResponse response = employeeService.getAllEmployee(requestId, user);
             log.info(requestId + " Response from /getEmployeeList: " + response);

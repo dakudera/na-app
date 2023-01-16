@@ -47,6 +47,7 @@ public class AuthorizationService {
                     .refreshToken(refreshTokenService.createRefreshToken(user.getId()))
                     .issueAt(issueAt)
                     .expDate(expDate)
+                    .role(user.getRole())
                     .error(new ErrorObject(0))
                     .build();
         } catch (Exception ex) {
@@ -70,6 +71,7 @@ public class AuthorizationService {
                     .refreshToken(refreshTokenService.createRefreshToken(userOptional.get().getId()))
                     .issueAt(issueAt)
                     .expDate(expDate)
+                    .role(userOptional.get().getRole())
                     .error(new ErrorObject(0))
                     .build();
         } catch (Exception e) {

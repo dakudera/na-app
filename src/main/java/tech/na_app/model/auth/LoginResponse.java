@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tech.na_app.model.ErrorObject;
+import tech.na_app.model.enums.UserRoleType;
 
 import java.util.Date;
 
@@ -40,6 +41,12 @@ public class LoginResponse {
             type = "string"
     )
     private Date expDate;
+
+    @Schema(
+            example = "DRIVER",
+            type = "string"
+    )
+    private UserRoleType role;
 
     private ErrorObject error;
 

@@ -150,7 +150,7 @@ public class TransportController {
             log.info(requestId + " Request to /editNomenclatureName: " + request);
             log.info(requestId + " User: " + user);
             EditNomenclatureNameResponse response = transportService.editNomenclatureName(requestId, request);
-            log.info(requestId + " Response from /editTechnicalCertificate: " + response);
+            log.info(requestId + " Response from /editNomenclatureName: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());

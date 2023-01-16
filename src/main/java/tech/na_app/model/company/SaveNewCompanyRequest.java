@@ -3,7 +3,6 @@ package tech.na_app.model.company;
 import lombok.Data;
 import tech.na_app.entity.company.BankingDetails;
 import tech.na_app.entity.company.Communication;
-import tech.na_app.entity.company.CompanyName;
 import tech.na_app.entity.company.IdentificationDetails;
 
 @Data

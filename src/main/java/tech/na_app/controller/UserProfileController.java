@@ -30,10 +30,10 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
-            log.info(requestId + " Request to saveInfoDrivingLicense: " + request);
+            log.info(requestId + " Request to /saveInfoDrivingLicense: " + request);
             log.info(requestId + " User: " + user);
             SaveInfoDrivingLicenseResponse response = userProfileService.saveInfoDrivingLicense(requestId, request);
-            log.info(requestId + " Response from saveInfoDrivingLicense: " + response);
+            log.info(requestId + " Response from /saveInfoDrivingLicense: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
@@ -66,10 +66,10 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
-            log.info(requestId + " Request to editInfoDrivingLicense: " + request);
+            log.info(requestId + " Request to /editInfoDrivingLicense: " + request);
             log.info(requestId + " User: " + user);
             EditInfoDrivingLicenseResponse response = userProfileService.editInfoDrivingLicense(requestId, user, request);
-            log.info(requestId + " Response from editInfoDrivingLicense: " + response);
+            log.info(requestId + " Response from /editInfoDrivingLicense: " + response);
 
             return response;
         } catch (ApiException e) {
@@ -103,10 +103,10 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
-            log.info(requestId + " Request to removeInfoDrivingLicense: " + request);
+            log.info(requestId + " Request to /removeInfoDrivingLicense: " + request);
             log.info(requestId + " User: " + user);
             RemoveInfoDrivingLicenseResponse response = userProfileService.removeInfoDrivingLicense(requestId, user, request);
-            log.info(requestId + " Response from removeInfoDrivingLicense: " + response);
+            log.info(requestId + " Response from /removeInfoDrivingLicense: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
@@ -175,10 +175,10 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
-            log.info(requestId + " Request to /saveInternship: " + request);
+            log.info(requestId + " Request to /getUserProfile: " + request);
             log.info(requestId + " User: " + user);
             GetUserProfileResponse response = userProfileService.getUserProfile(requestId, user, request);
-            log.info(requestId + " Response from /saveInternship: " + response);
+            log.info(requestId + " Response from /getUserProfile: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
@@ -229,9 +229,9 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
-            log.info(requestId + " Request to editUserProfile: " + request);
+            log.info(requestId + " Request to /editUserProfile: " + request);
             EditUserProfileResponse response = userProfileService.editUserProfile(requestId, user, request);
-            log.info(requestId + " Response from editUserProfile: " + response);
+            log.info(requestId + " Response from /editUserProfile: " + response);
             return response;
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());

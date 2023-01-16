@@ -3,21 +3,19 @@ package tech.na_app.services.company;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import tech.na_app.entity.company.BankingDetails;
+import tech.na_app.entity.company.Communication;
+import tech.na_app.entity.company.CompanyName;
+import tech.na_app.entity.company.IdentificationDetails;
 import tech.na_app.entity.company.*;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
-import tech.na_app.model.company.GetAllCompanyResponse;
-import tech.na_app.model.company.GetCompanyInfoResponse;
-import tech.na_app.model.company.SaveNewCompanyRequest;
-import tech.na_app.model.company.SaveNewCompanyResponse;
+import tech.na_app.model.company.*;
 import tech.na_app.repository.CompanyRepository;
 import tech.na_app.utils.SequenceGeneratorService;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Log4j2
 @Service
@@ -180,4 +178,51 @@ public class CompanyService {
             return new GetCompanyInfoResponse(new ErrorObject(500, e.getMessage()));
         }
     }
+
+    public EditCompanyNameResponse editCompanyName(String requestId, User user, EditCompanyNameRequest request) {
+        try {
+            if (Objects.isNull(request) || Objects.isNull(user.getCompanyId())) {
+                throw new ApiException(400, "BAD REQUEST");
+            }
+
+            Optional<Company> companyOptional = companyRepository.findById(user.getCompanyId());
+            Company company = companyOptional.orElseThrow(() -> new ApiException(404, "Not Found"));
+
+            if (request.getEng_name() != null) {
+                if (company.getEng_name() != null) {
+                    company.getEng_name().setFull_name(request.getEng_name().getFull_name());
+                    company.getEng_name().setShort_name(request.getEng_name().getShort_name());
+                } else {
+                    CompanyName companyNameEng = CompanyName
+                            .builder()
+                            .full_name(request.getEng_name().getFull_name())
+                            .short_name(request.getEng_name().getShort_name())
+                            .build();
+                    company.setEng_name(companyNameEng);
+                }
+            }
+
+            if (request.getUkr_name() != null) {
+                if (company.getUkr_name() != null) {
+                    company.getUkr_name().setFull_name(request.getUkr_name().getFull_name());
+                    company.getUkr_name().setShort_name(request.getUkr_name().getShort_name());
+                } else {
+                    CompanyName companyNameUkr = CompanyName
+                            .builder()
+                            .full_name(request.getUkr_name().getFull_name())
+                            .short_name(request.getUkr_name().getShort_name())
+                            .build();
+                    company.setUkr_name(companyNameUkr);
+                }
+            }
+
+            companyRepository.save(company);
+
+            return new EditCompanyNameResponse(new ErrorObject(0));
+        } catch (Exception e) {
+            log.error(requestId + " Error: " + 500 + " Message: " + e.getMessage());
+            return new EditCompanyNameResponse(new ErrorObject(500, e.getMessage()));
+        }
+    }
+
 }

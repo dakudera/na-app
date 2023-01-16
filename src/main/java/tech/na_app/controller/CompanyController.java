@@ -6,10 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
-import tech.na_app.model.company.GetAllCompanyResponse;
-import tech.na_app.model.company.GetCompanyInfoResponse;
-import tech.na_app.model.company.SaveNewCompanyRequest;
-import tech.na_app.model.company.SaveNewCompanyResponse;
+import tech.na_app.model.company.*;
 import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.services.company.CompanyService;
 import tech.na_app.utils.HelpUtil;
@@ -71,6 +68,24 @@ public class CompanyController {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new GetCompanyInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @PostMapping("edit/company_name")
+    public EditCompanyNameResponse editCompanyName(
+            @RequestHeader(name = "Authorization") String token, @RequestBody EditCompanyNameRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            log.info(requestId + " Request to /editCompanyName");
+            log.info(requestId + " User: " + user);
+            EditCompanyNameResponse response = companyService.editCompanyName(requestId, user, request);
+            log.info(requestId + " Response from /editCompanyName: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditCompanyNameResponse(new ErrorObject(e.getCode(), e.getMessage()));
         }
     }
 
