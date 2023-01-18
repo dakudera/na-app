@@ -176,4 +176,24 @@ public class TransportController {
             return new EditTechnicalCertificateDopInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
         }
     }
+
+    @GetMapping("fuels")
+    public GetFuelResponse getFuels(
+            @RequestHeader(name = "Authorization") String token
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+
+            log.info(requestId + " Request to /getFuels ");
+            log.info(requestId + " User: " + user);
+            GetFuelResponse response = transportService.getFuel(requestId);
+            log.info(requestId + " Response from /getFuels: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new GetFuelResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
 }

@@ -10,6 +10,7 @@ import tech.na_app.entity.transport.*;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
+import tech.na_app.model.enums.Fuel;
 import tech.na_app.model.transport.*;
 import tech.na_app.model.transport.general_info.EditTransportGeneralInfoRequest;
 import tech.na_app.model.transport.general_info.EditTransportGeneralInfoResponse;
@@ -24,6 +25,7 @@ import tech.na_app.model.transport.using_reason.EditTransportUsingReasonInfoResp
 import tech.na_app.repository.TransportRepository;
 import tech.na_app.utils.SequenceGeneratorService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -286,6 +288,32 @@ public class TransportService {
         } catch (Exception e) {
             log.error(requestId + " Message: " + e.getMessage());
             return new EditTechnicalCertificateDopInfoResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public GetFuelResponse getFuel(String requestId) {
+        try {
+
+            List<GetFuelResponse.GetFuel> fuels = new ArrayList<>();
+
+            for (var value : Fuel.values()) {
+                fuels.add(
+                        GetFuelResponse.GetFuel.builder()
+                                .fuel(value)
+                                .name(value.getValue())
+                                .build()
+                );
+            }
+
+            return GetFuelResponse.builder()
+                    .fuels(fuels)
+                    .build();
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new GetFuelResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new GetFuelResponse(new ErrorObject(500, "Something went wrong"));
         }
     }
 
