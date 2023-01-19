@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tech.na_app.model.ErrorObject;
-import tech.na_app.model.enums.Fuel;
+import tech.na_app.model.enums.EnvironmentalStandard;
 
 import java.util.List;
 
@@ -14,14 +14,14 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetFuelResponse {
+public class GetEnvironmentalStandardResponse {
 
 
-    private List<GetFuel> fuels;
+    private List<GetEnvironmentalStandard> standards;
 
     private ErrorObject error;
 
-    public GetFuelResponse(ErrorObject error) {
+    public GetEnvironmentalStandardResponse(ErrorObject error) {
         this.error = error;
     }
 
@@ -29,16 +29,17 @@ public class GetFuelResponse {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class GetFuel {
+    public static class GetEnvironmentalStandard {
         @Schema(
-                example = "Gasoline"
+                example = "EURO 1"
         )
         private String name;
-        @Schema(
-                example = "GASOLINE"
-        )
-        private Fuel fuel;
 
+        @Schema(
+                example = "EURO_1"
+        )
+        private EnvironmentalStandard standard;
     }
+
 
 }

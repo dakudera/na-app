@@ -196,4 +196,23 @@ public class TransportController {
         }
     }
 
+    @GetMapping("environmental_standard")
+    public GetEnvironmentalStandardResponse getEnvironmentalStandard(
+            @RequestHeader(name = "Authorization") String token
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+
+            log.info(requestId + " Request to /getEnvironmentalStandard ");
+            log.info(requestId + " User: " + user);
+            GetEnvironmentalStandardResponse response = transportService.getEnvironmentalStandard(requestId);
+            log.info(requestId + " Response from /getEnvironmentalStandard: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new GetEnvironmentalStandardResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
 }

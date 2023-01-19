@@ -10,6 +10,7 @@ import tech.na_app.entity.transport.*;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
+import tech.na_app.model.enums.EnvironmentalStandard;
 import tech.na_app.model.enums.Fuel;
 import tech.na_app.model.transport.*;
 import tech.na_app.model.transport.general_info.EditTransportGeneralInfoRequest;
@@ -314,6 +315,33 @@ public class TransportService {
         } catch (Exception e) {
             log.error(requestId + " Message: " + e.getMessage());
             return new GetFuelResponse(new ErrorObject(500, "Something went wrong"));
+        }
+    }
+
+    public GetEnvironmentalStandardResponse getEnvironmentalStandard(String requestId) {
+        try {
+
+            List<GetEnvironmentalStandardResponse.GetEnvironmentalStandard> standards = new ArrayList<>();
+
+            for (var value : EnvironmentalStandard.values()) {
+                standards.add(
+                        GetEnvironmentalStandardResponse.GetEnvironmentalStandard
+                                .builder()
+                                .standard(value)
+                                .name(value.getValue())
+                                .build()
+                );
+            }
+
+            return GetEnvironmentalStandardResponse.builder()
+                    .standards(standards)
+                    .build();
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new GetEnvironmentalStandardResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        } catch (Exception e) {
+            log.error(requestId + " Message: " + e.getMessage());
+            return new GetEnvironmentalStandardResponse(new ErrorObject(500, "Something went wrong"));
         }
     }
 

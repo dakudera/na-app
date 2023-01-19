@@ -1,7 +1,9 @@
 package tech.na_app.model.enums;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public enum Fuel {
 
@@ -15,7 +17,4 @@ public enum Fuel {
 
     private final String value;
 
-    public String getValue() {
-        return value;
-    }
 }
