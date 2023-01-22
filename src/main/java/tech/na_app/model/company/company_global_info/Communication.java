@@ -1,5 +1,6 @@
-package tech.na_app.model.company;
+package tech.na_app.model.company.company_global_info;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,14 @@ import java.util.List;
 @AllArgsConstructor
 public class Communication {
 
+    @Schema(
+            example = "+38012345678"
+    )
     private List<String> phone_number;
+
+    @Schema(
+            example = "example@gmail.com"
+    )
     private String email;
 
 }
