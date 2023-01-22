@@ -1,4 +1,4 @@
-package tech.na_app.model.company;
+package tech.na_app.model.company.conpany_name;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

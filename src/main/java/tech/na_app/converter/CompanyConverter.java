@@ -63,14 +63,14 @@ public class CompanyConverter {
         return GetCompanyInfoResponse.builder()
                 .ukrName(
                         company.getUkr_name() != null ?
-                                tech.na_app.model.company.CompanyName.builder()
+                                tech.na_app.model.company.conpany_name.CompanyName.builder()
                                         .full_name(company.getUkr_name().getFull_name())
                                         .short_name(company.getUkr_name().getShort_name())
                                         .build() : null
                 )
                 .engName(
                         company.getEng_name() != null ?
-                                tech.na_app.model.company.CompanyName.builder()
+                                tech.na_app.model.company.conpany_name.CompanyName.builder()
                                         .full_name(company.getEng_name().getFull_name())
                                         .short_name(company.getEng_name().getShort_name())
                                         .build() : null
@@ -93,7 +93,7 @@ public class CompanyConverter {
                 )
                 .identificationDetails(
                         company.getIdentification_details() != null ?
-                                tech.na_app.model.company.IdentificationDetails.builder()
+                                tech.na_app.model.company.identification_detalis.IdentificationDetails.builder()
                                         .edrpou(company.getIdentification_details().getEdrpou())
                                         .registration_certificate(company.getIdentification_details().getRegistration_certificate())
                                         .ipn(company.getIdentification_details().getIpn())

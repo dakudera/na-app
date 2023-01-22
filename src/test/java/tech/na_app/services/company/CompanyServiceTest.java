@@ -15,6 +15,9 @@ import tech.na_app.model.ErrorObject;
 import tech.na_app.model.company.company_global_info.Communication;
 import tech.na_app.model.company.company_global_info.EditCompanyGlobalInfoRequest;
 import tech.na_app.model.company.company_global_info.EditCompanyGlobalInfoResponse;
+import tech.na_app.model.company.identification_detalis.EditIdentificationDetailsRequest;
+import tech.na_app.model.company.identification_detalis.EditIdentificationDetailsResponse;
+import tech.na_app.model.company.identification_detalis.IdentificationDetails;
 import tech.na_app.repository.CompanyRepository;
 import tech.na_app.utils.SequenceGeneratorService;
 import tech.na_app.utils.TestUtils;
@@ -66,7 +69,7 @@ class CompanyServiceTest {
                                 .address(null)
                                 .postal_address("ylica pupi i lupi")
                                 .communication(Communication.builder()
-                                        .email("pupailupa@Ggmail.com")
+                                        .email("pupailupa@gmail.com")
                                         .phone_number(List.of("0662744321", "0662744123"))
                                         .build())
                                 .banking_details(tech.na_app.model.company.company_global_info.BankingDetails.builder()
@@ -99,7 +102,7 @@ class CompanyServiceTest {
                                 .address("ulica lamana")
                                 .postal_address(null)
                                 .communication(Communication.builder()
-                                        .email("pupailupa@Ggmail.com")
+                                        .email("pupailupa@gmail.com")
                                         .phone_number(List.of("0662744321", "0662744123"))
                                         .build())
                                 .banking_details(tech.na_app.model.company.company_global_info.BankingDetails.builder()
@@ -162,7 +165,7 @@ class CompanyServiceTest {
                                 .address("ulica lamana")
                                 .postal_address("ylica pupi i lupi")
                                 .communication(Communication.builder()
-                                        .email("pupailupa@Ggmail.com")
+                                        .email("pupailupa@gmail.com")
                                         .phone_number(List.of("0662744321", "0662744123"))
                                         .build())
                                 .banking_details(null)
@@ -192,7 +195,7 @@ class CompanyServiceTest {
                                 .address("ulica lamana")
                                 .postal_address("ylica pupi i lupi")
                                 .communication(Communication.builder()
-                                        .email("pupailupa@Ggmail.com")
+                                        .email("pupailupa@gmail.com")
                                         .phone_number(List.of("0662744321", "0662744123"))
                                         .build())
                                 .banking_details(tech.na_app.model.company.company_global_info.BankingDetails.builder()
@@ -253,7 +256,7 @@ class CompanyServiceTest {
                                 .address("panikaxi")
                                 .postal_address("ylica pupi i lupi")
                                 .communication(Communication.builder()
-                                        .email("pupailupa@Ggmail.com")
+                                        .email("pupailupa@ggmail.com")
                                         .phone_number(List.of("0662744321", "0662744123"))
                                         .build())
                                 .banking_details(tech.na_app.model.company.company_global_info.BankingDetails.builder()
@@ -286,7 +289,7 @@ class CompanyServiceTest {
                                 .address("ulica lamana")
                                 .postal_address("ylica pupi i lupi")
                                 .communication(Communication.builder()
-                                        .email("pupailupa@Ggmail.com")
+                                        .email("pupailupa@gmail.com")
                                         .phone_number(List.of("0662744321", "0662744123"))
                                         .build())
                                 .banking_details(tech.na_app.model.company.company_global_info.BankingDetails.builder()
@@ -316,7 +319,7 @@ class CompanyServiceTest {
                                 .address("ulica lamana")
                                 .postal_address("ylica pupi i lupi")
                                 .communication(Communication.builder()
-                                        .email("pupailupa@Ggmail.com")
+                                        .email("pupailupa@gmail.com")
                                         .phone_number(List.of("0662744321", "0662744123"))
                                         .build())
                                 .banking_details(tech.na_app.model.company.company_global_info.BankingDetails.builder()
@@ -342,4 +345,154 @@ class CompanyServiceTest {
                 )
         );
     }
+
+    @ParameterizedTest
+    @MethodSource("editIdentificationDetails$BadDataSet")
+    void editIdentificationDetails$BadRequest(EditIdentificationDetailsRequest request, EditIdentificationDetailsResponse expectedResponse,
+                                              Optional<Company> mockedCompany
+    ) {
+        User user = User.builder().id(1).companyId(1).build();
+
+        lenient().when(companyRepository.findById(user.getId())).thenReturn(mockedCompany);
+
+        EditIdentificationDetailsResponse response = companyService.editIdentificationDetails(TestUtils.TEST_REQUEST_ID, user, request);
+
+        assertEquals(expectedResponse, response);
+    }
+
+    private static Stream<Arguments> editIdentificationDetails$BadDataSet() {
+        return Stream.of(
+                //-1-// request is NULL
+                Arguments.of(
+                        null,
+
+                        EditIdentificationDetailsResponse.builder()
+                                .error(new ErrorObject(400, "BAD REQUEST"))
+                                .build(),
+
+                        Optional.of(Company.builder()
+                                .id(1)
+                                .identification_details(tech.na_app.entity.company.IdentificationDetails.builder()
+                                        .edrpou("21312313")
+                                        .registration_certificate("789461346")
+                                        .ipn("11111515111111111")
+                                        .accounting_tax_info("some tax info")
+                                        .tax_form("4")
+                                        .build())
+                                .build())
+
+                ),
+                //-2-// identification_details is NULL
+                Arguments.of(
+                        EditIdentificationDetailsRequest.builder()
+                                .identification_details(null)
+                                .build(),
+
+                        EditIdentificationDetailsResponse.builder()
+                                .error(new ErrorObject(400, "BAD REQUEST"))
+                                .build(),
+
+                        Optional.of(Company.builder()
+                                .id(1)
+                                .identification_details(tech.na_app.entity.company.IdentificationDetails.builder()
+                                        .edrpou("21312313")
+                                        .registration_certificate("789461346")
+                                        .ipn("11111515111111111")
+                                        .accounting_tax_info("some tax info")
+                                        .tax_form("4")
+                                        .build())
+                                .build())
+
+                ),
+                //-3-//  Not found company
+                Arguments.of(
+                        EditIdentificationDetailsRequest.builder()
+                                .identification_details(IdentificationDetails.builder()
+                                        .edrpou("21312313")
+                                        .registration_certificate("789461346")
+                                        .ipn("11111515111111111")
+                                        .accounting_tax_info("some tax info")
+                                        .tax_form("4")
+                                        .build())
+                                .build(),
+
+                        EditIdentificationDetailsResponse.builder()
+                                .error(new ErrorObject(404, "Not Found"))
+                                .build(),
+
+                        Optional.empty()
+
+                )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("editIdentificationDetails$GoodDataSet")
+    void editIdentificationDetails$GoodRequest(EditIdentificationDetailsRequest request, EditIdentificationDetailsResponse expectedResponse,
+                                               Optional<Company> mockedCompany
+    ) {
+        User user = User.builder().id(1).companyId(1).build();
+
+        lenient().when(companyRepository.findById(user.getId())).thenReturn(mockedCompany);
+
+        EditIdentificationDetailsResponse response = companyService.editIdentificationDetails(TestUtils.TEST_REQUEST_ID, user, request);
+
+        assertEquals(expectedResponse, response);
+    }
+
+    private static Stream<Arguments> editIdentificationDetails$GoodDataSet() {
+        return Stream.of(
+                //-1-//
+                Arguments.of(
+                        EditIdentificationDetailsRequest.builder()
+                                .identification_details(IdentificationDetails.builder()
+                                        .edrpou("21312313")
+                                        .registration_certificate("789461346")
+                                        .ipn("11111515111111111")
+                                        .accounting_tax_info("some tax info")
+                                        .tax_form("4")
+                                        .build())
+                                .build(),
+
+                        EditIdentificationDetailsResponse.builder()
+                                .error(new ErrorObject(0))
+                                .build(),
+
+                        Optional.of(Company.builder()
+                                .id(1)
+                                .identification_details(tech.na_app.entity.company.IdentificationDetails.builder()
+                                        .edrpou("21312313")
+                                        .registration_certificate("789461346")
+                                        .ipn("11111515111111111")
+                                        .accounting_tax_info("some tax info")
+                                        .tax_form("4")
+                                        .build())
+                                .build())
+
+                ),
+                //-2-// Company identification_details is NULL in DB
+                Arguments.of(
+                        EditIdentificationDetailsRequest.builder()
+                                .identification_details(IdentificationDetails.builder()
+                                        .edrpou("21312313")
+                                        .registration_certificate("789461346")
+                                        .ipn("11111515111111111")
+                                        .accounting_tax_info("some tax info")
+                                        .tax_form("4")
+                                        .build())
+                                .build(),
+
+                        EditIdentificationDetailsResponse.builder()
+                                .error(new ErrorObject(0))
+                                .build(),
+
+                        Optional.of(Company.builder()
+                                .id(1)
+                                .identification_details(null)
+                                .build())
+
+                )
+        );
+    }
+
 }

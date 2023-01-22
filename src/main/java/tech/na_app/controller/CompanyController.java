@@ -9,6 +9,10 @@ import tech.na_app.model.ErrorObject;
 import tech.na_app.model.company.*;
 import tech.na_app.model.company.company_global_info.EditCompanyGlobalInfoRequest;
 import tech.na_app.model.company.company_global_info.EditCompanyGlobalInfoResponse;
+import tech.na_app.model.company.conpany_name.EditCompanyNameRequest;
+import tech.na_app.model.company.conpany_name.EditCompanyNameResponse;
+import tech.na_app.model.company.identification_detalis.EditIdentificationDetailsRequest;
+import tech.na_app.model.company.identification_detalis.EditIdentificationDetailsResponse;
 import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.services.company.CompanyService;
 import tech.na_app.utils.HelpUtil;
@@ -91,7 +95,7 @@ public class CompanyController {
         }
     }
 
-    @PostMapping("edit/company_global_info")
+    @PostMapping("edit/global_info")
     public EditCompanyGlobalInfoResponse editCompanyGlobalInfo(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditCompanyGlobalInfoRequest request
     ) {
@@ -106,6 +110,24 @@ public class CompanyController {
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new EditCompanyGlobalInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
+        }
+    }
+
+    @PostMapping("edit/identification_details")
+    public EditIdentificationDetailsResponse editIdentificationDetails(
+            @RequestHeader(name = "Authorization") String token, @RequestBody EditIdentificationDetailsRequest request
+    ) {
+        String requestId = HelpUtil.getUUID();
+        try {
+            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            log.info(requestId + " Request to /editIdentificationDetails");
+            log.info(requestId + " User: " + user);
+            EditIdentificationDetailsResponse response = companyService.editIdentificationDetails(requestId, user, request);
+            log.info(requestId + " Response from /editIdentificationDetails: " + response);
+            return response;
+        } catch (ApiException e) {
+            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
+            return new EditIdentificationDetailsResponse(new ErrorObject(e.getCode(), e.getMessage()));
         }
     }
 

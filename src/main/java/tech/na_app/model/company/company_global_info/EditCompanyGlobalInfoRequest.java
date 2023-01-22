@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EditCompanyGlobalInfoRequest {
 
-    @Schema(example = "с. Новоолександрівка, Дніпропетровська область")
+    @Schema(example = "s. Novooleksandrivka, Dnіpropetrovska oblast")
     private String address;
 
-    @Schema(example = "вул. Центральна, буд. 90, с. Новоолександрівка, Дніпровський район, Дн…")
+    @Schema(example = "vul. Centralna, bud. 90, s. Novooleksandrivka, Dnіprovskij rajon, Dnіpropetrovska oblast, Ukraina, 52070")
     private String postal_address;
 
     private Communication communication;
