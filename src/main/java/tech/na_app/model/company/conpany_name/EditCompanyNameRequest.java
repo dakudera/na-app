@@ -1,4 +1,4 @@
-package tech.na_app.model.company;
+package tech.na_app.model.company.conpany_name;
 
 import lombok.Data;
 import tech.na_app.entity.company.CompanyName;
