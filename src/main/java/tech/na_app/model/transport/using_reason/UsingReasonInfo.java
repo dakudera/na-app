@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
@@ -15,6 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class UsingReasonInfo {
 
+    @NotEmpty
     private String num_and_name_contract;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
@@ -23,8 +26,10 @@ public class UsingReasonInfo {
             pattern = "dd.MM.yyyy",
             type = "string"
     )
+    @NotNull
     private Date date_start;
 
+    @NotNull
     private Boolean is_contract_fixed_term;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
@@ -33,6 +38,7 @@ public class UsingReasonInfo {
             pattern = "dd.MM.yyyy",
             type = "string"
     )
+    @NotNull
     private Date date_end;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
@@ -41,5 +47,6 @@ public class UsingReasonInfo {
             pattern = "dd.MM.yyyy",
             type = "string"
     )
+    @NotNull
     private Date date_next_start;
 }

@@ -8,6 +8,7 @@ import tech.na_app.model.auth.AuthRequest;
 import tech.na_app.model.auth.LoginResponse;
 import tech.na_app.model.auth.TokenRefreshRequest;
 import tech.na_app.services.authorization.AuthorizationService;
+import tech.na_app.utils.ValidateHelper;
 
 import javax.validation.Valid;
 
@@ -18,12 +19,14 @@ public class AuthorizationController {
     private final AuthorizationService authorizationService;
 
     @PostMapping("/authenticate")
-    public LoginResponse generateToken(@RequestBody AuthRequest authRequest) {
-        return authorizationService.login(authRequest);
+    public LoginResponse generateToken(@RequestBody AuthRequest request) {
+        ValidateHelper.validateInput(request);
+        return authorizationService.login(request);
     }
 
     @PostMapping("/refreshToken")
     public LoginResponse refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
+        ValidateHelper.validateInput(request);
         return authorizationService.refreshToken(request);
     }
 

@@ -15,6 +15,7 @@ import tech.na_app.model.user.employee.GetAllEmployeeResponse;
 import tech.na_app.services.user.EmployeeService;
 import tech.na_app.services.user.UserService;
 import tech.na_app.utils.HelpUtil;
+import tech.na_app.utils.ValidateHelper;
 import tech.na_app.utils.jwt.AuthChecker;
 
 @Log4j2
@@ -33,6 +34,7 @@ public class UserController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /saveNewUser: " + request);
             log.info(requestId + " User: " + user);
             SaveNewUserResponse response = userService.saveNewUser(requestId, user, request);
@@ -69,6 +71,7 @@ public class UserController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /resetPassword: " + request);
             log.info(requestId + " User: " + user);
             ErrorObject response = userService.resetPassword(requestId, user, request);

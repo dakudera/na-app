@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
@@ -15,8 +17,10 @@ import java.util.Date;
 @AllArgsConstructor
 public class EditTechnicalCertificateRequest {
 
+    @NotNull
     private Integer id;
 
+    @NotNull
     private TechnicalCertificate technical_certificate;
 
     @Data
@@ -28,11 +32,13 @@ public class EditTechnicalCertificateRequest {
         @Schema(
                 example = "CTX 915595"
         )
+        @NotEmpty
         private String num_and_series;
 
         @Schema(
                 example = "ABC 1249"
         )
+        @NotEmpty
         private String issued_by;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
@@ -41,6 +47,8 @@ public class EditTechnicalCertificateRequest {
                 pattern = "dd.MM.yyyy",
                 type = "string"
         )
+
+        @NotNull
         private Date date_end;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
@@ -49,6 +57,7 @@ public class EditTechnicalCertificateRequest {
                 pattern = "dd.MM.yyyy",
                 type = "string"
         )
+        @NotNull
         private Date date_issue;
     }
 }

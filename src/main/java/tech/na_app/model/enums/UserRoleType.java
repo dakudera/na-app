@@ -1,5 +1,8 @@
 package tech.na_app.model.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum UserRoleType {
 
     SUPER_ADMIN(1),
@@ -19,9 +22,5 @@ public enum UserRoleType {
 
     UserRoleType(Integer value) {
         this.value = value;
-    }
-
-    public Integer getValue() {
-        return value;
     }
 }

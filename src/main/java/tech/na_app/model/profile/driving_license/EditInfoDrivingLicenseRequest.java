@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import tech.na_app.model.enums.DriverLicenceCategory;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 import java.util.Set;
 
@@ -20,8 +21,10 @@ public class EditInfoDrivingLicenseRequest {
     @Schema(
             example = "1"
     )
+    @NotEmpty
     private Integer userId;
 
+    @NotEmpty
     private Set<DriverLicenceCategory> categories;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
@@ -30,6 +33,7 @@ public class EditInfoDrivingLicenseRequest {
             pattern = "dd.MM.yyyy",
             type = "string"
     )
+    @NotEmpty
     private Date date_issue;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
@@ -38,5 +42,6 @@ public class EditInfoDrivingLicenseRequest {
             pattern = "dd.MM.yyyy",
             type = "string"
     )
+    @NotEmpty
     private Date date_end;
 }

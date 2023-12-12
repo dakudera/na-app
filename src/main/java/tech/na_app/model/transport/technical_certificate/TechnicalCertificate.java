@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import tech.na_app.model.transport.technical_certificate_dop_info.TechnicalCertificateDopInfo;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
@@ -20,11 +22,13 @@ public class TechnicalCertificate {
     @Schema(
             example = "CTX 915595"
     )
+    @NotEmpty
     private String num_and_series;
 
     @Schema(
             example = "ABC 1249"
     )
+    @NotEmpty
     private String issued_by;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
@@ -33,6 +37,7 @@ public class TechnicalCertificate {
             pattern = "dd.MM.yyyy",
             type = "string"
     )
+    @NotNull
     private Date date_end;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
@@ -41,6 +46,7 @@ public class TechnicalCertificate {
             pattern = "dd.MM.yyyy",
             type = "string"
     )
+    @NotNull
     private Date date_issue;
 
     private TechnicalCertificateDopInfo technical_certificate_dop_info;

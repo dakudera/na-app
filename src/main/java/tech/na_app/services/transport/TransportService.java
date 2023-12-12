@@ -42,9 +42,6 @@ public class TransportService {
 
     public SaveNewTransportResponse saveNewTransport(String requestId, SaveNewTransportRequest request, User user) {
         try {
-            if (Objects.isNull(request)) {
-                throw new ApiException(400, "BAD_REQUEST");
-            }
             TransportSequence sequenceNumber = (TransportSequence) sequenceGeneratorService.getSequenceNumber(Transport.SEQUENCE_NAME, TransportSequence.class);
             transportRepository.save(transportConverter.convertToTransportEntity(request, sequenceNumber, user));
             return new SaveNewTransportResponse(new ErrorObject(0));
@@ -181,13 +178,6 @@ public class TransportService {
 
     public EditTechnicalCertificateResponse editTechnicalCertificate(String requestId, EditTechnicalCertificateRequest request) {
         try {
-            if (Objects.isNull(request)) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getTechnical_certificate()) || Objects.isNull(request.getId())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
             Transport transport = transportRepository.findById(request.getId())
                     .orElseThrow(() -> new ApiException(404, "Not Found"));
 
@@ -221,14 +211,6 @@ public class TransportService {
 
     public EditNomenclatureNameResponse editNomenclatureName(String requestId, EditNomenclatureNameRequest request) {
         try {
-            if (Objects.isNull(request)) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
-            if (Objects.isNull(request.getNomenclature_name()) || Objects.isNull(request.getId())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
             Transport transport = transportRepository.findById(request.getId())
                     .orElseThrow(() -> new ApiException(404, "Not Found"));
 
@@ -256,14 +238,6 @@ public class TransportService {
 
     public EditTechnicalCertificateDopInfoResponse editTechnicalCertificateDopInfo(String requestId, EditTechnicalCertificateDopInfoRequest request) {
         try {
-            if (Objects.isNull(request)) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
-            if (Objects.isNull(request.getTechnical_certificate_dop_info()) || Objects.isNull(request.getId())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
             Transport transport = transportRepository.findById(request.getId())
                     .orElseThrow(() -> new ApiException(404, "Not Found"));
 

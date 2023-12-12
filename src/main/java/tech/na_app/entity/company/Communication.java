@@ -13,7 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 public class Communication {
 
+
     private List<String> phone_number;
+
     private String email;
 
 }

@@ -12,6 +12,7 @@ import tech.na_app.model.profile.driving_license.*;
 import tech.na_app.model.profile.education.*;
 import tech.na_app.services.user_profile.UserProfileService;
 import tech.na_app.utils.HelpUtil;
+import tech.na_app.utils.ValidateHelper;
 import tech.na_app.utils.jwt.AuthChecker;
 
 @Log4j2
@@ -30,6 +31,7 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /saveInfoDrivingLicense: " + request);
             log.info(requestId + " User: " + user);
             SaveInfoDrivingLicenseResponse response = userProfileService.saveInfoDrivingLicense(requestId, request);
@@ -48,6 +50,7 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /saveInfoEducation: " + request);
             log.info(requestId + " User: " + user);
             SaveInfoEducationResponse response = userProfileService.saveInfoEducation(requestId, request);
@@ -66,6 +69,7 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editInfoDrivingLicense: " + request);
             log.info(requestId + " User: " + user);
             EditInfoDrivingLicenseResponse response = userProfileService.editInfoDrivingLicense(requestId, user, request);
@@ -85,6 +89,7 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editInfoEducation: " + request);
             log.info(requestId + " User: " + user);
             EditInfoEducationResponse response = userProfileService.editInfoEducation(requestId, user, request);
@@ -103,6 +108,7 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /removeInfoDrivingLicense: " + request);
             log.info(requestId + " User: " + user);
             RemoveInfoDrivingLicenseResponse response = userProfileService.removeInfoDrivingLicense(requestId, user, request);
@@ -121,6 +127,7 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /removeInfoEducation: " + request);
             log.info(requestId + " User: " + user);
             RemoveInfoEducationResponse response = userProfileService.removeInfoEducation(requestId, user, request);
@@ -139,6 +146,7 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /saveInternship: " + request);
             log.info(requestId + " User: " + user);
             SaveInternshipResponse response = userProfileService.saveInternship(requestId, user, request);
@@ -157,6 +165,7 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /removeInternship: " + request);
             log.info(requestId + " User: " + user);
             SaveInternshipResponse response = userProfileService.removeInternship(requestId, user, request);
@@ -175,6 +184,7 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /getUserProfile: " + request);
             log.info(requestId + " User: " + user);
             GetUserProfileResponse response = userProfileService.getUserProfile(requestId, user, request);
@@ -193,6 +203,7 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /saveUserProfile: " + request);
             log.info(requestId + " User: " + user);
             SaveUserProfileResponse response = userProfileService.saveUserProfile(requestId, request);
@@ -211,6 +222,7 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /existDocument: " + request);
             log.info(requestId + " User: " + user);
             ExistDocumentResponse response = userProfileService.saveExistDocument(requestId, user, request);
@@ -229,6 +241,7 @@ public class UserProfileController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editUserProfile: " + request);
             EditUserProfileResponse response = userProfileService.editUserProfile(requestId, user, request);
             log.info(requestId + " Response from /editUserProfile: " + response);

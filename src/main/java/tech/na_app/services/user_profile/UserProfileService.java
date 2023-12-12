@@ -15,7 +15,6 @@ import tech.na_app.model.profile.driving_license.*;
 import tech.na_app.model.profile.education.*;
 import tech.na_app.repository.*;
 import tech.na_app.services.user.UserHelperComponent;
-import tech.na_app.utils.ParameterValidator;
 import tech.na_app.utils.SequenceGeneratorService;
 
 import java.util.Date;
@@ -76,21 +75,6 @@ public class UserProfileService {
 
     public SaveInfoDrivingLicenseResponse saveInfoDrivingLicense(String requestId, SaveInfoDrivingLicenseRequest request) {
         try {
-            if (Objects.isNull(request)) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getUserId())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getCategories()) || request.getCategories().isEmpty()) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getDate_end())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getDate_issue())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
             if (drivingLicenseRepository.findByUserId(request.getUserId()).isPresent()) {
                 throw new ApiException(400, "User already has driving license");
             }
@@ -114,16 +98,6 @@ public class UserProfileService {
 
     public EditInfoEducationResponse editInfoEducation(String requestId, User user, EditInfoEducationRequest request) {
         try {
-            if (request.getCertificate() == null || request.getCertificate().isEmpty()) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (request.getSpecialty() == null || request.getSpecialty().isEmpty()) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (request.getAdvanced_qualification() == null || request.getAdvanced_qualification().isEmpty()) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
             User userInfo = choosingUser(user, request.getUserId());
 
             Optional<Education> educationOptional = educationRepository.findByIdAndUserId(request.getId(), userInfo.getId());
@@ -145,19 +119,6 @@ public class UserProfileService {
 
     public EditInfoDrivingLicenseResponse editInfoDrivingLicense(String requestId, User user, EditInfoDrivingLicenseRequest request) {
         try {
-            if (Objects.isNull(request)) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getCategories()) || request.getCategories().isEmpty()) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getDate_end())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getDate_issue())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
             User userInfo = choosingUser(user, request.getUserId());
 
             DrivingLicense drivingLicense = drivingLicenseRepository.findByUserId(userInfo.getId())
@@ -197,9 +158,6 @@ public class UserProfileService {
 
     public RemoveInfoDrivingLicenseResponse removeInfoDrivingLicense(String requestId, User user, RemoveInfoDrivingLicenseRequest request) {
         try {
-            if (Objects.isNull(request.getUserId())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
             User userInfo = choosingUser(user, request.getUserId());
 
             DrivingLicense drivingLicense = drivingLicenseRepository.findByUserId(userInfo.getId())
@@ -217,16 +175,6 @@ public class UserProfileService {
 
     public SaveInternshipResponse saveInternship(String requestId, User user, SaveInternshipRequest request) {
         try {
-            if (request.getUserId() == null) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (request.getDate() == null) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (request.getDoc_number() == null || request.getDoc_number().isEmpty()) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
             User userInfo = choosingUser(user, request.getUserId());
 
             if (request.getId() == null) {
@@ -318,10 +266,6 @@ public class UserProfileService {
 
     public SaveUserProfileResponse saveUserProfile(String requestId, SaveUserProfileRequest request) {
         try {
-            if (request.getId() == null) {
-                throw new ApiException(400, "BAD_REQUEST");
-            }
-
             Optional<User> userOptional = userRepository.findById(request.getId());
             if (userOptional.isEmpty()) {
                 log.info(requestId + " User was not found");
@@ -331,13 +275,8 @@ public class UserProfileService {
             User user = userOptional.get();
             user.setUpdate_date(new Date());
 
-            String email = request.getEmail();
-            if (!ParameterValidator.emailIsValid(request.getEmail())) {
-                throw new ApiException(500, "Email is invalid");
-            }
-
             Profile profile = Profile.builder()
-                    .email(email)
+                    .email(request.getEmail())
                     .phone(request.getPhone())
                     .fio(request.getFio())
                     .acc_order_number(request.getAcc_order_number())
@@ -366,10 +305,6 @@ public class UserProfileService {
 
     public ExistDocumentResponse saveExistDocument(String requestId, User user, ExistDocumentRequest request) {
         try {
-            if (request == null) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
             User userInfo = choosingUser(user, request.getUserId());
 
             Optional<AvailableDocuments> availableDocumentsOptional = availableDocumentsRepository.findByUserId(userInfo.getId());
@@ -409,22 +344,10 @@ public class UserProfileService {
 
     public EditUserProfileResponse editUserProfile(String requestId, User userThatMakeRequest, EditUserProfileRequest request) {
         try {
-            if (Objects.isNull(request)) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getRole())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
-            String email = request.getEmail();
-            if (!ParameterValidator.emailIsValid(request.getEmail())) {
-                throw new ApiException(500, "Email is invalid");
-            }
-
             User userInfo = choosingUser(userThatMakeRequest, request.getId());
 
             Profile profile = Profile.builder()
-                    .email(email)
+                    .email(request.getEmail())
                     .phone(request.getPhone())
                     .fio(request.getFio())
                     .acc_order_number(request.getAcc_order_number())

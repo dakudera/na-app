@@ -37,16 +37,6 @@ public class UserService {
 
     public SaveNewUserResponse saveNewUser(String requestId, User user, SaveNewUserRequest request) {
         try {
-            if (request.getLogin() == null || request.getLogin().isEmpty()
-                    || request.getPassword() == null || request.getPassword().isEmpty()) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
-            if (!PasswordUtils.isValid(request.getPassword())) {
-                log.info(requestId + " New password not verified");
-                throw new ApiException(400, "Incorrect request data");
-            }
-
             Integer companyId = null;
             if (!request.getRole().equals(UserRoleType.SUPER_ADMIN) && !user.getRole().equals(UserRoleType.SUPER_ADMIN)) {
                 Optional<Company> companyOptional = companyRepository.findById(user.getCompanyId());
@@ -106,21 +96,10 @@ public class UserService {
 
     public ErrorObject resetPassword(String requestId, User user, ResetPasswordRequest request) {
         try {
-            if (request.getNewPassword() == null || request.getNewPassword().isEmpty()
-                    || request.getOldPassword() == null || request.getOldPassword().isEmpty()) {
-                log.info(requestId + " Bad request: " + request);
-                throw new ApiException(400, "BAD_REQUEST");
-            }
 
             String encodeOldPassword = PasswordUtils.generateSecurePassword(request.getOldPassword(), user.getSalt());
             if (!encodeOldPassword.equals(user.getPassword())) {
                 log.info(requestId + " Incorrect password");
-                throw new ApiException(400, "Incorrect request data");
-            }
-
-
-            if (!PasswordUtils.isValid(request.getNewPassword())) {
-                log.info(requestId + " New password not verified");
                 throw new ApiException(400, "Incorrect request data");
             }
 

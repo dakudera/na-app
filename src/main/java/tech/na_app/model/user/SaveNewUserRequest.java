@@ -6,6 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tech.na_app.model.enums.UserRoleType;
+import tech.na_app.utils.jwt.PasswordUtils;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Data
 @Builder
@@ -17,18 +22,22 @@ public class SaveNewUserRequest {
             example = "new user",
             required = true
     )
+    @NotEmpty
     private String login;
 
     @Schema(
             example = "secrete password",
             required = true
     )
+    @NotEmpty
+    @Pattern(regexp = PasswordUtils.PASSWORD_PATTERN)
     private String password;
 
     @Schema(
             example = "DRIVER",
             required = true
     )
+    @NotNull
     private UserRoleType role;
 
 

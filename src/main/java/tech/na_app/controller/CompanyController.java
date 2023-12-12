@@ -16,6 +16,7 @@ import tech.na_app.model.company.identification_detalis.EditIdentificationDetail
 import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.services.company.CompanyService;
 import tech.na_app.utils.HelpUtil;
+import tech.na_app.utils.ValidateHelper;
 import tech.na_app.utils.jwt.AuthChecker;
 
 @Log4j2
@@ -34,6 +35,7 @@ public class CompanyController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.SUPER_ADMIN);
+//            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /saveNewCompany: " + request);
             log.info(requestId + " User: " + user);
             SaveNewCompanyResponse response = companyService.saveNewCompany(requestId, request);
@@ -84,6 +86,7 @@ public class CompanyController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editCompanyName");
             log.info(requestId + " User: " + user);
             EditCompanyNameResponse response = companyService.editCompanyName(requestId, user, request);
@@ -102,6 +105,7 @@ public class CompanyController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editCompanyGlobalInfo");
             log.info(requestId + " User: " + user);
             EditCompanyGlobalInfoResponse response = companyService.editCompanyGlobalInfo(requestId, user, request);
@@ -120,6 +124,7 @@ public class CompanyController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editIdentificationDetails");
             log.info(requestId + " User: " + user);
             EditIdentificationDetailsResponse response = companyService.editIdentificationDetails(requestId, user, request);

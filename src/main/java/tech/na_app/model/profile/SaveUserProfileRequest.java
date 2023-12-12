@@ -6,6 +6,9 @@ import lombok.Data;
 import tech.na_app.entity.profile.AvailableDocuments;
 import tech.na_app.entity.profile.DrivingLicense;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -16,78 +19,95 @@ public class SaveUserProfileRequest {
             title = " user id",
             example = "1"
     )
+    @NotNull
     private Integer id;
 
     @Schema(
             example = "test@gmail.com"
     )
+    @Email
     private String email;
 
     @Schema(
             example = "+38012345678"
     )
+    @NotEmpty
     private String phone;
 
     @Schema(
             example = "Petro Ejik Perdole"
     )
+    @NotEmpty
     private String fio;
 
     @Schema(
             example = "1231231"
     )
+    @NotEmpty
     private String acc_order_number;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
     @Schema(
             example = "03.10.2023",
             pattern = "dd.MM.yyyy",
             type = "string"
     )
+    @NotNull
     private Date acc_order_date;
 
     @Schema(
             example = "20000.58",
             type = "number"
     )
+    @NotNull
     private BigDecimal salary;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")
     @Schema(
             example = "01.10.1993",
             pattern = "dd.MM.yyyy",
             type = "string"
     )
+    @NotNull
     private Date birthday;
 
     @Schema(
             example = "10",
             type = "string"
     )
+    @NotEmpty
     private String previous_work_exp;
 
     @Schema(
             example = "12",
             type = "string"
     )
+    @NotEmpty
     private String previous_info_work_mp;
 
     @Schema(
             example = "12",
             type = "string"
     )
+    @NotEmpty
     private String sufficient_experience_mp;
 
     @Schema(
             example = "Dnipro city, Faina street",
             type = "string"
     )
+    @NotEmpty
     private String registration_address;
 
     @Schema(
             example = "Dnipro city, Faina street",
             type = "string"
     )
+    @NotEmpty
     private String actual_address;
+    @NotNull
     private DrivingLicense driving_license;
+    @NotNull
     private AvailableDocuments available_documents;
 
 }

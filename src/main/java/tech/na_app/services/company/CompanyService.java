@@ -19,7 +19,6 @@ import tech.na_app.model.company.conpany_name.EditCompanyNameResponse;
 import tech.na_app.model.company.identification_detalis.EditIdentificationDetailsRequest;
 import tech.na_app.model.company.identification_detalis.EditIdentificationDetailsResponse;
 import tech.na_app.repository.CompanyRepository;
-import tech.na_app.utils.ParameterValidator;
 import tech.na_app.utils.SequenceGeneratorService;
 
 import java.util.*;
@@ -35,10 +34,6 @@ public class CompanyService {
 
     public SaveNewCompanyResponse saveNewCompany(String requestId, SaveNewCompanyRequest request) {
         try {
-            if (request == null) {
-                throw new ApiException(400, "BAD_REQUEST");
-            }
-
             CompanySequence sequenceNumber = (CompanySequence) sequenceGeneratorService.getSequenceNumber(User.SEQUENCE_NAME, CompanySequence.class);
 
             companyRepository.save(companyConverter.convertToCompanyEntity(request, sequenceNumber));
@@ -99,7 +94,7 @@ public class CompanyService {
 
     public EditCompanyNameResponse editCompanyName(String requestId, User user, EditCompanyNameRequest request) {
         try {
-            if (Objects.isNull(request) || Objects.isNull(user.getCompanyId())) {
+            if (Objects.isNull(user.getCompanyId())) {
                 throw new ApiException(400, "BAD REQUEST");
             }
 
@@ -145,26 +140,8 @@ public class CompanyService {
 
     public EditCompanyGlobalInfoResponse editCompanyGlobalInfo(String requestId, User user, EditCompanyGlobalInfoRequest request) {
         try {
-            if (Objects.isNull(request) || Objects.isNull(user.getCompanyId())) {
+            if (Objects.isNull(user.getCompanyId())) {
                 throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getAddress())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getPostal_address())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getBanking_details())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getCommunication())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
-            if (Objects.nonNull(request.getCommunication().getEmail())) {
-                if (!ParameterValidator.emailIsValid(request.getCommunication().getEmail())) {
-                    throw new ApiException(500, "Email is invalid");
-                }
             }
 
             Company company = companyRepository.findById(user.getCompanyId())
@@ -197,13 +174,6 @@ public class CompanyService {
 
     public EditIdentificationDetailsResponse editIdentificationDetails(String requestId, User user, EditIdentificationDetailsRequest request) {
         try {
-            if (Objects.isNull(request) || Objects.isNull(user.getCompanyId())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getIdentification_details())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
             Company company = companyRepository.findById(user.getCompanyId())
                     .orElseThrow(() -> new ApiException(404, "Not Found"));
 

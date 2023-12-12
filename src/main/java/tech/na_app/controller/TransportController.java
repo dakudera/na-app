@@ -20,6 +20,7 @@ import tech.na_app.model.transport.using_reason.EditTransportUsingReasonInfoRequ
 import tech.na_app.model.transport.using_reason.EditTransportUsingReasonInfoResponse;
 import tech.na_app.services.transport.TransportService;
 import tech.na_app.utils.HelpUtil;
+import tech.na_app.utils.ValidateHelper;
 import tech.na_app.utils.jwt.AuthChecker;
 
 
@@ -39,6 +40,7 @@ public class TransportController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /saveNewTransport: " + request);
             log.info(requestId + " User: " + user);
             SaveNewTransportResponse response = transportService.saveNewTransport(requestId, request, user);
@@ -67,10 +69,13 @@ public class TransportController {
     }
 
     @PostMapping("/get_transport_info")
-    public GetTransportInfoResponse getTransportInfo(@RequestHeader(name = "Authorization") String token, @RequestBody GetTransportInfoRequest request) {
+    public GetTransportInfoResponse getTransportInfo(
+            @RequestHeader(name = "Authorization") String token, @RequestBody GetTransportInfoRequest request
+    ) {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /getTransportInfo");
             log.info(requestId + " User: " + user);
             GetTransportInfoResponse response = transportService.getTransportInfo(requestId, user, request);
@@ -89,7 +94,7 @@ public class TransportController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
-
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editGeneralInfo");
             log.info(requestId + " User: " + user);
             EditTransportGeneralInfoResponse response = transportService.editTransportGeneralInfo(requestId, request);
@@ -108,7 +113,7 @@ public class TransportController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
-
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editUsingReasonInfo");
             log.info(requestId + " User: " + user);
             EditTransportUsingReasonInfoResponse response = transportService.editTransportUsingReasonInfo(requestId, request);
@@ -127,7 +132,7 @@ public class TransportController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
-
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editTechnicalCertificate: " + request);
             log.info(requestId + " User: " + user);
             EditTechnicalCertificateResponse response = transportService.editTechnicalCertificate(requestId, request);
@@ -146,7 +151,7 @@ public class TransportController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
-
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editNomenclatureName: " + request);
             log.info(requestId + " User: " + user);
             EditNomenclatureNameResponse response = transportService.editNomenclatureName(requestId, request);
@@ -165,7 +170,7 @@ public class TransportController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
-
+            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editTechnicalCertificateDopInfo: " + request);
             log.info(requestId + " User: " + user);
             EditTechnicalCertificateDopInfoResponse response = transportService.editTechnicalCertificateDopInfo(requestId, request);
@@ -184,7 +189,6 @@ public class TransportController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
-
             log.info(requestId + " Request to /getFuels ");
             log.info(requestId + " User: " + user);
             GetFuelResponse response = transportService.getFuel(requestId);
@@ -203,7 +207,6 @@ public class TransportController {
         String requestId = HelpUtil.getUUID();
         try {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
-
             log.info(requestId + " Request to /getEnvironmentalStandard ");
             log.info(requestId + " User: " + user);
             GetEnvironmentalStandardResponse response = transportService.getEnvironmentalStandard(requestId);
