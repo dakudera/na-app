@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.*;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
 import tech.na_app.model.ErrorObject;
-import tech.na_app.model.company.*;
+import tech.na_app.model.company.GetAllCompanyResponse;
+import tech.na_app.model.company.GetCompanyInfoResponse;
+import tech.na_app.model.company.SaveNewCompanyRequest;
+import tech.na_app.model.company.SaveNewCompanyResponse;
 import tech.na_app.model.company.company_global_info.EditCompanyGlobalInfoRequest;
 import tech.na_app.model.company.company_global_info.EditCompanyGlobalInfoResponse;
 import tech.na_app.model.company.conpany_name.EditCompanyNameRequest;
@@ -14,7 +17,12 @@ import tech.na_app.model.company.conpany_name.EditCompanyNameResponse;
 import tech.na_app.model.company.identification_detalis.EditIdentificationDetailsRequest;
 import tech.na_app.model.company.identification_detalis.EditIdentificationDetailsResponse;
 import tech.na_app.model.enums.UserRoleType;
-import tech.na_app.services.company.CompanyService;
+import tech.na_app.services.company.edit_data.EditCompanyGlobalInfoService;
+import tech.na_app.services.company.edit_data.EditCompanyNameService;
+import tech.na_app.services.company.edit_data.EditIdentificationDetailsServiceImpl;
+import tech.na_app.services.company.get_data.GetAllCompaniesService;
+import tech.na_app.services.company.get_data.GetCompanyInfoService;
+import tech.na_app.services.company.save_data.SaveNewCompanyService;
 import tech.na_app.utils.HelpUtil;
 import tech.na_app.utils.ValidateHelper;
 import tech.na_app.utils.jwt.AuthChecker;
@@ -26,7 +34,12 @@ import tech.na_app.utils.jwt.AuthChecker;
 public class CompanyController {
 
     private final AuthChecker authChecker;
-    private final CompanyService companyService;
+    private final EditIdentificationDetailsServiceImpl editIdentificationDetailsServiceImpl;
+    private final SaveNewCompanyService saveNewCompanyService;
+    private final GetAllCompaniesService getAllCompaniesService;
+    private final GetCompanyInfoService getCompanyInfoService;
+    private final EditCompanyNameService editCompanyNameService;
+    private final EditCompanyGlobalInfoService editCompanyGlobalInfoService;
 
     @PostMapping("save_new")
     public SaveNewCompanyResponse saveNewCompany(
@@ -38,7 +51,7 @@ public class CompanyController {
 //            ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /saveNewCompany: " + request);
             log.info(requestId + " User: " + user);
-            SaveNewCompanyResponse response = companyService.saveNewCompany(requestId, request);
+            SaveNewCompanyResponse response = saveNewCompanyService.saveNewCompany(requestId, request);
             log.info(requestId + " Response from /saveNewCompany: " + response);
             return response;
         } catch (ApiException e) {
@@ -54,7 +67,7 @@ public class CompanyController {
             User user = authChecker.checkToken(token, UserRoleType.SUPER_ADMIN);
             log.info(requestId + " Request to /getAllCompany");
             log.info(requestId + " User: " + user);
-            GetAllCompanyResponse response = companyService.getAllCompanies(requestId);
+            GetAllCompanyResponse response = getAllCompaniesService.getAllCompanies(requestId);
             log.info(requestId + " Response from /getAllCompany: " + response);
             return response;
         } catch (ApiException e) {
@@ -70,7 +83,7 @@ public class CompanyController {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /getCompanyInfo");
             log.info(requestId + " User: " + user);
-            GetCompanyInfoResponse response = companyService.getCompanyInfo(requestId, user);
+            GetCompanyInfoResponse response = getCompanyInfoService.getCompanyInfo(requestId, user);
             log.info(requestId + " Response from /getCompanyInfo: " + response);
             return response;
         } catch (ApiException e) {
@@ -79,7 +92,7 @@ public class CompanyController {
         }
     }
 
-    @PostMapping("edit/company_name")
+    @PutMapping("edit/company_name")
     public EditCompanyNameResponse editCompanyName(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditCompanyNameRequest request
     ) {
@@ -89,7 +102,7 @@ public class CompanyController {
             ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editCompanyName");
             log.info(requestId + " User: " + user);
-            EditCompanyNameResponse response = companyService.editCompanyName(requestId, user, request);
+            EditCompanyNameResponse response = editCompanyNameService.editCompanyName(requestId, user, request);
             log.info(requestId + " Response from /editCompanyName: " + response);
             return response;
         } catch (ApiException e) {
@@ -98,7 +111,7 @@ public class CompanyController {
         }
     }
 
-    @PostMapping("edit/global_info")
+    @PutMapping("edit/global_info")
     public EditCompanyGlobalInfoResponse editCompanyGlobalInfo(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditCompanyGlobalInfoRequest request
     ) {
@@ -108,7 +121,7 @@ public class CompanyController {
             ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editCompanyGlobalInfo");
             log.info(requestId + " User: " + user);
-            EditCompanyGlobalInfoResponse response = companyService.editCompanyGlobalInfo(requestId, user, request);
+            EditCompanyGlobalInfoResponse response = editCompanyGlobalInfoService.editCompanyGlobalInfo(requestId, user, request);
             log.info(requestId + " Response from /editCompanyGlobalInfo: " + response);
             return response;
         } catch (ApiException e) {
@@ -117,7 +130,7 @@ public class CompanyController {
         }
     }
 
-    @PostMapping("edit/identification_details")
+    @PutMapping("edit/identification_details")
     public EditIdentificationDetailsResponse editIdentificationDetails(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditIdentificationDetailsRequest request
     ) {
@@ -127,7 +140,7 @@ public class CompanyController {
             ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editIdentificationDetails");
             log.info(requestId + " User: " + user);
-            EditIdentificationDetailsResponse response = companyService.editIdentificationDetails(requestId, user, request);
+            EditIdentificationDetailsResponse response = editIdentificationDetailsServiceImpl.editIdentificationDetails(requestId, user, request);
             log.info(requestId + " Response from /editIdentificationDetails: " + response);
             return response;
         } catch (ApiException e) {

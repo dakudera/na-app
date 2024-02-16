@@ -18,7 +18,12 @@ import tech.na_app.model.transport.technical_certificate_dop_info.EditTechnicalC
 import tech.na_app.model.transport.technical_certificate_dop_info.EditTechnicalCertificateDopInfoResponse;
 import tech.na_app.model.transport.using_reason.EditTransportUsingReasonInfoRequest;
 import tech.na_app.model.transport.using_reason.EditTransportUsingReasonInfoResponse;
-import tech.na_app.services.transport.TransportService;
+import tech.na_app.services.transport.edit_data.*;
+import tech.na_app.services.transport.get_data.GetAllTransportService;
+import tech.na_app.services.transport.get_data.GetEnvironmentalStandardService;
+import tech.na_app.services.transport.get_data.GetFuelService;
+import tech.na_app.services.transport.get_data.GetTransportInfoService;
+import tech.na_app.services.transport.save_data.SaveNewTransportService;
 import tech.na_app.utils.HelpUtil;
 import tech.na_app.utils.ValidateHelper;
 import tech.na_app.utils.jwt.AuthChecker;
@@ -31,7 +36,16 @@ import tech.na_app.utils.jwt.AuthChecker;
 public class TransportController {
 
     private final AuthChecker authChecker;
-    private final TransportService transportService;
+    private final GetEnvironmentalStandardService getEnvironmentalStandardService;
+    private final SaveNewTransportService saveNewTransportService;
+    private final GetAllTransportService getAllTransportService;
+    private final EditTransportGeneralInfoService editTransportGeneralInfoService;
+    private final EditTransportUsingReasonInfoService editTransportUsingReasonInfoService;
+    private final GetTransportInfoService getTransportInfoService;
+    private final EditTechnicalCertificateService editTechnicalCertificateService;
+    private final EditNomenclatureNameService editNomenclatureNameService;
+    private final EditTechnicalCertificateDopInfoService editTechnicalCertificateDopInfoService;
+    private final GetFuelService getFuelService;
 
     @PostMapping("/save_new_transport")
     public SaveNewTransportResponse saveNewTransport(
@@ -43,7 +57,7 @@ public class TransportController {
             ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /saveNewTransport: " + request);
             log.info(requestId + " User: " + user);
-            SaveNewTransportResponse response = transportService.saveNewTransport(requestId, request, user);
+            SaveNewTransportResponse response = saveNewTransportService.saveNewTransport(requestId, request, user);
             log.info(requestId + " Response from /saveNewTransport: " + response);
             return response;
         } catch (ApiException e) {
@@ -59,7 +73,7 @@ public class TransportController {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to /getAllTransport");
             log.info(requestId + " User: " + user);
-            GetAllTransportResponse response = transportService.getAllTransport(requestId, user);
+            GetAllTransportResponse response = getAllTransportService.getAllTransport(requestId, user);
             log.info(requestId + " Response from /getAllTransport: " + response);
             return response;
         } catch (ApiException e) {
@@ -78,7 +92,7 @@ public class TransportController {
             ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /getTransportInfo");
             log.info(requestId + " User: " + user);
-            GetTransportInfoResponse response = transportService.getTransportInfo(requestId, user, request);
+            GetTransportInfoResponse response = getTransportInfoService.getTransportInfo(requestId, user, request);
             log.info(requestId + " Response from /getTransportInfo: " + response);
             return response;
         } catch (ApiException e) {
@@ -97,7 +111,7 @@ public class TransportController {
             ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editGeneralInfo");
             log.info(requestId + " User: " + user);
-            EditTransportGeneralInfoResponse response = transportService.editTransportGeneralInfo(requestId, request);
+            EditTransportGeneralInfoResponse response = editTransportGeneralInfoService.editTransportGeneralInfo(requestId, request);
             log.info(requestId + " Response from /editGeneralInfo: " + response);
             return response;
         } catch (ApiException e) {
@@ -116,7 +130,7 @@ public class TransportController {
             ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editUsingReasonInfo");
             log.info(requestId + " User: " + user);
-            EditTransportUsingReasonInfoResponse response = transportService.editTransportUsingReasonInfo(requestId, request);
+            EditTransportUsingReasonInfoResponse response = editTransportUsingReasonInfoService.editTransportUsingReasonInfo(requestId, request);
             log.info(requestId + " Response from /editUsingReasonInfo: " + response);
             return response;
         } catch (ApiException e) {
@@ -135,7 +149,7 @@ public class TransportController {
             ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editTechnicalCertificate: " + request);
             log.info(requestId + " User: " + user);
-            EditTechnicalCertificateResponse response = transportService.editTechnicalCertificate(requestId, request);
+            EditTechnicalCertificateResponse response = editTechnicalCertificateService.editTechnicalCertificate(requestId, request);
             log.info(requestId + " Response from /editTechnicalCertificate: " + response);
             return response;
         } catch (ApiException e) {
@@ -154,7 +168,7 @@ public class TransportController {
             ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editNomenclatureName: " + request);
             log.info(requestId + " User: " + user);
-            EditNomenclatureNameResponse response = transportService.editNomenclatureName(requestId, request);
+            EditNomenclatureNameResponse response = editNomenclatureNameService.editNomenclatureName(requestId, request);
             log.info(requestId + " Response from /editNomenclatureName: " + response);
             return response;
         } catch (ApiException e) {
@@ -173,7 +187,7 @@ public class TransportController {
             ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /editTechnicalCertificateDopInfo: " + request);
             log.info(requestId + " User: " + user);
-            EditTechnicalCertificateDopInfoResponse response = transportService.editTechnicalCertificateDopInfo(requestId, request);
+            EditTechnicalCertificateDopInfoResponse response = editTechnicalCertificateDopInfoService.editTechnicalCertificateDopInfo(requestId, request);
             log.info(requestId + " Response from /editTechnicalCertificateDopInfo: " + response);
             return response;
         } catch (ApiException e) {
@@ -191,7 +205,7 @@ public class TransportController {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /getFuels ");
             log.info(requestId + " User: " + user);
-            GetFuelResponse response = transportService.getFuel(requestId);
+            GetFuelResponse response = getFuelService.getFuel(requestId);
             log.info(requestId + " Response from /getFuels: " + response);
             return response;
         } catch (ApiException e) {
@@ -209,7 +223,7 @@ public class TransportController {
             User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " Request to /getEnvironmentalStandard ");
             log.info(requestId + " User: " + user);
-            GetEnvironmentalStandardResponse response = transportService.getEnvironmentalStandard(requestId);
+            GetEnvironmentalStandardResponse response = getEnvironmentalStandardService.getEnvironmentalStandard(requestId);
             log.info(requestId + " Response from /getEnvironmentalStandard: " + response);
             return response;
         } catch (ApiException e) {

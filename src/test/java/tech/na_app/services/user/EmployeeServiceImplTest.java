@@ -23,25 +23,25 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith({MockitoExtension.class})
-public class EmployeeServiceTest {
+public class EmployeeServiceImplTest {
 
     @Mock
     private UserRolesStoreRepository userRolesStoreRepository;
     @Mock
     private UserRepository userRepository;
 
-    private EmployeeService employeeService;
+    private EmployeeServiceImpl employeeServiceImpl;
 
     @BeforeEach
     public void setUp() {
-        employeeService = new EmployeeService(userRolesStoreRepository, userRepository);
+        employeeServiceImpl = new EmployeeServiceImpl(userRolesStoreRepository, userRepository);
     }
 
     @Test
     public void getAllEmployee$EmptyList() {
         User user = new User();
 
-        GetAllEmployeeResponse allEmployee = employeeService.getAllEmployee(TestUtils.TEST_REQUEST_ID, user);
+        GetAllEmployeeResponse allEmployee = employeeServiceImpl.getAllEmployee(TestUtils.TEST_REQUEST_ID, user);
         assertNull(allEmployee.getEmployeeInfo());
         assertEquals(allEmployee.getError().getCode().intValue(), 0);
     }
@@ -75,7 +75,7 @@ public class EmployeeServiceTest {
 
         when(userRepository.findAllByCompanyId(any())).thenReturn(users);
 
-        GetAllEmployeeResponse allEmployee = employeeService.getAllEmployee(TestUtils.TEST_REQUEST_ID, user);
+        GetAllEmployeeResponse allEmployee = employeeServiceImpl.getAllEmployee(TestUtils.TEST_REQUEST_ID, user);
         assertNotNull(allEmployee.getEmployeeInfo());
         assertEquals(allEmployee.getEmployeeInfo().get(0).getId().intValue(), 1);
         assertEquals(allEmployee.getEmployeeInfo().get(0).getRole(), "Водій");
