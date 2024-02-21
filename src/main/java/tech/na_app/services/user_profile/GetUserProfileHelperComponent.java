@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class GetUserProfileHelperComponent {
 
-    List<EducationInfo> buildEducations(List<Education> educations) {
+    public List<EducationInfo> buildEducations(List<Education> educations) {
         List<EducationInfo> educationInfo = new ArrayList<>();
         if (educations == null || educations.isEmpty()) {
             return educationInfo;
@@ -32,7 +32,7 @@ public class GetUserProfileHelperComponent {
         return educationInfo;
     }
 
-    List<InstructionInfo> buildInstructionsAndInternships(List<InternshipAndInstruction> instructions) {
+    public List<InstructionInfo> buildInstructionsAndInternships(List<InternshipAndInstruction> instructions) {
         List<InstructionInfo> instructionInfo = new ArrayList<>();
         if (instructions == null || instructions.isEmpty()) {
             return instructionInfo;
@@ -50,7 +50,7 @@ public class GetUserProfileHelperComponent {
         return instructionInfo;
     }
 
-    void fillUserProfile(User userInfo, GetUserProfileResponse response) {
+    public void fillUserProfile(User userInfo, GetUserProfileResponse response) {
         Profile profile = userInfo.getProfile();
         response.setRole(userInfo.getRole());
         response.setEmail(profile.getEmail());
@@ -67,7 +67,7 @@ public class GetUserProfileHelperComponent {
         response.setActual_address(profile.getActual_address());
     }
 
-    tech.na_app.model.profile.driving_license.DrivingLicense fillDriverLicense(DrivingLicense drivingLicense) {
+    public tech.na_app.model.profile.driving_license.DrivingLicense fillDriverLicense(DrivingLicense drivingLicense) {
         tech.na_app.model.profile.driving_license.DrivingLicense driving = new tech.na_app.model.profile.driving_license.DrivingLicense();
         driving.setCategories(drivingLicense.getCategories());
         driving.setDate_issue(drivingLicense.getDate_issue());
@@ -76,7 +76,7 @@ public class GetUserProfileHelperComponent {
     }
 
 
-    tech.na_app.model.profile.AvailableDocuments fillDriverLicense(AvailableDocuments availableDocuments) {
+    public tech.na_app.model.profile.AvailableDocuments fillDriverLicense(AvailableDocuments availableDocuments) {
         tech.na_app.model.profile.AvailableDocuments documents = new tech.na_app.model.profile.AvailableDocuments();
         documents.setEmployment_history(availableDocuments.getEmployment_history());
         documents.setIpn(availableDocuments.getIpn());

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.user.User;
+import tech.na_app.model.wrapper.LoginDateWrapper;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -41,15 +42,15 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(User user, Date issueAt, Date expDate) {
+    public String generateToken(User user, LoginDateWrapper loginDate) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", user.getId());
         claims.put("role", user.getRole());
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(user.getLogin())
-                .setIssuedAt(issueAt)
-                .setExpiration(expDate)
+                .setIssuedAt(loginDate.getIssueAt())
+                .setExpiration(loginDate.getExpDate())
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }

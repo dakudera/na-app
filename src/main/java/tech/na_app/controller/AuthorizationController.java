@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import tech.na_app.model.auth.AuthRequest;
 import tech.na_app.model.auth.LoginResponse;
 import tech.na_app.model.auth.TokenRefreshRequest;
-import tech.na_app.services.authorization.AuthorizationService;
+import tech.na_app.services.authorization.LoginService;
+import tech.na_app.services.authorization.RefreshTokenService;
 import tech.na_app.utils.ValidateHelper;
 
 import javax.validation.Valid;
@@ -16,18 +17,19 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class AuthorizationController {
 
-    private final AuthorizationService authorizationService;
+    private final LoginService loginServiceImpl;
+    private final RefreshTokenService refreshTokenServiceImpl;
 
     @PostMapping("/authenticate")
     public LoginResponse generateToken(@RequestBody AuthRequest request) {
         ValidateHelper.validateInput(request);
-        return authorizationService.login(request);
+        return loginServiceImpl.login(request);
     }
 
     @PostMapping("/refreshToken")
     public LoginResponse refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
         ValidateHelper.validateInput(request);
-        return authorizationService.refreshToken(request);
+        return refreshTokenServiceImpl.refreshToken(request);
     }
 
 }
