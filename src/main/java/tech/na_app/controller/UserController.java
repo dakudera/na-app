@@ -13,7 +13,9 @@ import tech.na_app.model.user.SaveNewUserRequest;
 import tech.na_app.model.user.SaveNewUserResponse;
 import tech.na_app.model.user.employee.GetAllEmployeeResponse;
 import tech.na_app.services.user.EmployeeService;
-import tech.na_app.services.user.UserService;
+import tech.na_app.services.user.GetAllUserRolesService;
+import tech.na_app.services.user.ResetPasswordService;
+import tech.na_app.services.user.SaveNewUserService;
 import tech.na_app.utils.HelpUtil;
 import tech.na_app.utils.ValidateHelper;
 import tech.na_app.utils.jwt.AuthChecker;
@@ -23,9 +25,12 @@ import tech.na_app.utils.jwt.AuthChecker;
 @RequestMapping("user")
 @RequiredArgsConstructor
 public class UserController {
+
     private final AuthChecker authChecker;
-    private final UserService userService;
+    private final ResetPasswordService resetPasswordService;
     private final EmployeeService employeeService;
+    private final SaveNewUserService saveNewUserService;
+    private final GetAllUserRolesService getAllUserRolesService;
 
     @PostMapping("/save_new_user")
     public SaveNewUserResponse saveNewUser(
@@ -37,7 +42,7 @@ public class UserController {
             ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /saveNewUser: " + request);
             log.info(requestId + " User: " + user);
-            SaveNewUserResponse response = userService.saveNewUser(requestId, user, request);
+            SaveNewUserResponse response = saveNewUserService.saveNewUser(requestId, user, request);
             log.info(requestId + " Response from /saveNewUser: " + response);
             return response;
         } catch (ApiException e) {
@@ -55,7 +60,7 @@ public class UserController {
             User user = authChecker.checkToken(token, UserRoleType.CHIEF_ACCOUNTANT);
             log.info(requestId + " Request to /getAllUserRoles");
             log.info(requestId + " User: " + user);
-            GetAllUserRolesResponse response = userService.getAllUserRoles(requestId);
+            GetAllUserRolesResponse response = getAllUserRolesService.getAllUserRoles(requestId);
             log.info(requestId + " Response from /getAllUserRoles: " + response);
             return response;
         } catch (ApiException e) {
@@ -74,7 +79,7 @@ public class UserController {
             ValidateHelper.validateInput(request);
             log.info(requestId + " Request to /resetPassword: " + request);
             log.info(requestId + " User: " + user);
-            ErrorObject response = userService.resetPassword(requestId, user, request);
+            ErrorObject response = resetPasswordService.resetPassword(requestId, user, request);
             log.info(requestId + " Response from /resetPassword: " + response);
             return response;
         } catch (ApiException e) {

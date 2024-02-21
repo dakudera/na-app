@@ -82,7 +82,7 @@ public class TransportController {
         }
     }
 
-    @PostMapping("/get_transport_info")
+    @GetMapping("/get_transport_info")
     public GetTransportInfoResponse getTransportInfo(
             @RequestHeader(name = "Authorization") String token, @RequestBody GetTransportInfoRequest request
     ) {
@@ -101,7 +101,7 @@ public class TransportController {
         }
     }
 
-    @PostMapping("edit/general_info")
+    @PutMapping("edit/general_info")
     public EditTransportGeneralInfoResponse editGeneralInfo(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditTransportGeneralInfoRequest request
     ) {
@@ -120,7 +120,7 @@ public class TransportController {
         }
     }
 
-    @PostMapping("edit/using_reason_info")
+    @PutMapping("edit/using_reason_info")
     public EditTransportUsingReasonInfoResponse editUsingReasonInfo(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditTransportUsingReasonInfoRequest request
     ) {
@@ -139,7 +139,7 @@ public class TransportController {
         }
     }
 
-    @PostMapping("edit/technical_certificate")
+    @PutMapping("edit/technical_certificate")
     public EditTechnicalCertificateResponse editTechnicalCertificate(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditTechnicalCertificateRequest request
     ) {
@@ -158,7 +158,7 @@ public class TransportController {
         }
     }
 
-    @PostMapping("edit/nomenclature_name")
+    @PutMapping("edit/nomenclature_name")
     public EditNomenclatureNameResponse editNomenclatureName(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditNomenclatureNameRequest request
     ) {
@@ -177,7 +177,7 @@ public class TransportController {
         }
     }
 
-    @PostMapping("edit/technical_certificate_dop_info")
+    @PutMapping("edit/technical_certificate_dop_info")
     public EditTechnicalCertificateDopInfoResponse editTechnicalCertificateDopInfo(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditTechnicalCertificateDopInfoRequest request
     ) {
