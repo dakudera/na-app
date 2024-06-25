@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
@@ -43,6 +44,6 @@ public class AvailableDocuments {
     )
     private String military_registration_doc;
     private HealthCertificate health_certificate;
-    private Integer userId;
+    private ObjectId userId;
 
 }

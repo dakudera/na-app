@@ -45,7 +45,6 @@ public class SaveNewUserServiceImpl implements SaveNewUserService {
             String passwordEncode = PasswordUtils.generateSecurePassword(request.getPassword(), salt);
             userRepository.save(
                     User.builder()
-                            .id(sequenceNumber.getSeq())
                             .create_date(new Date())
                             .login(request.getLogin())
                             .password(passwordEncode)

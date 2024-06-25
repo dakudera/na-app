@@ -1,6 +1,7 @@
 package tech.na_app.services.authorization;
 
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.auth.RefreshToken;
@@ -26,12 +27,12 @@ public class CreateRefreshTokenService {
         return refreshTokenRepository.findByToken(token);
     }
 
-    public String createRefreshToken(Integer userId) {
+    public String createRefreshToken(ObjectId userId) {
         RefreshToken refreshToken = new RefreshToken();
 
         RefreshTokenSequence sequenceNumber = (RefreshTokenSequence) sequenceGeneratorService
                 .getSequenceNumber(RefreshToken.SEQUENCE_NAME, RefreshTokenSequence.class);
-        refreshToken.setId(sequenceNumber.getSeq());
+//        refreshToken.setId(sequenceNumber.getSeq());
         refreshToken.setUserId(userId);
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());

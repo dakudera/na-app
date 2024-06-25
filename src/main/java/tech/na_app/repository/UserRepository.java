@@ -1,5 +1,6 @@
 package tech.na_app.repository;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import tech.na_app.entity.user.User;
@@ -16,4 +17,5 @@ public interface UserRepository extends MongoRepository<User, Integer> {
 
     List<User> findAllByCompanyId(Integer companyId);
 
+    Optional<User> findById(ObjectId integer);
 }

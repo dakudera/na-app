@@ -47,7 +47,7 @@ public class GetUserProfileServiceImpl extends UserProfileAbs implements GetUser
             AvailableDocuments availableDocuments = availableDocumentsRepository.findByUserId(userInfo.getId())
                     .orElseGet(AvailableDocuments::new);
             GetUserProfileResponse response = new GetUserProfileResponse(new ErrorObject(0));
-            response.setId(userInfo.getId());
+//            response.setId(userInfo.getId());
             response.setDriving_license(getUserProfileHelperComponent.fillDriverLicense(drivingLicense));
             response.setEducationInfo(getUserProfileHelperComponent.buildEducations(educations));
             response.setInternshipInfo(getUserProfileHelperComponent.buildInstructionsAndInternships(internships));

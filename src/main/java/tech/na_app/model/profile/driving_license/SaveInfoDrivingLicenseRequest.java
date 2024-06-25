@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import tech.na_app.model.enums.DriverLicenceCategory;
 
 import javax.validation.constraints.NotNull;
@@ -22,7 +23,7 @@ public class SaveInfoDrivingLicenseRequest {
             example = "1"
     )
     @NotNull
-    private Integer userId;
+    private ObjectId userId;
 
     @NotNull
     private Set<DriverLicenceCategory> categories;

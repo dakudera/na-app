@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 import tech.na_app.entity.profile.Profile;
 import tech.na_app.model.enums.UserRoleType;
 
@@ -25,8 +27,8 @@ public class User implements Serializable {
     @Transient
     public static final String SEQUENCE_NAME = "users_sequence";
 
-    @Id
-    private Integer id;
+    @MongoId
+    private ObjectId id;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

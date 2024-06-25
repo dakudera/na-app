@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import tech.na_app.model.enums.DriverLicenceCategory;
 
@@ -45,6 +46,6 @@ public class DrivingLicense {
     )
     private Date date_end;
 
-    private Integer userId;
+    private ObjectId userId;
 
 }
