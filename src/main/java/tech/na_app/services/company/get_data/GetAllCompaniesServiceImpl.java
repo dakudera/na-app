@@ -27,15 +27,15 @@ public class GetAllCompaniesServiceImpl implements GetAllCompaniesService {
                 return new GetAllCompanyResponse(new ErrorObject(0));
             }
             List<GetAllCompanyResponse.Company> companies = new ArrayList<>();
-            for (var company : all) {
-                companies.add(
-                        GetAllCompanyResponse.Company.builder()
-                                .id(company.getId())
-                                .name(company.getUkr_name().getFull_name())
-                                .registrationDate(company.getCreate_date())
-                                .build()
-                );
-            }
+            all.forEach(
+                    a -> companies.add(
+                            GetAllCompanyResponse.Company.builder()
+                                    .id(a.getId())
+                                    .name(a.getUkr_name().getFull_name())
+                                    .registrationDate(a.getCreate_date())
+                                    .build()
+                    )
+            );
 
             return GetAllCompanyResponse.builder()
                     .companies(companies)

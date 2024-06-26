@@ -2,6 +2,7 @@ package tech.na_app.utils.jwt;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.ApiException;
@@ -21,14 +22,15 @@ public class AuthChecker {
         String tokenSplit = token.split(" ")[1];
 
         Claims claims = jwtUtil.extractAllClaims(tokenSplit);
-        Integer userId = (Integer) claims.get("userId");
-        Optional<User> byId = userRepository.findById(userId);
+        String userIdStr = (String) claims.get("userId");
+        ObjectId userId = new ObjectId(userIdStr);
+        Optional<User> userById = userRepository.findById(userId);
 
-        if (byId.isEmpty()) {
+        if (userById.isEmpty()) {
             throw new ApiException(500, "");
         }
 
-        User user = byId.get();
+        User user = userById.get();
         if (user.getRole().getValue() > role.getValue()) {
             throw new ApiException(500, "denied");
         }

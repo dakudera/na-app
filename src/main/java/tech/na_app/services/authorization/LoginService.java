@@ -5,6 +5,6 @@ import tech.na_app.model.auth.LoginResponse;
 
 public interface LoginService {
 
-    LoginResponse login(AuthRequest authRequest);
+    LoginResponse login(String basicAuthToken);
 
 }

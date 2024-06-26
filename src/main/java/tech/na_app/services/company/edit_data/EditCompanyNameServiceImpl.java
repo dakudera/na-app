@@ -22,6 +22,24 @@ public class EditCompanyNameServiceImpl implements EditCompanyNameService {
 
     private final CompanyRepository companyRepository;
 
+
+    private CompanyName setCompanyName(CompanyName currentCompanyName, CompanyName newCompanyName) {
+        if (newCompanyName != null) {
+            if (currentCompanyName != null) {
+                currentCompanyName.setFull_name(newCompanyName.getFull_name());
+                currentCompanyName.setShort_name(newCompanyName.getShort_name());
+            } else {
+                return CompanyName
+                        .builder()
+                        .full_name(newCompanyName.getFull_name())
+                        .short_name(newCompanyName.getShort_name())
+                        .build();
+            }
+        }
+        return currentCompanyName;
+    }
+
+
     @Override
     public EditCompanyNameResponse editCompanyName(String requestId, User user, EditCompanyNameRequest request) {
         try {
@@ -32,34 +50,8 @@ public class EditCompanyNameServiceImpl implements EditCompanyNameService {
             Optional<Company> companyOptional = companyRepository.findById(user.getCompanyId());
             Company company = companyOptional.orElseThrow(() -> new ApiException(404, "Not Found"));
 
-            if (request.getEng_name() != null) {
-                if (company.getEng_name() != null) {
-                    company.getEng_name().setFull_name(request.getEng_name().getFull_name());
-                    company.getEng_name().setShort_name(request.getEng_name().getShort_name());
-                } else {
-                    CompanyName companyNameEng = CompanyName
-                            .builder()
-                            .full_name(request.getEng_name().getFull_name())
-                            .short_name(request.getEng_name().getShort_name())
-                            .build();
-                    company.setEng_name(companyNameEng);
-                }
-            }
-
-            if (request.getUkr_name() != null) {
-                if (company.getUkr_name() != null) {
-                    company.getUkr_name().setFull_name(request.getUkr_name().getFull_name());
-                    company.getUkr_name().setShort_name(request.getUkr_name().getShort_name());
-                } else {
-                    CompanyName companyNameUkr = CompanyName
-                            .builder()
-                            .full_name(request.getUkr_name().getFull_name())
-                            .short_name(request.getUkr_name().getShort_name())
-                            .build();
-                    company.setUkr_name(companyNameUkr);
-                }
-            }
-
+            company.setEng_name(setCompanyName(company.getEng_name(), request.getEng_name()));
+            company.setUkr_name(setCompanyName(company.getUkr_name(), request.getUkr_name()));
             companyRepository.save(company);
 
             return new EditCompanyNameResponse(new ErrorObject(0));

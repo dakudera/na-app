@@ -18,11 +18,12 @@ public class LoginServiceImpl extends AuthorithationAbst implements LoginService
 
     private final UserRepository userRepository;
 
-    public LoginResponse login(AuthRequest authRequest) {
+    public LoginResponse login(String basicAuthToken) {
         try {
-            Optional<User> userOptional = userRepository.findByLogin(authRequest.getLogin());
+            var creds = extractCredentials(basicAuthToken);
+            Optional<User> userOptional = userRepository.findByLogin(creds[0]);
             User user = userOptional.orElseThrow(() -> new ApiException(500, "invalid username/password"));
-            if (!PasswordUtils.verifyUserPassword(authRequest.getPassword(), user.getPassword(), user.getSalt())) {
+            if (!PasswordUtils.verifyUserPassword(creds[1], user.getPassword(), user.getSalt())) {
                 return new LoginResponse(new ErrorObject(500, "invalid username/password"));
             }
 
