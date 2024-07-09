@@ -3,7 +3,7 @@ package tech.na_app.services.authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import tech.na_app.entity.user.User;
-import tech.na_app.model.ErrorObject;
+import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.auth.LoginResponse;
 import tech.na_app.model.wrapper.LoginDateWrapper;
 import tech.na_app.utils.jwt.JwtUtil;

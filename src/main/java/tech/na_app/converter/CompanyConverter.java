@@ -2,7 +2,7 @@ package tech.na_app.converter;
 
 import org.springframework.stereotype.Component;
 import tech.na_app.entity.company.*;
-import tech.na_app.model.ErrorObject;
+import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.company.GetCompanyInfoResponse;
 import tech.na_app.model.company.SaveNewCompanyRequest;
 

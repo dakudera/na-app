@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.auth.RefreshToken;
 import tech.na_app.entity.auth.RefreshTokenSequence;
-import tech.na_app.model.ApiException;
+import tech.na_app.model.exceptions.ApiException;
 import tech.na_app.repository.RefreshTokenRepository;
 import tech.na_app.utils.SequenceGeneratorService;
 

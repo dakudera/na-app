@@ -11,7 +11,7 @@
 //import tech.na_app.entity.company.BankingDetails;
 //import tech.na_app.entity.company.Company;
 //import tech.na_app.entity.user.User;
-//import tech.na_app.model.ErrorObject;
+//import tech.na_app.model.exceptions.ErrorObject;
 //import tech.na_app.model.company.company_global_info.Communication;
 //import tech.na_app.model.company.company_global_info.EditCompanyGlobalInfoRequest;
 //import tech.na_app.model.company.company_global_info.EditCompanyGlobalInfoResponse;

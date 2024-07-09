@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.user.User;
-import tech.na_app.model.ApiException;
+import tech.na_app.model.exceptions.ApiException;
 import tech.na_app.repository.UserRepository;
 
 import java.util.ArrayList;

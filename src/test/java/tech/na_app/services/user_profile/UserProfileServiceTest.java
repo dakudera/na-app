@@ -10,7 +10,7 @@
 //import org.mockito.junit.jupiter.MockitoExtension;
 //import tech.na_app.entity.profile.DrivingLicense;
 //import tech.na_app.entity.user.User;
-//import tech.na_app.model.ErrorObject;
+//import tech.na_app.model.exceptions.ErrorObject;
 //import tech.na_app.model.enums.DriverLicenceCategory;
 //import tech.na_app.model.enums.UserRoleType;
 //import tech.na_app.model.profile.EditUserProfileRequest;

@@ -1,6 +1,6 @@
 package tech.na_app.utils;
 
-import tech.na_app.model.ApiException;
+import tech.na_app.model.exceptions.ApiException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

@@ -5,13 +5,11 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.profile.Education;
 import tech.na_app.entity.profile.EducationSequence;
-import tech.na_app.model.ApiException;
-import tech.na_app.model.ErrorObject;
+import tech.na_app.model.exceptions.ApiException;
+import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.profile.education.SaveInfoEducationRequest;
 import tech.na_app.model.profile.education.SaveInfoEducationResponse;
 import tech.na_app.repository.*;
-import tech.na_app.services.user.UserHelperComponent;
-import tech.na_app.services.user_profile.GetUserProfileHelperComponent;
 import tech.na_app.utils.SequenceGeneratorService;
 
 @Log4j2

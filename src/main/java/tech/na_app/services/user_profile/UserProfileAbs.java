@@ -3,7 +3,7 @@ package tech.na_app.services.user_profile;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import tech.na_app.entity.user.User;
-import tech.na_app.model.ApiException;
+import tech.na_app.model.exceptions.ApiException;
 import tech.na_app.repository.UserRepository;
 
 import java.util.Objects;

@@ -4,10 +4,10 @@ import org.springframework.stereotype.Component;
 import tech.na_app.entity.transport.*;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.enums.TransportStatus;
-import tech.na_app.model.transport.GetAllTransportResponse;
-import tech.na_app.model.transport.GetTransportInfoResponse;
-import tech.na_app.model.transport.SaveNewTransportRequest;
-import tech.na_app.model.transport.technical_certificate_dop_info.EditTechnicalCertificateDopInfoRequest;
+import tech.na_app.model.vehicle.GetAllTransportResponse;
+import tech.na_app.model.vehicle.GetTransportInfoResponse;
+import tech.na_app.model.vehicle.SaveNewTransportRequest;
+import tech.na_app.model.vehicle.technical_certificate_dop_info.EditTechnicalCertificateDopInfoRequest;
 
 import java.util.Date;
 import java.util.List;
@@ -99,7 +99,7 @@ public class TransportConverter {
         return GetTransportInfoResponse.builder()
                 .nomenclature_name(transport.getTransport_card().getNomenclature_name())
                 .technical_certificate(Objects.nonNull(transport.getTransport_card().getTechnical_certificate())
-                        ? tech.na_app.model.transport.technical_certificate.TechnicalCertificate
+                        ? tech.na_app.model.vehicle.technical_certificate.TechnicalCertificate
                         .builder()
                         .num_and_series(transport.getTransport_card()
                                 .getTechnical_certificate().getNum_and_series())
@@ -111,7 +111,7 @@ public class TransportConverter {
                                 .getTechnical_certificate().getDate_issue())
                         .technical_certificate_dop_info(Objects.nonNull(transport.getTransport_card()
                                 .getTechnical_certificate().getTechnical_certificate_dop_info())
-                                ? tech.na_app.model.transport.technical_certificate_dop_info.TechnicalCertificateDopInfo.builder()
+                                ? tech.na_app.model.vehicle.technical_certificate_dop_info.TechnicalCertificateDopInfo.builder()
                                 .brand(transport.getTransport_card()
                                         .getTechnical_certificate().getTechnical_certificate_dop_info().getBrand())
                                 .state_number(transport.getTransport_card()
@@ -143,7 +143,7 @@ public class TransportConverter {
                                 .build() : null)
                         .build() : null)
                 .using_reason_info(Objects.nonNull(transport.getTransport_card().getUsing_reason_info())
-                        ? tech.na_app.model.transport.using_reason.UsingReasonInfo.builder()
+                        ? tech.na_app.model.vehicle.using_reason.UsingReasonInfo.builder()
                         .num_and_name_contract(transport.getTransport_card()
                                 .getUsing_reason_info().getNum_and_name_contract())
                         .date_start(transport.getTransport_card()
@@ -156,7 +156,7 @@ public class TransportConverter {
                                 .getUsing_reason_info().getDate_next_start())
                         .build() : null)
                 .general_info(Objects.nonNull(transport.getTransport_card().getGeneral_info())
-                        ? tech.na_app.model.transport.general_info.GeneralInfo.builder()
+                        ? tech.na_app.model.vehicle.general_info.GeneralInfo.builder()
                         .mileage(transport.getTransport_card().getGeneral_info().getMileage())
                         .fuel_tank_volume(transport.getTransport_card().getGeneral_info().getFuel_tank_volume())
                         .height(transport.getTransport_card().getGeneral_info().getHeight())

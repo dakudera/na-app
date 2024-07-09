@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import tech.na_app.converter.CompanyConverter;
 import tech.na_app.entity.company.Company;
 import tech.na_app.entity.user.User;
-import tech.na_app.model.ErrorObject;
+import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.company.GetCompanyInfoResponse;
 import tech.na_app.repository.CompanyRepository;
 

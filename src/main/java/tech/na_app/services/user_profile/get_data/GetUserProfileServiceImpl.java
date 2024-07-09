@@ -8,16 +8,14 @@ import tech.na_app.entity.profile.DrivingLicense;
 import tech.na_app.entity.profile.Education;
 import tech.na_app.entity.profile.InternshipAndInstruction;
 import tech.na_app.entity.user.User;
-import tech.na_app.model.ApiException;
-import tech.na_app.model.ErrorObject;
+import tech.na_app.model.exceptions.ApiException;
+import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.enums.InternshipAndInstructionType;
 import tech.na_app.model.profile.GetUserProfileRequest;
 import tech.na_app.model.profile.GetUserProfileResponse;
 import tech.na_app.repository.*;
-import tech.na_app.services.user.UserHelperComponent;
 import tech.na_app.services.user_profile.GetUserProfileHelperComponent;
 import tech.na_app.services.user_profile.UserProfileAbs;
-import tech.na_app.utils.SequenceGeneratorService;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package tech.na_app.model.profile.education;
 
 import lombok.Data;
-import tech.na_app.model.ErrorObject;
+import tech.na_app.model.exceptions.ErrorObject;
 
 @Data
 public class RemoveInfoEducationResponse {

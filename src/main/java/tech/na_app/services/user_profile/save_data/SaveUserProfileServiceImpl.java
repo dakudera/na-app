@@ -5,15 +5,12 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.profile.Profile;
 import tech.na_app.entity.user.User;
-import tech.na_app.model.ApiException;
-import tech.na_app.model.ErrorObject;
+import tech.na_app.model.exceptions.ApiException;
+import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.profile.SaveUserProfileRequest;
 import tech.na_app.model.profile.SaveUserProfileResponse;
-import tech.na_app.repository.AvailableDocumentsRepository;
-import tech.na_app.repository.DrivingLicenseRepository;
 import tech.na_app.repository.UserRepository;
 import tech.na_app.services.user.UserHelperComponent;
-import tech.na_app.services.user_profile.GetUserProfileHelperComponent;
 
 import java.util.Date;
 import java.util.Optional;
