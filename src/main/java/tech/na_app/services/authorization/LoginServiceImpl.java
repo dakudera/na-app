@@ -3,9 +3,9 @@ package tech.na_app.services.authorization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.user.User;
+import tech.na_app.model.auth.LoginResponse;
 import tech.na_app.model.exceptions.ApiException;
 import tech.na_app.model.exceptions.ErrorObject;
-import tech.na_app.model.auth.LoginResponse;
 import tech.na_app.repository.UserRepository;
 import tech.na_app.utils.jwt.PasswordUtils;
 

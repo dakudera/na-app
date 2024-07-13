@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.enums.TransportStatus;
+import tech.na_app.model.exceptions.ErrorObject;
 
 import java.util.List;
 

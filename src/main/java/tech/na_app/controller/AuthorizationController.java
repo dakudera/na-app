@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-import tech.na_app.model.auth.AuthRequest;
 import tech.na_app.model.auth.LoginResponse;
 import tech.na_app.model.auth.TokenRefreshRequest;
 import tech.na_app.services.authorization.LoginService;

@@ -2,9 +2,9 @@ package tech.na_app.services.vehicle.get_data;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import tech.na_app.model.enums.Fuel;
 import tech.na_app.model.exceptions.ApiException;
 import tech.na_app.model.exceptions.ErrorObject;
-import tech.na_app.model.enums.Fuel;
 import tech.na_app.model.vehicle.GetFuelResponse;
 
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
 package tech.na_app.model.exceptions;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 import lombok.Getter;
 
 @Getter

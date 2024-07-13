@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import tech.na_app.entity.company.Company;
 import tech.na_app.entity.company.CompanyName;
 import tech.na_app.entity.user.User;
-import tech.na_app.model.exceptions.ApiException;
-import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.company.conpany_name.EditCompanyNameRequest;
 import tech.na_app.model.company.conpany_name.EditCompanyNameResponse;
+import tech.na_app.model.exceptions.ApiException;
+import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.repository.CompanyRepository;
 
 import java.util.Objects;

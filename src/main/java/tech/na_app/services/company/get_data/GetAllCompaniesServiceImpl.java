@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.company.Company;
-import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.company.GetAllCompanyResponse;
+import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.repository.CompanyRepository;
 
 import java.util.ArrayList;

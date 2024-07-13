@@ -9,7 +9,6 @@ import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.profile.education.SaveInfoEducationRequest;
 import tech.na_app.model.profile.education.SaveInfoEducationResponse;
 import tech.na_app.repository.EducationRepository;
-import tech.na_app.utils.SequenceGeneratorService;
 
 @Log4j2
 @Service

@@ -6,8 +6,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.role_buttons.RoleButtons;
 import tech.na_app.entity.user.User;
-import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.enums.UserRoleType;
+import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.role_buttons.GetAllowedButtonsResponse;
 import tech.na_app.repository.RoleButtonsRepository;
 

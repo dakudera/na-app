@@ -7,10 +7,10 @@ import tech.na_app.entity.company.BankingDetails;
 import tech.na_app.entity.company.Communication;
 import tech.na_app.entity.company.Company;
 import tech.na_app.entity.user.User;
-import tech.na_app.model.exceptions.ApiException;
-import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.company.company_global_info.EditCompanyGlobalInfoRequest;
 import tech.na_app.model.company.company_global_info.EditCompanyGlobalInfoResponse;
+import tech.na_app.model.exceptions.ApiException;
+import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.repository.CompanyRepository;
 
 import java.util.Objects;

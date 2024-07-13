@@ -1,7 +1,6 @@
 package tech.na_app.model.company;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 import tech.na_app.model.company.company_global_info.BankingDetails;
 import tech.na_app.model.company.company_global_info.Communication;
 import tech.na_app.model.company.conpany_name.CompanyName;

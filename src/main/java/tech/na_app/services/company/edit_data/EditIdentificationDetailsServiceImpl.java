@@ -3,15 +3,16 @@ package tech.na_app.services.company.edit_data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-import tech.na_app.entity.company.*;
+import tech.na_app.entity.company.Company;
+import tech.na_app.entity.company.IdentificationDetails;
 import tech.na_app.entity.user.User;
-import tech.na_app.model.exceptions.ApiException;
-import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.company.identification_detalis.EditIdentificationDetailsRequest;
 import tech.na_app.model.company.identification_detalis.EditIdentificationDetailsResponse;
+import tech.na_app.model.exceptions.ApiException;
+import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.repository.CompanyRepository;
 
-import java.util.*;
+import java.util.Objects;
 
 @Log4j2
 @Service
