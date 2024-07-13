@@ -24,7 +24,7 @@ public class SaveExistDocumentServiceImpl extends UserProfileAbs implements Save
     @Override
     public ExistDocumentResponse saveExistDocument(String requestId, User user, ExistDocumentRequest request) {
         try {
-            User userInfo = choosingUser(user, request.getUserId());
+            User userInfo = choosingUser(user, request.userId());
 
             Optional<AvailableDocuments> availableDocumentsOptional = availableDocumentsRepository.findByUserId(userInfo.getId());
             AvailableDocuments availableDocuments;
@@ -32,19 +32,19 @@ public class SaveExistDocumentServiceImpl extends UserProfileAbs implements Save
             if (availableDocumentsOptional.isPresent()) {
                 availableDocuments = availableDocumentsOptional.get();
 
-                availableDocuments.setIpn(request.getIpn());
-                availableDocuments.setPassport(request.getPassport());
-                availableDocuments.setEmployment_history(request.getEmployment_history());
-                availableDocuments.setHealth_certificate(request.getHealth_certificate());
-                availableDocuments.setMilitary_registration_doc(request.getMilitary_registration_doc());
+                availableDocuments.setIpn(request.ipn());
+                availableDocuments.setPassport(request.passport());
+                availableDocuments.setEmployment_history(request.employment_history());
+                availableDocuments.setHealth_certificate(request.health_certificate());
+                availableDocuments.setMilitary_registration_doc(request.military_registration_doc());
             } else { // do save new entry
 
                 availableDocuments = AvailableDocuments.builder()
-                        .ipn(request.getIpn())
-                        .passport(request.getPassport())
-                        .employment_history(request.getEmployment_history())
-                        .health_certificate(request.getHealth_certificate())
-                        .military_registration_doc(request.getMilitary_registration_doc())
+                        .ipn(request.ipn())
+                        .passport(request.passport())
+                        .employment_history(request.employment_history())
+                        .health_certificate(request.health_certificate())
+                        .military_registration_doc(request.military_registration_doc())
                         .userId(userInfo.getId())
                         .build();
             }

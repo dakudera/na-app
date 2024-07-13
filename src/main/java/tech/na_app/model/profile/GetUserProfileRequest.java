@@ -1,10 +1,6 @@
 package tech.na_app.model.profile;
 
-import lombok.Data;
+public record GetUserProfileRequest(String userId) {
 
-@Data
-public class GetUserProfileRequest {
-
-    private Integer userId;
 
 }

@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface EducationRepository extends MongoRepository<Education, Integer> {
+public interface EducationRepository extends MongoRepository<Education, ObjectId> {
 
     List<Education> findAllByUserId(ObjectId userId);
 
-    Optional<Education> findByIdAndUserId(Integer id, ObjectId userId);
+    Optional<Education> findByIdAndUserId(ObjectId id, ObjectId userId);
 
 }

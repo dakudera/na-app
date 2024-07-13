@@ -2,6 +2,7 @@ package tech.na_app.services.user_profile.edit_data;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.profile.Education;
 import tech.na_app.entity.user.User;
@@ -22,15 +23,18 @@ public class EditInfoEducationServiceImpl extends UserProfileAbs implements Edit
     private final EducationRepository educationRepository;
 
     @Override
-    public EditInfoEducationResponse editInfoEducation(String requestId, User user, EditInfoEducationRequest request) {
+    public EditInfoEducationResponse editInfoEducation(
+            String requestId, User user, EditInfoEducationRequest request
+    ) {
         try {
-            User userInfo = choosingUser(user, request.getUserId());
+            User userInfo = choosingUser(user, request.userId());
 
-            Optional<Education> educationOptional = educationRepository.findByIdAndUserId(request.getId(), userInfo.getId());
+            Optional<Education> educationOptional = educationRepository
+                    .findByIdAndUserId(new ObjectId(request.id()), userInfo.getId());
             Education education = educationOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
-            education.setCertificate(request.getCertificate());
-            education.setSpecialty(request.getSpecialty());
-            education.setAdvanced_qualification(request.getAdvanced_qualification());
+            education.setCertificate(request.certificate());
+            education.setSpecialty(request.specialty());
+            education.setAdvanced_qualification(request.advanced_qualification());
             educationRepository.save(education);
 
             return new EditInfoEducationResponse(new ErrorObject(0));

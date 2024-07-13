@@ -13,7 +13,10 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 import tech.na_app.entity.profile.Profile;
 import tech.na_app.model.enums.UserRoleType;
 
-import javax.persistence.*;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -24,8 +27,6 @@ import java.util.Date;
 @Document(collection = "users")
 public class User implements Serializable {
 
-    @Transient
-    public static final String SEQUENCE_NAME = "users_sequence";
 
     @MongoId
     private ObjectId id;
@@ -47,7 +48,7 @@ public class User implements Serializable {
 
     private Profile profile;
 
-    private Integer companyId;
+    private ObjectId companyId;
 
     @Override
     public String toString() {

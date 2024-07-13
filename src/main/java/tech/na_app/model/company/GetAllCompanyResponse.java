@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import tech.na_app.model.exceptions.ErrorObject;
 
 import java.util.Date;
@@ -29,7 +30,7 @@ public class GetAllCompanyResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Company {
-        private Integer id;
+        private ObjectId id;
         private String name;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")

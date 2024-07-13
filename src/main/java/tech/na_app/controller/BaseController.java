@@ -6,6 +6,8 @@ import tech.na_app.utils.HelpUtil;
 
 @Log4j2
 public abstract class BaseController {
+
+
     protected <T> T handleRequest(String requestId, RequestHandler<T> handler) {
         try {
             T response = handler.handle();

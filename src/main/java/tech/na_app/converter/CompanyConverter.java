@@ -2,60 +2,54 @@ package tech.na_app.converter;
 
 import org.springframework.stereotype.Component;
 import tech.na_app.entity.company.*;
-import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.company.GetCompanyInfoResponse;
 import tech.na_app.model.company.SaveNewCompanyRequest;
+import tech.na_app.model.exceptions.ErrorObject;
 
 import java.util.Date;
 
 @Component
 public class CompanyConverter {
 
-    public Company convertToCompanyEntity(SaveNewCompanyRequest request, CompanySequence companySequence) {
+    public Company convertToCompanyEntity(SaveNewCompanyRequest request) {
+        CompanyName ukrainianCompanyName = request.ukr_name() != null ?
+                CompanyName.builder()
+                        .full_name(request.ukr_name().getFull_name())
+                        .short_name(request.ukr_name().getShort_name())
+                        .build() : null;
+        CompanyName englishCompanyName = request.eng_name() != null ?
+                CompanyName.builder()
+                        .full_name(request.eng_name().getFull_name())
+                        .short_name(request.eng_name().getShort_name())
+                        .build() : null;
+        Communication communication = request.communication() != null ?
+                Communication.builder()
+                        .email(request.communication().getEmail())
+                        .phone_number(request.communication().getPhone_number())
+                        .build() : null;
+        BankingDetails bankingDetails = request.banking_details() != null ?
+                BankingDetails.builder()
+                        .iban(request.banking_details().getIban())
+                        .remittance_bank(request.banking_details().getRemittance_bank())
+                        .build() : null;
+        IdentificationDetails identificationDetails = request.identification_details() != null ?
+                IdentificationDetails.builder()
+                        .edrpou(request.identification_details().getEdrpou())
+                        .registration_certificate(request.identification_details().getRegistration_certificate())
+                        .ipn(request.identification_details().getIpn())
+                        .accounting_tax_info(request.identification_details().getAccounting_tax_info())
+                        .tax_form(request.identification_details().getTax_form())
+                        .build() : null;
         return Company.builder()
-                .id(companySequence.getSeq())
                 .create_date(new Date())
-                .ukr_name(
-                        request.getUkr_name() != null ?
-                                CompanyName.builder()
-                                        .full_name(request.getUkr_name().getFull_name())
-                                        .short_name(request.getUkr_name().getShort_name())
-                                        .build() : null
-                )
-                .eng_name(
-                        request.getEng_name() != null ?
-                                CompanyName.builder()
-                                        .full_name(request.getEng_name().getFull_name())
-                                        .short_name(request.getEng_name().getShort_name())
-                                        .build() : null
-                )
-                .address(request.getAddress())
-                .postal_address(request.getPostal_address())
-                .communication(
-                        request.getCommunication() != null ?
-                                Communication.builder()
-                                        .email(request.getCommunication().getEmail())
-                                        .phone_number(request.getCommunication().getPhone_number())
-                                        .build() : null
-                )
-                .banking_details(
-                        request.getBanking_details() != null ?
-                                BankingDetails.builder()
-                                        .iban(request.getBanking_details().getIban())
-                                        .remittance_bank(request.getBanking_details().getRemittance_bank())
-                                        .build() : null
-                )
-                .identification_details(
-                        request.getIdentification_details() != null ?
-                                IdentificationDetails.builder()
-                                        .edrpou(request.getIdentification_details().getEdrpou())
-                                        .registration_certificate(request.getIdentification_details().getRegistration_certificate())
-                                        .ipn(request.getIdentification_details().getIpn())
-                                        .accounting_tax_info(request.getIdentification_details().getAccounting_tax_info())
-                                        .tax_form(request.getIdentification_details().getTax_form())
-                                        .build() : null
-                )
-                .licence_info(request.getLicence_info())
+                .ukr_name(ukrainianCompanyName)
+                .eng_name(englishCompanyName)
+                .address(request.address())
+                .postal_address(request.postal_address())
+                .communication(communication)
+                .banking_details(bankingDetails)
+                .identification_details(identificationDetails)
+                .licence_info(request.licence_info())
                 .build();
     }
 

@@ -4,12 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.profile.Education;
-import tech.na_app.entity.profile.EducationSequence;
 import tech.na_app.model.exceptions.ApiException;
 import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.profile.education.SaveInfoEducationRequest;
 import tech.na_app.model.profile.education.SaveInfoEducationResponse;
-import tech.na_app.repository.*;
+import tech.na_app.repository.EducationRepository;
 import tech.na_app.utils.SequenceGeneratorService;
 
 @Log4j2
@@ -18,33 +17,16 @@ import tech.na_app.utils.SequenceGeneratorService;
 public class SaveInfoEducationServiceImpl implements SaveInfoEducationService {
 
     private final EducationRepository educationRepository;
-    private final SequenceGeneratorService sequenceGeneratorService;
 
     @Override
     public SaveInfoEducationResponse saveInfoEducation(String requestId, SaveInfoEducationRequest request) {
         try {
-            if (request.getUserId() == null) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (request.getCertificate() == null || request.getCertificate().isEmpty()) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (request.getSpecialty() == null || request.getSpecialty().isEmpty()) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (request.getAdvanced_qualification() == null || request.getAdvanced_qualification().isEmpty()) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
-            EducationSequence sequenceNumber = (EducationSequence) sequenceGeneratorService.getSequenceNumber(Education.SEQUENCE_NAME, EducationSequence.class);
-
             educationRepository.save(
                     Education.builder()
-                            .id(sequenceNumber.getSeq())
-                            .userId(request.getUserId())
-                            .certificate(request.getCertificate())
-                            .specialty(request.getSpecialty())
-                            .advanced_qualification(request.getAdvanced_qualification())
+                            .userId(request.userId())
+                            .certificate(request.certificate())
+                            .specialty(request.specialty())
+                            .advanced_qualification(request.advanced_qualification())
                             .build()
             );
 

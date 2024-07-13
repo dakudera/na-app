@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import tech.na_app.model.enums.TransportStatus;
 
@@ -34,5 +35,5 @@ public class Transport {
     private TransportStatus transport_status;
 
     private TransportCard transport_card;
-    private Integer companyId;
+    private ObjectId companyId;
 }

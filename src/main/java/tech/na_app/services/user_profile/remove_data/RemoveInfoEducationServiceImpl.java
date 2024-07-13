@@ -2,6 +2,7 @@ package tech.na_app.services.user_profile.remove_data;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.profile.Education;
 import tech.na_app.entity.user.User;
@@ -22,11 +23,14 @@ public class RemoveInfoEducationServiceImpl extends UserProfileAbs implements Re
     private final EducationRepository educationRepository;
 
     @Override
-    public RemoveInfoEducationResponse removeInfoEducation(String requestId, User user, RemoveInfoEducationRequest request) {
+    public RemoveInfoEducationResponse removeInfoEducation(
+            String requestId, User user, RemoveInfoEducationRequest request
+    ) {
         try {
-            User userInfo = choosingUser(user, request.getUserId());
+            User userInfo = choosingUser(user, request.userId());
 
-            Optional<Education> educationOptional = educationRepository.findByIdAndUserId(request.getId(), userInfo.getId());
+            Optional<Education> educationOptional = educationRepository
+                    .findByIdAndUserId(new ObjectId(request.id()), userInfo.getId());
             Education education = educationOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
             educationRepository.delete(education);
 

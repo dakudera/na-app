@@ -10,7 +10,6 @@ import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.profile.driving_license.EditInfoDrivingLicenseRequest;
 import tech.na_app.model.profile.driving_license.EditInfoDrivingLicenseResponse;
 import tech.na_app.repository.DrivingLicenseRepository;
-import tech.na_app.repository.UserRepository;
 import tech.na_app.services.user_profile.UserProfileAbs;
 
 @Log4j2
@@ -23,13 +22,13 @@ public class EditInfoDrivingLicenseServiceImpl extends UserProfileAbs implements
     @Override
     public EditInfoDrivingLicenseResponse editInfoDrivingLicense(String requestId, User user, EditInfoDrivingLicenseRequest request) {
         try {
-            User userInfo = choosingUser(user, request.getUserId());
+            User userInfo = choosingUser(user, request.userId());
 
             DrivingLicense drivingLicense = drivingLicenseRepository.findByUserId(userInfo.getId())
                     .orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
-            drivingLicense.setCategories(request.getCategories());
-            drivingLicense.setDate_issue(request.getDate_issue());
-            drivingLicense.setDate_end(request.getDate_end());
+            drivingLicense.setCategories(request.categories());
+            drivingLicense.setDate_issue(request.date_issue());
+            drivingLicense.setDate_end(request.date_end());
             drivingLicenseRepository.save(drivingLicense);
 
             return new EditInfoDrivingLicenseResponse(new ErrorObject(0));

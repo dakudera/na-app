@@ -23,7 +23,7 @@ public class RefreshTokenServiceImpl extends AuthorithationAbst implements Refre
     private final RefreshTokenRepository refreshTokenRepository;
 
     public LoginResponse refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
-        String requestRefreshToken = request.getRefreshToken();
+        String requestRefreshToken = request.refreshToken();
         try {
             Optional<RefreshToken> refreshTokenOptional = createRefreshTokenService.findByToken(requestRefreshToken);
             RefreshToken refreshToken = refreshTokenOptional.orElseThrow(() -> new ApiException(500, "invalid username/password"));

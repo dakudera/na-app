@@ -22,7 +22,7 @@ public class GetUserProfileHelperComponent {
         educations.forEach(
                 e -> educationInfo.add(
                         EducationInfo.builder()
-                                .id(e.getId())
+                                .id(e.getId().toHexString())
                                 .advanced_qualification(e.getAdvanced_qualification())
                                 .certificate(e.getCertificate())
                                 .specialty(e.getSpecialty())

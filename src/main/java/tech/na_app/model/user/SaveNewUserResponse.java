@@ -16,7 +16,7 @@ public class SaveNewUserResponse {
     @Schema(
             example = "1"
     )
-    private Integer id;
+    private String id;
     private ErrorObject error;
 
     public SaveNewUserResponse(ErrorObject error) {

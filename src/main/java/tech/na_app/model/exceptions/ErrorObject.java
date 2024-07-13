@@ -1,21 +1,16 @@
 package tech.na_app.model.exceptions;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-//@Data
-//@Builder
-public class ErrorObject extends CustomExceptionAbs{
+@Data
+@AllArgsConstructor
+public class ErrorObject {
 
+    private int code;
+    private String description;
 
-    public ErrorObject(Integer code, String description) {
-        super(code, description);
-    }
-
-    public ErrorObject(Integer code){
-        super(code, null);
+    public ErrorObject(int code) {
+        this.code = code;
     }
 }

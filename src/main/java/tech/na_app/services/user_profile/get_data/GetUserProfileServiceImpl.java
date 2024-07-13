@@ -8,12 +8,15 @@ import tech.na_app.entity.profile.DrivingLicense;
 import tech.na_app.entity.profile.Education;
 import tech.na_app.entity.profile.InternshipAndInstruction;
 import tech.na_app.entity.user.User;
+import tech.na_app.model.enums.InternshipAndInstructionType;
 import tech.na_app.model.exceptions.ApiException;
 import tech.na_app.model.exceptions.ErrorObject;
-import tech.na_app.model.enums.InternshipAndInstructionType;
 import tech.na_app.model.profile.GetUserProfileRequest;
 import tech.na_app.model.profile.GetUserProfileResponse;
-import tech.na_app.repository.*;
+import tech.na_app.repository.AvailableDocumentsRepository;
+import tech.na_app.repository.DrivingLicenseRepository;
+import tech.na_app.repository.EducationRepository;
+import tech.na_app.repository.InternshipAndInstructionRepository;
 import tech.na_app.services.user_profile.GetUserProfileHelperComponent;
 import tech.na_app.services.user_profile.UserProfileAbs;
 
@@ -33,7 +36,7 @@ public class GetUserProfileServiceImpl extends UserProfileAbs implements GetUser
     @Override
     public GetUserProfileResponse getUserProfile(String requestId, User user, GetUserProfileRequest request) {
         try {
-            User userInfo = choosingUser(user, request.getUserId());
+            User userInfo = choosingUser(user, request.userId());
 
             DrivingLicense drivingLicense = drivingLicenseRepository.findByUserId(userInfo.getId())
                     .orElseGet(DrivingLicense::new);

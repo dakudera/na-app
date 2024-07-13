@@ -15,7 +15,7 @@ public interface UserRepository extends MongoRepository<User, Integer> {
 
     Optional<User> findByLogin(String login);
 
-    List<User> findAllByCompanyId(Integer companyId);
+    List<User> findAllByCompanyId(ObjectId companyId);
 
     Optional<User> findById(ObjectId integer);
 }

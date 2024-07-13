@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import javax.persistence.Id;
 import javax.persistence.Temporal;
@@ -24,8 +26,8 @@ public class Company {
     @Transient
     public static final String SEQUENCE_NAME = "company_sequence";
 
-    @Id
-    private Integer id;
+    @MongoId
+    private ObjectId id;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

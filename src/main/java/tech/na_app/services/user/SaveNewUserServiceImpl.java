@@ -2,6 +2,7 @@ package tech.na_app.services.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.company.Company;
 import tech.na_app.entity.user.User;
@@ -31,7 +32,7 @@ public class SaveNewUserServiceImpl implements SaveNewUserService {
     @Override
     public SaveNewUserResponse saveNewUser(String requestId, User user, SaveNewUserRequest request) {
         try {
-            Integer companyId = null;
+            ObjectId companyId = null;
             if (!request.getRole().equals(UserRoleType.SUPER_ADMIN) && !user.getRole().equals(UserRoleType.SUPER_ADMIN)) {
                 Optional<Company> companyOptional = companyRepository.findById(user.getCompanyId());
                 if (companyOptional.isPresent()) {
@@ -39,11 +40,10 @@ public class SaveNewUserServiceImpl implements SaveNewUserService {
                 }
             }
 
-            UserSequence sequenceNumber = (UserSequence) sequenceGeneratorService.getSequenceNumber(User.SEQUENCE_NAME, UserSequence.class);
 
             String salt = PasswordUtils.getSalt();
             String passwordEncode = PasswordUtils.generateSecurePassword(request.getPassword(), salt);
-            userRepository.save(
+            User savedUser = userRepository.save(
                     User.builder()
                             .create_date(new Date())
                             .login(request.getLogin())
@@ -55,7 +55,7 @@ public class SaveNewUserServiceImpl implements SaveNewUserService {
             );
 
             return SaveNewUserResponse.builder()
-                    .id(sequenceNumber.getSeq())
+                    .id(savedUser.getId().toString())
                     .error(new ErrorObject(0))
                     .build();
         } catch (ApiException e) {
