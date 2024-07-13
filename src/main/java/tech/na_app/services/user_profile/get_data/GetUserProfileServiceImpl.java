@@ -17,7 +17,7 @@ import tech.na_app.repository.AvailableDocumentsRepository;
 import tech.na_app.repository.DrivingLicenseRepository;
 import tech.na_app.repository.EducationRepository;
 import tech.na_app.repository.InternshipAndInstructionRepository;
-import tech.na_app.services.user_profile.GetUserProfileHelperComponent;
+import tech.na_app.services.user_profile.GetUserProfileHelper;
 import tech.na_app.services.user_profile.UserProfileAbs;
 
 import java.util.List;
@@ -29,7 +29,6 @@ public class GetUserProfileServiceImpl extends UserProfileAbs implements GetUser
 
     private final EducationRepository educationRepository;
     private final InternshipAndInstructionRepository internshipAndInstructionRepository;
-    private final GetUserProfileHelperComponent getUserProfileHelperComponent;
     private final DrivingLicenseRepository drivingLicenseRepository;
     private final AvailableDocumentsRepository availableDocumentsRepository;
 
@@ -47,19 +46,12 @@ public class GetUserProfileServiceImpl extends UserProfileAbs implements GetUser
                     .findAllByUserIdAndType(userInfo.getId(), InternshipAndInstructionType.INSTRUCTION);
             AvailableDocuments availableDocuments = availableDocumentsRepository.findByUserId(userInfo.getId())
                     .orElseGet(AvailableDocuments::new);
-            GetUserProfileResponse response = new GetUserProfileResponse(new ErrorObject(0));
-//            response.setId(userInfo.getId());
-            response.setDriving_license(getUserProfileHelperComponent.fillDriverLicense(drivingLicense));
-            response.setEducationInfo(getUserProfileHelperComponent.buildEducations(educations));
-            response.setInternshipInfo(getUserProfileHelperComponent.buildInstructionsAndInternships(internships));
-            response.setInstructionInfo(getUserProfileHelperComponent.buildInstructionsAndInternships(instructions));
-            response.setAvailable_documents(getUserProfileHelperComponent.fillDriverLicense(availableDocuments));
 
-            if (userInfo.getProfile() != null) {
-                getUserProfileHelperComponent.fillUserProfile(userInfo, response);
-            }
-
-            return response;
+            GetUserProfileHelper getUserProfileHelper = new GetUserProfileHelper(
+                    educations, instructions, userInfo, drivingLicense,
+                    availableDocuments, internships
+            );
+            return getUserProfileHelper.buildGetUserProfileResponse();
         } catch (ApiException e) {
             log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
             return new GetUserProfileResponse(new ErrorObject(e.getCode(), e.getMessage()));

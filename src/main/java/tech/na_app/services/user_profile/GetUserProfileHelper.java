@@ -1,8 +1,8 @@
 package tech.na_app.services.user_profile;
 
-import org.springframework.stereotype.Component;
 import tech.na_app.entity.profile.*;
 import tech.na_app.entity.user.User;
+import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.profile.GetUserProfileResponse;
 import tech.na_app.model.profile.InstructionInfo;
 import tech.na_app.model.profile.education.EducationInfo;
@@ -10,10 +10,46 @@ import tech.na_app.model.profile.education.EducationInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class GetUserProfileHelperComponent {
 
-    public List<EducationInfo> buildEducations(List<Education> educations) {
+public class GetUserProfileHelper {
+
+    private final List<Education> educations;
+    private final List<InternshipAndInstruction> instructions;
+    private final List<InternshipAndInstruction> internships;
+    private final User userInfo;
+    private final DrivingLicense drivingLicense;
+    private final AvailableDocuments availableDocuments;
+
+    public GetUserProfileHelper(
+            List<Education> educations, List<InternshipAndInstruction> instructions,
+            User userInfo, DrivingLicense drivingLicense, AvailableDocuments availableDocuments,
+            List<InternshipAndInstruction> internships) {
+        this.educations = educations;
+        this.instructions = instructions;
+        this.userInfo = userInfo;
+        this.drivingLicense = drivingLicense;
+        this.availableDocuments = availableDocuments;
+        this.internships = internships;
+    }
+
+    public GetUserProfileResponse buildGetUserProfileResponse() {
+        GetUserProfileResponse response = new GetUserProfileResponse(new ErrorObject(0));
+        response.setId(userInfo.getId().toHexString());
+        response.setRole(userInfo.getRole());
+        response.setDriving_license(this.fillDriverLicense());
+        response.setEducationInfo(this.buildEducations());
+        response.setInternshipInfo(this.buildInstructionsAndInternships(internships));
+        response.setInstructionInfo(this.buildInstructionsAndInternships(instructions));
+        response.setAvailable_documents(this.fillAvailableDocuments());
+
+        if (userInfo.getProfile() != null) {
+            this.fillUserProfile();
+        }
+
+        return response;
+    }
+
+    private List<EducationInfo> buildEducations() {
         List<EducationInfo> educationInfo = new ArrayList<>();
         if (educations == null || educations.isEmpty()) {
             return educationInfo;
@@ -32,13 +68,13 @@ public class GetUserProfileHelperComponent {
         return educationInfo;
     }
 
-    public List<InstructionInfo> buildInstructionsAndInternships(List<InternshipAndInstruction> instructions) {
+    private List<InstructionInfo> buildInstructionsAndInternships(List<InternshipAndInstruction> list) {
         List<InstructionInfo> instructionInfo = new ArrayList<>();
-        if (instructions == null || instructions.isEmpty()) {
+        if (list == null || list.isEmpty()) {
             return instructionInfo;
         }
 
-        instructions.forEach(
+        list.forEach(
                 e -> instructionInfo.add(
                         InstructionInfo.builder()
                                 .id(e.getId())
@@ -50,7 +86,8 @@ public class GetUserProfileHelperComponent {
         return instructionInfo;
     }
 
-    public void fillUserProfile(User userInfo, GetUserProfileResponse response) {
+    private GetUserProfileResponse fillUserProfile() {
+        GetUserProfileResponse response = new GetUserProfileResponse(new ErrorObject(0));
         Profile profile = userInfo.getProfile();
         response.setRole(userInfo.getRole());
         response.setEmail(profile.getEmail());
@@ -65,9 +102,10 @@ public class GetUserProfileHelperComponent {
         response.setSufficient_experience_mp(profile.getSufficient_experience_mp());
         response.setRegistration_address(profile.getRegistration_address());
         response.setActual_address(profile.getActual_address());
+        return response;
     }
 
-    public tech.na_app.model.profile.driving_license.DrivingLicense fillDriverLicense(DrivingLicense drivingLicense) {
+    private tech.na_app.model.profile.driving_license.DrivingLicense fillDriverLicense() {
         tech.na_app.model.profile.driving_license.DrivingLicense driving = new tech.na_app.model.profile.driving_license.DrivingLicense();
         driving.setCategories(drivingLicense.getCategories());
         driving.setDate_issue(drivingLicense.getDate_issue());
@@ -76,7 +114,7 @@ public class GetUserProfileHelperComponent {
     }
 
 
-    public tech.na_app.model.profile.AvailableDocuments fillDriverLicense(AvailableDocuments availableDocuments) {
+    private tech.na_app.model.profile.AvailableDocuments fillAvailableDocuments() {
         tech.na_app.model.profile.AvailableDocuments documents = new tech.na_app.model.profile.AvailableDocuments();
         documents.setEmployment_history(availableDocuments.getEmployment_history());
         documents.setIpn(availableDocuments.getIpn());

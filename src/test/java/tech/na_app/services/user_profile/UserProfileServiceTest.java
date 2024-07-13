@@ -51,7 +51,7 @@
 //    private UserRepository userRepository;
 //
 //    @Mock
-//    private GetUserProfileHelperComponent getUserProfileHelperComponent;
+//    private GetUserProfileHelper getUserProfileHelperComponent;
 //
 //    @Mock
 //    private UserHelperComponent userHelperComponent;

@@ -25,7 +25,7 @@ public class GetUserProfileResponse {
             title = " user id",
             example = "1"
     )
-    private Integer id;
+    private String id;
 
     private UserRoleType role;
 
