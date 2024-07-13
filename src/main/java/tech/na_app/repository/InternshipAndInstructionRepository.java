@@ -11,8 +11,9 @@ import java.util.Optional;
 
 @Repository
 public interface InternshipAndInstructionRepository extends MongoRepository<InternshipAndInstruction, Integer> {
+
     List<InternshipAndInstruction> findAllByUserIdAndType(ObjectId userId, InternshipAndInstructionType type);
 
-    Optional<InternshipAndInstruction> findByUserIdAndId(ObjectId userId, Integer id);
+    Optional<InternshipAndInstruction> findByUserIdAndId(ObjectId userId, ObjectId id);
 
 }

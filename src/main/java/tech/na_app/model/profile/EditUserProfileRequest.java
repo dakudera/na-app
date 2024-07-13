@@ -24,7 +24,7 @@ public class EditUserProfileRequest {
             title = " user id"
     )
     @NotNull
-    private Integer id;
+    private String id;
 
     @NotNull
     private UserRoleType role;

@@ -2,6 +2,7 @@ package tech.na_app.services.user_profile.remove_data;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.profile.InternshipAndInstruction;
 import tech.na_app.entity.user.User;
@@ -26,7 +27,8 @@ public class RemoveInternshipServiceImpl extends UserProfileAbs implements Remov
         try {
             User userInfo = choosingUser(user, request.getUserId());
 
-            Optional<InternshipAndInstruction> internshipAndInstructionOptional = internshipAndInstructionRepository.findByUserIdAndId(userInfo.getId(), request.getId());
+            Optional<InternshipAndInstruction> internshipAndInstructionOptional = internshipAndInstructionRepository
+                    .findByUserIdAndId(userInfo.getId(), new ObjectId(request.getId()));
             InternshipAndInstruction internshipAndInstruction = internshipAndInstructionOptional.orElseThrow(() -> new ApiException(400, "BAD REQUEST"));
             internshipAndInstructionRepository.delete(internshipAndInstruction);
 

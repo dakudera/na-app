@@ -6,11 +6,11 @@ import lombok.Data;
 @Data
 public class RemoveInternshipRequest {
 
-    private Integer id;
+    private String id;
     @Schema(
             example = "1",
             type = "integer"
     )
-    private Integer userId;
+    private String userId;
 
 }

@@ -1,4 +1,4 @@
-package tech.na_app.services.user_profile;
+package tech.na_app.converter;
 
 import tech.na_app.entity.profile.*;
 import tech.na_app.entity.user.User;

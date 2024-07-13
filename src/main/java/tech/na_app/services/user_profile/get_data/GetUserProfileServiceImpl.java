@@ -17,7 +17,7 @@ import tech.na_app.repository.AvailableDocumentsRepository;
 import tech.na_app.repository.DrivingLicenseRepository;
 import tech.na_app.repository.EducationRepository;
 import tech.na_app.repository.InternshipAndInstructionRepository;
-import tech.na_app.services.user_profile.GetUserProfileHelper;
+import tech.na_app.converter.GetUserProfileHelper;
 import tech.na_app.services.user_profile.UserProfileAbs;
 
 import java.util.List;

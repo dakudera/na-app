@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public record ExistDocumentRequest(
-        @NotNull Integer userId,
+        @NotNull String userId,
         @Schema(
                 example = "AE123456",
                 type = "string"
@@ -31,7 +31,7 @@ public record ExistDocumentRequest(
         @NotEmpty
         String military_registration_doc,
         @NotNull
-        HealthCertificate health_certificate) {
-
+        HealthCertificate health_certificate
+) {
 
 }

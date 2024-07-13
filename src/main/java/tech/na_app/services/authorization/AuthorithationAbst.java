@@ -45,7 +45,6 @@ public abstract class AuthorithationAbst {
         try {
             decoded = Base64.getDecoder().decode(base64Token);
             String token = new String(decoded, "UTF-8");
-            System.out.println(token);
             int delim = token.indexOf(":");
             if (delim == -1) {
                 throw new IllegalArgumentException("Invalid basic authentication token");

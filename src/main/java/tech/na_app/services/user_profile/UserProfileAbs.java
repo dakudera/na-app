@@ -15,17 +15,6 @@ public abstract class UserProfileAbs {
     @Autowired
     private UserRepository userRepository;
 
-    protected User choosingUser(User user, Integer userId) {
-        if (Objects.nonNull(userId)) {
-            User otherUser = userRepository.findById(userId).orElseThrow(() -> new ApiException(400, "User was not found"));
-            log.info("Other user {}", otherUser);
-            return otherUser;
-        } else {
-            log.info("Self user {}", user);
-            return user;
-        }
-    }
-
     protected User choosingUser(User user, String userIdStr) {
         if (Objects.nonNull(userIdStr)) {
             ObjectId userId = new ObjectId(userIdStr);

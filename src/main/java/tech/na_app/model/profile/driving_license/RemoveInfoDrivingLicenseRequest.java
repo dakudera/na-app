@@ -12,5 +12,5 @@ public class RemoveInfoDrivingLicenseRequest {
             example = "1"
     )
     @NotEmpty
-    private Integer userId;
+    private String userId;
 }

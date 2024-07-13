@@ -3,6 +3,7 @@ package tech.na_app.model.profile;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.bson.types.ObjectId;
 import tech.na_app.model.enums.InternshipAndInstructionType;
 
 import javax.validation.constraints.NotEmpty;
@@ -11,15 +12,14 @@ import java.util.Date;
 
 @Data
 public class SaveInternshipRequest {
-
     @NotNull
-    private Integer id;
+    private String id;
     @Schema(
             example = "1",
             type = "integer"
     )
     @NotNull
-    private Integer userId;
+    private String userId;
     @Schema(
             example = "123456",
             type = "string"
