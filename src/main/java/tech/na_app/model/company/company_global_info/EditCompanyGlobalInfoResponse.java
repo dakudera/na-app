@@ -1,17 +1,16 @@
 package tech.na_app.model.company.company_global_info;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tech.na_app.model.exceptions.ErrorObject;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class EditCompanyGlobalInfoResponse {
 
     private ErrorObject error;
 
+    public EditCompanyGlobalInfoResponse(ErrorObject error) {
+        this.error = error;
+    }
 }

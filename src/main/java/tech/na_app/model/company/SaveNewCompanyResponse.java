@@ -12,3 +12,4 @@ public class SaveNewCompanyResponse {
         this.error = error;
     }
 }
+

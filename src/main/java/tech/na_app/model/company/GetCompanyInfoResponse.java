@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.company.company_global_info.BankingDetails;
 import tech.na_app.model.company.company_global_info.Communication;
 import tech.na_app.model.company.conpany_name.CompanyName;
 import tech.na_app.model.company.identification_detalis.IdentificationDetails;
+import tech.na_app.model.exceptions.ErrorObject;
 
 @Data
 @Builder

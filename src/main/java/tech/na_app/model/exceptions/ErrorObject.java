@@ -6,12 +6,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
+//@Data
+//@Builder
 public class ErrorObject extends CustomExceptionAbs{
 
 
     public ErrorObject(Integer code, String description) {
         super(code, description);
+    }
+
+    public ErrorObject(Integer code){
+        super(code, null);
     }
 }

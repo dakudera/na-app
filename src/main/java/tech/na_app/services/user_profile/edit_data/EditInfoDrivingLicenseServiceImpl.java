@@ -10,6 +10,7 @@ import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.profile.driving_license.EditInfoDrivingLicenseRequest;
 import tech.na_app.model.profile.driving_license.EditInfoDrivingLicenseResponse;
 import tech.na_app.repository.DrivingLicenseRepository;
+import tech.na_app.repository.UserRepository;
 import tech.na_app.services.user_profile.UserProfileAbs;
 
 @Log4j2

@@ -6,8 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.enums.UserRoleType;
+import tech.na_app.model.exceptions.ErrorObject;
 
 import java.util.Date;
 
@@ -47,10 +47,11 @@ public class LoginResponse {
             type = "string"
     )
     private UserRoleType role;
-
     private ErrorObject error;
 
     public LoginResponse(ErrorObject error) {
         this.error = error;
     }
 }
+
+

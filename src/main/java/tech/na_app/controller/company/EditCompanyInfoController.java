@@ -3,9 +3,9 @@ package tech.na_app.controller.company;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
+import tech.na_app.controller.AuthenticationStrategy;
+import tech.na_app.controller.BaseController;
 import tech.na_app.entity.user.User;
-import tech.na_app.model.exceptions.ApiException;
-import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.company.company_global_info.EditCompanyGlobalInfoRequest;
 import tech.na_app.model.company.company_global_info.EditCompanyGlobalInfoResponse;
 import tech.na_app.model.company.conpany_name.EditCompanyNameRequest;
@@ -15,78 +15,60 @@ import tech.na_app.model.company.identification_detalis.EditIdentificationDetail
 import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.services.company.edit_data.EditCompanyGlobalInfoService;
 import tech.na_app.services.company.edit_data.EditCompanyNameService;
-import tech.na_app.services.company.edit_data.EditIdentificationDetailsServiceImpl;
-import tech.na_app.utils.HelpUtil;
+import tech.na_app.services.company.edit_data.EditIdentificationDetailsService;
 import tech.na_app.utils.ValidateHelper;
-import tech.na_app.utils.jwt.AuthChecker;
 
 @Log4j2
 @RestController
 @RequestMapping("company")
 @RequiredArgsConstructor
-public class EditCompanyInfoController {
+public class EditCompanyInfoController extends BaseController {
 
-    private final AuthChecker authChecker;
+    private final AuthenticationStrategy authenticationStrategy;
     private final EditCompanyNameService editCompanyNameService;
     private final EditCompanyGlobalInfoService editCompanyGlobalInfoService;
-    private final EditIdentificationDetailsServiceImpl editIdentificationDetailsServiceImpl;
+    private final EditIdentificationDetailsService editIdentificationDetailsService;
 
     @PutMapping("edit/company-name")
     public EditCompanyNameResponse editCompanyName(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditCompanyNameRequest request
     ) {
-        String requestId = HelpUtil.getUUID();
-        try {
-            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+        String requestId = generateRequestId();
+        log.info(requestId + " Request to /editCompanyName");
+        return handleRequest(requestId, () -> {
             ValidateHelper.validateInput(request);
-            log.info(requestId + " Request to /editCompanyName");
+            User user = authenticationStrategy.authenticate(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " User: " + user);
-            EditCompanyNameResponse response = editCompanyNameService.editCompanyName(requestId, user, request);
-            log.info(requestId + " Response from /editCompanyName: " + response);
-            return response;
-        } catch (ApiException e) {
-            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
-            return new EditCompanyNameResponse(new ErrorObject(e.getCode(), e.getMessage()));
-        }
+            return editCompanyNameService.editCompanyName(requestId, user, request);
+        });
     }
 
     @PutMapping("edit/global-info")
     public EditCompanyGlobalInfoResponse editCompanyGlobalInfo(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditCompanyGlobalInfoRequest request
     ) {
-        String requestId = HelpUtil.getUUID();
-        try {
-            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+        String requestId = generateRequestId();
+        log.info(requestId + " Request to /editCompanyGlobalInfo");
+        return handleRequest(requestId, () -> {
             ValidateHelper.validateInput(request);
-            log.info(requestId + " Request to /editCompanyGlobalInfo");
+            User user = authenticationStrategy.authenticate(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " User: " + user);
-            EditCompanyGlobalInfoResponse response = editCompanyGlobalInfoService.editCompanyGlobalInfo(requestId, user, request);
-            log.info(requestId + " Response from /editCompanyGlobalInfo: " + response);
-            return response;
-        } catch (ApiException e) {
-            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
-            return new EditCompanyGlobalInfoResponse(new ErrorObject(e.getCode(), e.getMessage()));
-        }
+            return editCompanyGlobalInfoService.editCompanyGlobalInfo(requestId, user, request);
+        });
     }
 
     @PutMapping("edit/identification-details")
     public EditIdentificationDetailsResponse editIdentificationDetails(
             @RequestHeader(name = "Authorization") String token, @RequestBody EditIdentificationDetailsRequest request
     ) {
-        String requestId = HelpUtil.getUUID();
-        try {
-            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
+        String requestId = generateRequestId();
+        log.info(requestId + " Request to /editIdentificationDetails");
+        return handleRequest(requestId, () -> {
             ValidateHelper.validateInput(request);
-            log.info(requestId + " Request to /editIdentificationDetails");
+            User user = authenticationStrategy.authenticate(token, UserRoleType.WAREHOUSE_MANAGER);
             log.info(requestId + " User: " + user);
-            EditIdentificationDetailsResponse response = editIdentificationDetailsServiceImpl.editIdentificationDetails(requestId, user, request);
-            log.info(requestId + " Response from /editIdentificationDetails: " + response);
-            return response;
-        } catch (ApiException e) {
-            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
-            return new EditIdentificationDetailsResponse(new ErrorObject(e.getCode(), e.getMessage()));
-        }
+            return editIdentificationDetailsService.editIdentificationDetails(requestId, user, request);
+        });
     }
-
 
 }
