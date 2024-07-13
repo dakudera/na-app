@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 public class EditTransportGeneralInfoRequest {
 
     @NotNull
-    private Integer id;
+    private String id;
 
     @NotNull
     private GeneralInfo general_info;

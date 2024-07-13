@@ -17,9 +17,8 @@ import java.util.stream.Collectors;
 @Component
 public class TransportConverter {
 
-    public Transport convertToTransportEntity(SaveNewTransportRequest request, TransportSequence transportSequence, User user) {
+    public Transport convertToTransportEntity(SaveNewTransportRequest request, User user) {
         return Transport.builder()
-                .id(transportSequence.getSeq())
                 .create_date(new Date())
                 .transport_status(TransportStatus.PARKING)
                 .transport_card(Objects.nonNull(request.getTransport_card()) ? TransportCard
@@ -183,7 +182,7 @@ public class TransportConverter {
         }
 
         return GetAllTransportResponse.Transport.builder()
-                .id(transport.getId())
+                .id(transport.getId().toHexString())
                 .brand(brand)
                 .state_number(state_number)
                 .nomenclature_name(nomenclature_name)

@@ -2,6 +2,7 @@ package tech.na_app.services.vehicle.edit_data;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.transport.Transport;
 import tech.na_app.entity.transport.TransportCard;
@@ -21,7 +22,7 @@ public class EditNomenclatureNameServiceImpl implements EditNomenclatureNameServ
     @Override
     public EditNomenclatureNameResponse editNomenclatureName(String requestId, EditNomenclatureNameRequest request) {
         try {
-            Transport transport = transportRepository.findById(request.getId())
+            Transport transport = transportRepository.findById(new ObjectId(request.getId()))
                     .orElseThrow(() -> new ApiException(404, "Not Found"));
 
 

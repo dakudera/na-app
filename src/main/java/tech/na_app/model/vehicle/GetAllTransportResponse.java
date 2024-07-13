@@ -29,7 +29,7 @@ public class GetAllTransportResponse {
     @AllArgsConstructor
     public static class Transport {
 
-        private Integer id;
+        private String id;
 
         private String brand;
 

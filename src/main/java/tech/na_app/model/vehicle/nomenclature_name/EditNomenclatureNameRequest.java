@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class EditNomenclatureNameRequest {
 
     @NotNull
-    private Integer id;
+    private String id;
 
     @NotEmpty
     private String nomenclature_name;

@@ -13,7 +13,6 @@ import tech.na_app.model.user.SaveNewUserRequest;
 import tech.na_app.model.user.SaveNewUserResponse;
 import tech.na_app.repository.CompanyRepository;
 import tech.na_app.repository.UserRepository;
-import tech.na_app.utils.SequenceGeneratorService;
 import tech.na_app.utils.jwt.PasswordUtils;
 
 import java.util.Date;
@@ -25,7 +24,6 @@ import java.util.Optional;
 public class SaveNewUserServiceImpl implements SaveNewUserService {
 
     private final UserRepository userRepository;
-    private final SequenceGeneratorService sequenceGeneratorService;
     private final CompanyRepository companyRepository;
 
     @Override

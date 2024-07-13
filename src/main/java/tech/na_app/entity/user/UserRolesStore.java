@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 import tech.na_app.model.enums.UserRoleType;
-
-import javax.persistence.Id;
 
 @Data
 @Builder
@@ -16,8 +16,8 @@ import javax.persistence.Id;
 @Document(collection = "user_roles")
 public class UserRolesStore {
 
-    @Id
-    private Integer id;
+    @MongoId
+    private ObjectId id;
 
     private UserRoleType role;
     private String description;

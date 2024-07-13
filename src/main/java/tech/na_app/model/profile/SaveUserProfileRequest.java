@@ -20,7 +20,7 @@ public class SaveUserProfileRequest {
             example = "1"
     )
     @NotNull
-    private Integer id;
+    private String id;
 
     @Schema(
             example = "test@gmail.com"

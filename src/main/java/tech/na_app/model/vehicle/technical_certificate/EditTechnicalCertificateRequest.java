@@ -18,7 +18,7 @@ import java.util.Date;
 public class EditTechnicalCertificateRequest {
 
     @NotNull
-    private Integer id;
+    private String id;
 
     @NotNull
     private TechnicalCertificate technical_certificate;

@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class InstructionInfo {
 
-    private Integer id;
+    private String id;
 
     private String doc_number;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Europe/Kiev")

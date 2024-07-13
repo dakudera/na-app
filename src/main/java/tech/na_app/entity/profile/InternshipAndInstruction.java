@@ -6,9 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 import tech.na_app.model.enums.InternshipAndInstructionType;
 
-import javax.persistence.*;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
 @Data
@@ -18,11 +22,8 @@ import java.util.Date;
 @Document(collection = "internship_instruction")
 public class InternshipAndInstruction {
 
-    @Transient
-    public static final String SEQUENCE_NAME = "internship_instruction_sequence";
-
-    @Id
-    private Integer id;
+    @MongoId
+    private ObjectId id;
 
     private String doc_number;
 

@@ -2,6 +2,7 @@ package tech.na_app.services.user_profile.save_data;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import tech.na_app.entity.profile.Profile;
 import tech.na_app.entity.user.User;
@@ -26,7 +27,7 @@ public class SaveUserProfileServiceImpl implements SaveUserProfileService {
     @Override
     public SaveUserProfileResponse saveUserProfile(String requestId, SaveUserProfileRequest request) {
         try {
-            Optional<User> userOptional = userRepository.findById(request.getId());
+            Optional<User> userOptional = userRepository.findById(new ObjectId(request.getId()));
             if (userOptional.isEmpty()) {
                 log.info(requestId + " User was not found");
                 throw new ApiException(400, "BAD_REQUEST");

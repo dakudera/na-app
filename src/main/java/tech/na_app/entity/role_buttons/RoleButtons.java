@@ -5,10 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 import tech.na_app.model.enums.UserRoleType;
 
-import javax.persistence.Id;
 import java.util.List;
 
 
@@ -19,8 +20,8 @@ import java.util.List;
 @Document(collection = "role_buttons")
 public class RoleButtons {
 
-    @Id
-    private String id;
+    @MongoId
+    private ObjectId id;
 
     private UserRoleType role;
 

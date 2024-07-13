@@ -2,6 +2,7 @@ package tech.na_app.services.vehicle.edit_data;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import tech.na_app.converter.TransportConverter;
 import tech.na_app.entity.transport.TechnicalCertificate;
@@ -25,7 +26,7 @@ public class EditTechnicalCertificateDopInfoServiceImpl implements EditTechnical
     @Override
     public EditTechnicalCertificateDopInfoResponse editTechnicalCertificateDopInfo(String requestId, EditTechnicalCertificateDopInfoRequest request) {
         try {
-            Transport transport = transportRepository.findById(request.getId())
+            Transport transport = transportRepository.findById(new ObjectId(request.getId()))
                     .orElseThrow(() -> new ApiException(404, "Not Found"));
 
             TechnicalCertificateDopInfo buildTechnicalCertificateDopInfo = transportConverter.convertToTechnicalCertificateDopInfoEntity(request);

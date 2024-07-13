@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 public class EditTransportUsingReasonInfoRequest {
 
     @NotNull
-    private Integer id;
+    private String id;
 
     @NotNull
     private UsingReasonInfo using_reason_info;

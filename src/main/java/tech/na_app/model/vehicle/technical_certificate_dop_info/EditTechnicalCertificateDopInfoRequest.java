@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class EditTechnicalCertificateDopInfoRequest {
 
     @NotNull
-    private Integer id;
+    private String id;
 
     @NotNull
     private TechnicalCertificateDopInfo technical_certificate_dop_info;

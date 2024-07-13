@@ -8,7 +8,6 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import javax.persistence.Transient;
 import java.time.Instant;
 
 @Data
@@ -17,9 +16,6 @@ import java.time.Instant;
 @AllArgsConstructor
 @Document(collection = "refresh_token")
 public class RefreshToken {
-
-    @Transient
-    public static final String SEQUENCE_NAME = "refresh_token_sequence";
 
     @MongoId
     private ObjectId id;

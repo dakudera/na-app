@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface InternshipAndInstructionRepository extends MongoRepository<InternshipAndInstruction, Integer> {
+public interface InternshipAndInstructionRepository extends MongoRepository<InternshipAndInstruction, ObjectId> {
 
     List<InternshipAndInstruction> findAllByUserIdAndType(ObjectId userId, InternshipAndInstructionType type);
 

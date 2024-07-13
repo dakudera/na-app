@@ -77,7 +77,7 @@ public class GetUserProfileHelper {
         list.forEach(
                 e -> instructionInfo.add(
                         InstructionInfo.builder()
-                                .id(e.getId())
+                                .id(e.getId().toHexString())
                                 .doc_number(e.getDoc_number())
                                 .date(e.getDate())
                                 .build()

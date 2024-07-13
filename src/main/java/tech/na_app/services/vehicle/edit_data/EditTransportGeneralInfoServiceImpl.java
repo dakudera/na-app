@@ -2,6 +2,7 @@ package tech.na_app.services.vehicle.edit_data;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import tech.na_app.converter.TransportConverter;
 import tech.na_app.entity.transport.GeneralInfo;
@@ -13,7 +14,6 @@ import tech.na_app.model.vehicle.general_info.EditTransportGeneralInfoRequest;
 import tech.na_app.model.vehicle.general_info.EditTransportGeneralInfoResponse;
 import tech.na_app.repository.TransportRepository;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Log4j2
@@ -28,14 +28,7 @@ public class EditTransportGeneralInfoServiceImpl implements EditTransportGeneral
     @Override
     public EditTransportGeneralInfoResponse editTransportGeneralInfo(String requestId, EditTransportGeneralInfoRequest request) {
         try {
-            if (Objects.isNull(request)) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-            if (Objects.isNull(request.getGeneral_info()) || Objects.isNull(request.getId())) {
-                throw new ApiException(400, "BAD REQUEST");
-            }
-
-            Optional<Transport> transportOptional = transportRepository.findById(request.getId());
+            Optional<Transport> transportOptional = transportRepository.findById(new ObjectId(request.getId()));
             Transport transport = transportOptional.orElseThrow(() -> new ApiException(404, "Not Found"));
 
 
