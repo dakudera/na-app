@@ -3,7 +3,6 @@ package tech.na_app.model.profile;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.bson.types.ObjectId;
 import tech.na_app.model.enums.InternshipAndInstructionType;
 
 import javax.validation.constraints.NotEmpty;

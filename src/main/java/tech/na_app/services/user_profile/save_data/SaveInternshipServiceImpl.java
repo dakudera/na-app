@@ -11,7 +11,6 @@ import tech.na_app.model.profile.SaveInternshipRequest;
 import tech.na_app.model.profile.SaveInternshipResponse;
 import tech.na_app.repository.InternshipAndInstructionRepository;
 import tech.na_app.services.user_profile.UserProfileAbs;
-import tech.na_app.utils.SequenceGeneratorService;
 
 @Log4j2
 @Service

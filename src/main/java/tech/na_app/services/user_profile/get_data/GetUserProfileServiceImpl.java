@@ -3,6 +3,7 @@ package tech.na_app.services.user_profile.get_data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import tech.na_app.converter.GetUserProfileHelper;
 import tech.na_app.entity.profile.AvailableDocuments;
 import tech.na_app.entity.profile.DrivingLicense;
 import tech.na_app.entity.profile.Education;
@@ -17,7 +18,6 @@ import tech.na_app.repository.AvailableDocumentsRepository;
 import tech.na_app.repository.DrivingLicenseRepository;
 import tech.na_app.repository.EducationRepository;
 import tech.na_app.repository.InternshipAndInstructionRepository;
-import tech.na_app.converter.GetUserProfileHelper;
 import tech.na_app.services.user_profile.UserProfileAbs;
 
 import java.util.List;
