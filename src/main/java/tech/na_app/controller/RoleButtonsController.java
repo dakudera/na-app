@@ -9,35 +9,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.na_app.entity.user.User;
 import tech.na_app.model.enums.UserRoleType;
-import tech.na_app.model.exceptions.ApiException;
-import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.role_buttons.GetAllowedButtonsResponse;
 import tech.na_app.services.role_buttons.RoleButtonsService;
-import tech.na_app.utils.HelpUtil;
-import tech.na_app.utils.jwt.AuthChecker;
 
 @Log4j2
 @RestController
 @RequestMapping("role_buttons")
 @RequiredArgsConstructor
-public class RoleButtonsController {
+public class RoleButtonsController extends BaseController {
 
-    private final AuthChecker authChecker;
+    private final AuthenticationStrategy authenticationStrategy;
     private final RoleButtonsService roleButtonsService;
 
-    @GetMapping("get_allowed")
-    public GetAllowedButtonsResponse getAllowedButtons(@RequestHeader(name = "Authorization") String token) {
-        String requestId = HelpUtil.getUUID();
-        try {
-            User user = authChecker.checkToken(token, UserRoleType.WAREHOUSE_MANAGER);
-            log.info(requestId + " Request to /getAllowedButtons");
+    @GetMapping("allowed")
+    public GetAllowedButtonsResponse getAllowedButtons(
+            @RequestHeader(name = "Authorization") String token
+    ) {
+        String requestId = generateRequestId();
+        log.info(requestId + " Request to /getAllowedButtons");
+        return handleRequest(requestId, () -> {
+            User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
             log.info(requestId + " User: " + user);
-            GetAllowedButtonsResponse response = roleButtonsService.getAllowedButtons(requestId, user);
-            log.info(requestId + " Response from /getAllowedButtons: " + response);
-            return response;
-        } catch (ApiException e) {
-            log.error(requestId + " Error: " + e.getCode() + " Message: " + e.getMessage());
-            return new GetAllowedButtonsResponse(new ErrorObject(e.getCode(), e.getMessage()));
-        }
+            return roleButtonsService.getAllowedButtons(requestId, user);
+        });
     }
 }
