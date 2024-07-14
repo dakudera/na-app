@@ -46,7 +46,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                         .orElse("");
                 employeeInfo.add(
                         EmployeeInfo.builder()
-//                                .id(employee.getId())
+                                .id(employee.getId().toHexString())
                                 .fio(
                                         employee.getProfile() != null && employee.getProfile().getFio() != null ?
                                                 employee.getProfile().getFio() : null

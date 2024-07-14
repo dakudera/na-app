@@ -15,7 +15,7 @@ public class EmployeeInfo {
     @Schema(
             example = "1"
     )
-    private Integer id;
+    private String id;
 
     @Schema(
             example = "Vasil"
