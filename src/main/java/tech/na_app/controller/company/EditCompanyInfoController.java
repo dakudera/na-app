@@ -16,6 +16,7 @@ import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.services.company.edit_data.EditCompanyGlobalInfoService;
 import tech.na_app.services.company.edit_data.EditCompanyNameService;
 import tech.na_app.services.company.edit_data.EditIdentificationDetailsService;
+import tech.na_app.utils.LineUtil;
 import tech.na_app.utils.ValidateHelper;
 
 @Log4j2
@@ -38,7 +39,7 @@ public class EditCompanyInfoController extends BaseController {
         return handleRequest(requestId, () -> {
             ValidateHelper.validateInput(request);
             User user = authenticationStrategy.authenticate(token, UserRoleType.WAREHOUSE_MANAGER);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return editCompanyNameService.editCompanyName(requestId, user, request);
         });
     }
@@ -52,7 +53,7 @@ public class EditCompanyInfoController extends BaseController {
         return handleRequest(requestId, () -> {
             ValidateHelper.validateInput(request);
             User user = authenticationStrategy.authenticate(token, UserRoleType.WAREHOUSE_MANAGER);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return editCompanyGlobalInfoService.editCompanyGlobalInfo(requestId, user, request);
         });
     }
@@ -66,7 +67,7 @@ public class EditCompanyInfoController extends BaseController {
         return handleRequest(requestId, () -> {
             ValidateHelper.validateInput(request);
             User user = authenticationStrategy.authenticate(token, UserRoleType.WAREHOUSE_MANAGER);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return editIdentificationDetailsService.editIdentificationDetails(requestId, user, request);
         });
     }

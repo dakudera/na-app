@@ -11,6 +11,7 @@ import tech.na_app.entity.user.User;
 import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.role_buttons.GetAllowedButtonsResponse;
 import tech.na_app.services.role_buttons.RoleButtonsService;
+import tech.na_app.utils.LineUtil;
 
 @Log4j2
 @RestController
@@ -29,7 +30,7 @@ public class RoleButtonsController extends BaseController {
         log.info(requestId + " Request to /getAllowedButtons");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return roleButtonsService.getAllowedButtons(requestId, user);
         });
     }

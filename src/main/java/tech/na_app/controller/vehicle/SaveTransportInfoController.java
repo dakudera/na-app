@@ -10,6 +10,7 @@ import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.vehicle.SaveNewTransportRequest;
 import tech.na_app.model.vehicle.SaveNewTransportResponse;
 import tech.na_app.services.vehicle.save_data.SaveNewTransportService;
+import tech.na_app.utils.LineUtil;
 
 @Log4j2
 @RestController
@@ -28,7 +29,7 @@ public class SaveTransportInfoController extends BaseController {
         log.info(requestId + " Request to /editNomenclatureName");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return saveNewTransportService.addNewVehicle(requestId, request, user);
         });
     }

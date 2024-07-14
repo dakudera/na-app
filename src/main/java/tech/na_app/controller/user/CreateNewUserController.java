@@ -10,6 +10,7 @@ import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.user.SaveNewUserRequest;
 import tech.na_app.model.user.SaveNewUserResponse;
 import tech.na_app.services.user.SaveNewUserService;
+import tech.na_app.utils.LineUtil;
 
 
 @Log4j2
@@ -29,7 +30,7 @@ public class CreateNewUserController extends BaseController {
         log.info(requestId + " Request to /saveNewUser");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return saveNewUserService.saveNewUser(requestId, user, request);
         });
     }

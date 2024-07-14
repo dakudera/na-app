@@ -11,6 +11,7 @@ import tech.na_app.model.profile.driving_license.*;
 import tech.na_app.services.user_profile.edit_data.EditInfoDrivingLicenseService;
 import tech.na_app.services.user_profile.remove_data.RemoveInfoDrivingLicenseService;
 import tech.na_app.services.user_profile.save_data.SaveInfoDrivingLicenseService;
+import tech.na_app.utils.LineUtil;
 
 @Log4j2
 @RestController
@@ -31,7 +32,7 @@ public class DrivingLicenseInfoController extends BaseController {
         log.info(requestId + " Request to /saveInfoDrivingLicense: " + request);
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return saveInfoDrivingLicenseService.saveInfoDrivingLicense(requestId, request);
         });
     }
@@ -45,7 +46,7 @@ public class DrivingLicenseInfoController extends BaseController {
         log.info(requestId + " Request to /editInfoDrivingLicense: " + request);
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return editInfoDrivingLicenseService.editInfoDrivingLicense(requestId, user, request);
         });
     }
@@ -58,7 +59,7 @@ public class DrivingLicenseInfoController extends BaseController {
         log.info(requestId + " Request to /removeInfoDrivingLicense: " + request);
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return removeInfoDrivingLicenseService.removeInfoDrivingLicense(requestId, user, request);
         });
     }

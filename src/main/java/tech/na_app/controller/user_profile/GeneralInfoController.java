@@ -12,6 +12,7 @@ import tech.na_app.services.user_profile.edit_data.EditUserProfileService;
 import tech.na_app.services.user_profile.get_data.GetUserProfileService;
 import tech.na_app.services.user_profile.save_data.SaveExistDocumentService;
 import tech.na_app.services.user_profile.save_data.SaveUserProfileService;
+import tech.na_app.utils.LineUtil;
 
 @Log4j2
 @RestController
@@ -33,7 +34,7 @@ public class GeneralInfoController extends BaseController {
         log.info(requestId + " Request to /getUserProfile: " + request);
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return getUserProfileService.getUserProfile(requestId, user, request);
         });
     }
@@ -46,7 +47,7 @@ public class GeneralInfoController extends BaseController {
         log.info(requestId + " Request to /existDocument: " + request);
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return saveExistDocumentService.saveExistDocument(requestId, user, request);
         });
     }
@@ -59,7 +60,7 @@ public class GeneralInfoController extends BaseController {
         log.info(requestId + " Request to /saveUserProfile: " + request);
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return saveUserProfileService.saveUserProfile(requestId, request);
         });
     }
@@ -72,7 +73,7 @@ public class GeneralInfoController extends BaseController {
         log.info(requestId + " Request to /editUserProfile: " + request);
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return editUserProfileService.editUserProfile(requestId, user, request);
         });
     }

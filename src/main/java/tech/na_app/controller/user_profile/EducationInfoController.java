@@ -11,6 +11,7 @@ import tech.na_app.model.profile.education.*;
 import tech.na_app.services.user_profile.edit_data.EditInfoEducationService;
 import tech.na_app.services.user_profile.remove_data.RemoveInfoEducationService;
 import tech.na_app.services.user_profile.save_data.SaveInfoEducationService;
+import tech.na_app.utils.LineUtil;
 import tech.na_app.utils.ValidateHelper;
 
 @Log4j2
@@ -33,7 +34,7 @@ public class EducationInfoController extends BaseController {
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
             ValidateHelper.validateInput(request);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return saveInfoEducationService.saveInfoEducation(requestId, request);
         });
     }
@@ -46,7 +47,7 @@ public class EducationInfoController extends BaseController {
         log.info(requestId + " Request to /editInfoEducation: " + request);
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return editInfoEducationService.editInfoEducation(requestId, user, request);
         });
     }
@@ -59,7 +60,7 @@ public class EducationInfoController extends BaseController {
         log.info(requestId + " Request to /removeInfoEducation: " + request);
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return removeInfoEducationService.removeInfoEducation(requestId, user, request);
         });
     }

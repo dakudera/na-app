@@ -14,6 +14,7 @@ import tech.na_app.model.user.GetAllUserRolesResponse;
 import tech.na_app.model.user.employee.GetAllEmployeeResponse;
 import tech.na_app.services.user.EmployeeService;
 import tech.na_app.services.user.GetAllUserRolesService;
+import tech.na_app.utils.LineUtil;
 
 @Log4j2
 @RestController
@@ -34,7 +35,7 @@ public class GetUserController extends BaseController {
         log.info(requestId + " Request to /getAllUserRoles");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return getAllUserRolesService.getAllUserRoles(requestId);
         });
     }
@@ -47,7 +48,7 @@ public class GetUserController extends BaseController {
         log.info(requestId + " Request to /getEmployeeList");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return employeeService.getAllEmployee(requestId, user);
         });
     }

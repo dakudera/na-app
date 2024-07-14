@@ -12,6 +12,7 @@ import tech.na_app.model.profile.SaveInternshipRequest;
 import tech.na_app.model.profile.SaveInternshipResponse;
 import tech.na_app.services.user_profile.remove_data.RemoveInternshipService;
 import tech.na_app.services.user_profile.save_data.SaveInternshipService;
+import tech.na_app.utils.LineUtil;
 
 @Log4j2
 @RestController
@@ -31,7 +32,7 @@ public class InternshipController extends BaseController {
         log.info(requestId + " Request to /saveInternship: " + request);
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return saveInternshipService.saveInternship(requestId, user, request);
         });
     }
@@ -44,7 +45,7 @@ public class InternshipController extends BaseController {
         log.info(requestId + " Request to /removeInternship: " + request);
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return removeInternshipService.removeInternship(requestId, user, request);
         });
     }

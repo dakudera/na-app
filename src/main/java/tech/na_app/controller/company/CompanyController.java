@@ -14,6 +14,7 @@ import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.services.company.get_data.GetAllCompaniesService;
 import tech.na_app.services.company.get_data.GetCompanyInfoService;
 import tech.na_app.services.company.save_data.SaveNewCompanyService;
+import tech.na_app.utils.LineUtil;
 
 @Log4j2
 @RestController
@@ -34,7 +35,7 @@ public class CompanyController extends BaseController {
         log.info(requestId + " Request to /saveNewCompany: " + request);
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return saveNewCompanyService.saveNewCompany(requestId, request);
         });
     }
@@ -45,7 +46,7 @@ public class CompanyController extends BaseController {
         log.info(requestId + " Request to /getAllCompany");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return getAllCompaniesService.getAllCompanies(requestId);
         });
     }
@@ -56,7 +57,7 @@ public class CompanyController extends BaseController {
         log.info(requestId + " Request to /getCompanyInfo");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.WAREHOUSE_MANAGER);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return getCompanyInfoService.getCompanyInfo(requestId, user);
         });
     }

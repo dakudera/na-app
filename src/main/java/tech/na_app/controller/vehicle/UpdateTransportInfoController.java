@@ -18,6 +18,7 @@ import tech.na_app.model.vehicle.technical_certificate_dop_info.EditTechnicalCer
 import tech.na_app.model.vehicle.using_reason.EditTransportUsingReasonInfoRequest;
 import tech.na_app.model.vehicle.using_reason.EditTransportUsingReasonInfoResponse;
 import tech.na_app.services.vehicle.edit_data.*;
+import tech.na_app.utils.LineUtil;
 
 @Log4j2
 @RestController
@@ -41,7 +42,7 @@ public class UpdateTransportInfoController extends BaseController {
         log.info(requestId + " Request to /editGeneralInfo");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return editTransportGeneralInfoService.editTransportGeneralInfo(requestId, request);
         });
     }
@@ -54,7 +55,7 @@ public class UpdateTransportInfoController extends BaseController {
         log.info(requestId + " Request to /editUsingReasonInfo");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return editTransportUsingReasonInfoService.editTransportUsingReasonInfo(requestId, request);
         });
     }
@@ -67,7 +68,7 @@ public class UpdateTransportInfoController extends BaseController {
         log.info(requestId + " Request to /editTechnicalCertificate");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return editTechnicalCertificateService.editTechnicalCertificate(requestId, request);
         });
     }
@@ -80,7 +81,7 @@ public class UpdateTransportInfoController extends BaseController {
         log.info(requestId + " Request to /editNomenclatureName");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return editNomenclatureNameService.editNomenclatureName(requestId, request);
         });
     }
@@ -93,7 +94,7 @@ public class UpdateTransportInfoController extends BaseController {
         log.info(requestId + " Request to /editTechnicalCertificateDopInfo");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return editTechnicalCertificateDopInfoService.editTechnicalCertificateDopInfo(requestId, request);
         });
     }

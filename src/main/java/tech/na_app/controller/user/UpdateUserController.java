@@ -10,6 +10,7 @@ import tech.na_app.model.enums.UserRoleType;
 import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.user.ResetPasswordRequest;
 import tech.na_app.services.user.ResetPasswordService;
+import tech.na_app.utils.LineUtil;
 
 
 @Log4j2
@@ -29,7 +30,7 @@ public class UpdateUserController extends BaseController {
         log.info(requestId + " Request to /resetPassword");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return resetPasswordService.resetPassword(requestId, user, request);
         });
     }

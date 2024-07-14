@@ -12,6 +12,7 @@ import tech.na_app.services.vehicle.get_data.GetAllTransportService;
 import tech.na_app.services.vehicle.get_data.GetEnvironmentalStandardService;
 import tech.na_app.services.vehicle.get_data.GetFuelService;
 import tech.na_app.services.vehicle.get_data.GetTransportInfoService;
+import tech.na_app.utils.LineUtil;
 
 @Log4j2
 @RestController
@@ -33,7 +34,7 @@ public class GetTransportInfoController extends BaseController {
         log.info(requestId + " Request to /getAllTransport");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return getAllTransportService.getAllTransport(requestId, user);
         });
     }
@@ -47,7 +48,7 @@ public class GetTransportInfoController extends BaseController {
         log.info(requestId + " Request to /getTransportInfo");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return getTransportInfoService.getTransportInfo(requestId, user, request);
         });
     }
@@ -61,7 +62,7 @@ public class GetTransportInfoController extends BaseController {
         log.info(requestId + " Request to /getFuels");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return getFuelService.getFuel(requestId);
         });
     }
@@ -74,7 +75,7 @@ public class GetTransportInfoController extends BaseController {
         log.info(requestId + " Request to /getEnvironmentalStandard");
         return handleRequest(requestId, () -> {
             User user = authenticationStrategy.authenticate(token, UserRoleType.SUPER_ADMIN);
-            log.info(requestId + " User: " + user);
+            log.info(requestId + LineUtil.USER + user);
             return getEnvironmentalStandardService.getEnvironmentalStandard(requestId);
         });
     }
