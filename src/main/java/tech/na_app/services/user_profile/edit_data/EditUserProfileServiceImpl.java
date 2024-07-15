@@ -10,7 +10,6 @@ import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.profile.EditUserProfileRequest;
 import tech.na_app.model.profile.EditUserProfileResponse;
 import tech.na_app.repository.UserRepository;
-import tech.na_app.services.user.UserHelperComponent;
 import tech.na_app.services.user_profile.UserProfileAbs;
 
 import java.util.Date;
@@ -21,13 +20,13 @@ import java.util.Date;
 public class EditUserProfileServiceImpl extends UserProfileAbs implements EditUserProfileService {
 
     private final UserRepository userRepository;
-    private final UserHelperComponent userHelperComponent;
 
 
     public EditUserProfileResponse editUserProfile(String requestId, User userThatMakeRequest, EditUserProfileRequest request) {
         try {
             User userInfo = choosingUser(userThatMakeRequest, request.getId());
 
+            CalculateUserAge userAge = new CalculateUserAge(request.getBirthday());
             Profile profile = Profile.builder()
                     .email(request.getEmail())
                     .phone(request.getPhone())
@@ -36,7 +35,7 @@ public class EditUserProfileServiceImpl extends UserProfileAbs implements EditUs
                     .acc_order_date(request.getAcc_order_date())
                     .salary(request.getSalary())
                     .birthday(request.getBirthday())
-                    .age(userHelperComponent.calculateAge(request.getBirthday()))
+                    .age(userAge.execute())
                     .previous_work_exp(request.getPrevious_work_exp())
                     .previous_info_work_mp(request.getPrevious_info_work_mp())
                     .sufficient_experience_mp(request.getSufficient_experience_mp())

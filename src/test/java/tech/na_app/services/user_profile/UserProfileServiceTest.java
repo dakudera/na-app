@@ -20,7 +20,7 @@
 //import tech.na_app.model.profile.driving_license.SaveInfoDrivingLicenseRequest;
 //import tech.na_app.model.profile.driving_license.SaveInfoDrivingLicenseResponse;
 //import tech.na_app.repository.*;
-//import tech.na_app.services.user.UserHelperComponent;
+//import tech.na_app.services.user_profile.edit_data.CalculateUserAge;
 //import tech.na_app.utils.SequenceGeneratorService;
 //import tech.na_app.utils.TestUtils;
 //
@@ -54,7 +54,7 @@
 //    private GetUserProfileHelper getUserProfileHelperComponent;
 //
 //    @Mock
-//    private UserHelperComponent userHelperComponent;
+//    private CalculateUserAge userHelperComponent;
 //
 //    @Mock
 //    private DrivingLicenseRepository drivingLicenseRepository;

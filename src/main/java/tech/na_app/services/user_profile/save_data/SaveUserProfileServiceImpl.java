@@ -11,7 +11,7 @@ import tech.na_app.model.exceptions.ErrorObject;
 import tech.na_app.model.profile.SaveUserProfileRequest;
 import tech.na_app.model.profile.SaveUserProfileResponse;
 import tech.na_app.repository.UserRepository;
-import tech.na_app.services.user.UserHelperComponent;
+import tech.na_app.services.user_profile.edit_data.CalculateUserAge;
 
 import java.util.Date;
 import java.util.Optional;
@@ -22,7 +22,6 @@ import java.util.Optional;
 public class SaveUserProfileServiceImpl implements SaveUserProfileService {
 
     private final UserRepository userRepository;
-    private final UserHelperComponent userHelperComponent;
 
     @Override
     public SaveUserProfileResponse saveUserProfile(String requestId, SaveUserProfileRequest request) {
@@ -36,6 +35,7 @@ public class SaveUserProfileServiceImpl implements SaveUserProfileService {
             User user = userOptional.get();
             user.setUpdate_date(new Date());
 
+            CalculateUserAge userAge = new CalculateUserAge(request.getBirthday());
             Profile profile = Profile.builder()
                     .email(request.getEmail())
                     .phone(request.getPhone())
@@ -44,7 +44,7 @@ public class SaveUserProfileServiceImpl implements SaveUserProfileService {
                     .acc_order_date(request.getAcc_order_date())
                     .salary(request.getSalary())
                     .birthday(request.getBirthday())
-                    .age(userHelperComponent.calculateAge(request.getBirthday()))
+                    .age(userAge.execute())
                     .previous_work_exp(request.getPrevious_work_exp())
                     .previous_info_work_mp(request.getPrevious_info_work_mp())
                     .sufficient_experience_mp(request.getSufficient_experience_mp())

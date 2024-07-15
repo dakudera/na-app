@@ -1,6 +1,4 @@
-package tech.na_app.services.user;
-
-import org.springframework.stereotype.Component;
+package tech.na_app.services.user_profile.edit_data;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -8,15 +6,20 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 
-@Component
-public class UserHelperComponent {
+public class CalculateUserAge {
 
-    public Integer calculateAge(Date birthDate) {
-        if (birthDate == null) {
+    private Date birthDay;
+
+    public CalculateUserAge(Date birthDay) {
+        this.birthDay = birthDay;
+    }
+
+    public Integer execute() {
+        if (this.birthDay == null) {
             return 0;
         }
 
-        LocalDate birthday = Instant.ofEpochMilli(birthDate.getTime())
+        LocalDate birthday = Instant.ofEpochMilli(this.birthDay.getTime())
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
         LocalDate currentDate = Instant.ofEpochMilli(new Date().getTime())

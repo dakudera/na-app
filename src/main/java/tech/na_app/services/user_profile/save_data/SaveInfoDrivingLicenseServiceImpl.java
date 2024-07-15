@@ -24,12 +24,14 @@ public class SaveInfoDrivingLicenseServiceImpl implements SaveInfoDrivingLicense
                 throw new ApiException(400, "User already has driving license");
             }
 
-            drivingLicenseRepository.save(DrivingLicense.builder()
-                    .userId(request.getUserId())
-                    .categories(request.getCategories())
-                    .date_issue(request.getDate_issue())
-                    .date_end(request.getDate_end())
-                    .build());
+            drivingLicenseRepository.save(
+                    DrivingLicense.builder()
+                            .userId(request.getUserId())
+                            .categories(request.getCategories())
+                            .date_issue(request.getDate_issue())
+                            .date_end(request.getDate_end())
+                            .build()
+            );
 
             return new SaveInfoDrivingLicenseResponse(new ErrorObject(0));
         } catch (ApiException e) {
