@@ -5,7 +5,7 @@ public class LineUtil {
     private LineUtil() {
     }
 
-    public final static String USER = " User: ";
+    public static final String USER = " User: ";
 
 
 }
